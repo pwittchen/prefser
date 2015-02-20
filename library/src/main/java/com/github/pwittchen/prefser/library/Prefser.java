@@ -103,8 +103,7 @@ public final class Prefser {
      *
      * @param key          key of the preference
      * @param classOfT     class of T (e.g. String.class)
-     * @param defaultValue default value of the preference (e.g. "" or "undefined"),
-     *                     currently supported only for primitive types
+     * @param defaultValue default value of the preference (e.g. "" or "undefined")
      * @param <T>          return type of the preference (e.g. String)
      * @return value from shared preferences associated with given key or default value
      */
@@ -118,7 +117,7 @@ public final class Prefser {
             }
         }
 
-        if(contains(key)) {
+        if (contains(key)) {
             return (T) gson.fromJson(preferences.getString(key, null), classOfT);
         } else {
             return defaultValue;
