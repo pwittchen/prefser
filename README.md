@@ -1,5 +1,5 @@
 Prefser
 =======
-Wrapper for Android sharedPreferences with object serialization
+Wrapper for Android SharedPreferences with object serialization
 
 Documentation and examples will be provided later.

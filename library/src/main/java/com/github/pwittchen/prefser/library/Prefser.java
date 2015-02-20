@@ -84,14 +84,14 @@ public final class Prefser {
      * gets value from shared preferences with a given key and type
      * default value is set to null
      *
-     * @param key       key of the preference
-     * @param classOfT  class of T (e.g. String.class)
-     * @param <T>       return type of the preference (e.g. String)
+     * @param key      key of the preference
+     * @param classOfT class of T (e.g. String.class)
+     * @param <T>      return type of the preference (e.g. String)
      * @return value from shared preferences associated with given key
      */
     public <T> T get(String key, Class classOfT) {
-        if(!contains(key)) {
-            return (T) new Object();
+        if (!contains(key)) {
+            throw new RuntimeException(String.format("value with key %s could not be found.", key));
         }
 
         return get(key, classOfT, null);
@@ -118,7 +118,11 @@ public final class Prefser {
             }
         }
 
-        return (T) gson.fromJson(preferences.getString(key, null), classOfT);
+        if(contains(key)) {
+            return (T) gson.fromJson(preferences.getString(key, null), classOfT);
+        } else {
+            return defaultValue;
+        }
     }
 
     /**
@@ -156,7 +160,7 @@ public final class Prefser {
      * clears all shared preferences
      */
     public void clear() {
-        if(size() == 0) {
+        if (size() == 0) {
             return;
         }
 
@@ -165,6 +169,7 @@ public final class Prefser {
 
     /**
      * returns number of all items stored in sharedPreferences
+     *
      * @return number of all stored items
      */
     public int size() {
