@@ -45,7 +45,7 @@ public final class Prefser {
     private final Gson gson = new Gson();
 
     private interface Getter {
-        <T> T get(String key, Class clazz, T defaultValue);
+        <T> T get(String key, Class classOfT, T defaultValue);
     }
 
     /**
@@ -133,7 +133,7 @@ public final class Prefser {
     }
 
     /**
-     * removed value defined by a given key
+     * removes value defined by a given key
      *
      * @param key key of the preference to be removed
      */
@@ -156,42 +156,42 @@ public final class Prefser {
     private void fillGetterMap() {
         getters.put(Boolean.class, new Getter() {
             @Override
-            public <T> T get(String key, Class clazz, T defaultValue) {
+            public <T> T get(String key, Class classOfT, T defaultValue) {
                 return (T) Boolean.valueOf(preferences.getString(key, String.valueOf(defaultValue)));
             }
         });
 
         getters.put(Float.class, new Getter() {
             @Override
-            public <T> T get(String key, Class clazz, T defaultValue) {
+            public <T> T get(String key, Class classOfT, T defaultValue) {
                 return (T) Float.valueOf(preferences.getString(key, String.valueOf(defaultValue)));
             }
         });
 
         getters.put(Integer.class, new Getter() {
             @Override
-            public <T> T get(String key, Class clazz, T defaultValue) {
+            public <T> T get(String key, Class classOfT, T defaultValue) {
                 return (T) Integer.valueOf(preferences.getString(key, String.valueOf(defaultValue)));
             }
         });
 
         getters.put(Long.class, new Getter() {
             @Override
-            public <T> T get(String key, Class clazz, T defaultValue) {
+            public <T> T get(String key, Class classOfT, T defaultValue) {
                 return (T) Long.valueOf(preferences.getString(key, String.valueOf(defaultValue)));
             }
         });
 
         getters.put(Double.class, new Getter() {
             @Override
-            public <T> T get(String key, Class clazz, T defaultValue) {
+            public <T> T get(String key, Class classOfT, T defaultValue) {
                 return (T) Double.valueOf(preferences.getString(key, String.valueOf(defaultValue)));
             }
         });
 
         getters.put(String.class, new Getter() {
             @Override
-            public <T> T get(String key, Class clazz, T defaultValue) {
+            public <T> T get(String key, Class classOfT, T defaultValue) {
                 return (T) preferences.getString(key, String.valueOf(defaultValue));
             }
         });
