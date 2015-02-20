@@ -67,7 +67,7 @@ public final class Prefser {
         checkNotNull(sharedPreferences, "sharedPreferences == null");
         this.preferences = sharedPreferences;
         this.editor = preferences.edit();
-        fillGetterMap();
+        putGetters();
     }
 
     /**
@@ -161,7 +161,7 @@ public final class Prefser {
         return preferences.getAll().size();
     }
 
-    private void fillGetterMap() {
+    private void putGetters() {
         getters.put(Boolean.class, new Getter() {
             @Override
             public <T> T get(String key, Class classOfT, T defaultValue) {
