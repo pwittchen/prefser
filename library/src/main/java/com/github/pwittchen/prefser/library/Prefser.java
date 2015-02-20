@@ -153,6 +153,14 @@ public final class Prefser {
         editor.clear().apply();
     }
 
+    /**
+     * returns number of all items stored in sharedPreferences
+     * @return number of all stored items
+     */
+    public int size() {
+        return preferences.getAll().size();
+    }
+
     private void fillGetterMap() {
         getters.put(Boolean.class, new Getter() {
             @Override

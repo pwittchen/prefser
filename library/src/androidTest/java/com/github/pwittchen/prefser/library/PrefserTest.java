@@ -35,11 +35,34 @@ public class PrefserTest extends AndroidTestCase {
     }
 
     public void testContains() throws Exception {
+        // given
+        String givenValue = "sample value";
+        String givenKey = "sampleKey";
 
+        // when
+        prefser.put(givenKey, givenValue);
+
+        // then
+        assertTrue(prefser.contains(givenKey));
+        prefser.remove(givenKey);
+        assertFalse(prefser.contains(givenKey));
     }
 
-    public void testGet() throws Exception {
+    public void testSize() throws Exception {
+        // given
+        prefser.clear();
 
+        // when
+        prefser.put("key1", 1);
+        prefser.put("key2", 2);
+        prefser.put("key3", 3);
+
+        // then
+        assertEquals(prefser.size(), 3);
+        prefser.remove("key1");
+        assertEquals(prefser.size(), 2);
+        prefser.clear();
+        assertEquals(prefser.size(), 0);
     }
 
     public void testPutBoolean() throws Exception {
