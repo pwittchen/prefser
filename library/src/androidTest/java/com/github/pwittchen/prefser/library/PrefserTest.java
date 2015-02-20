@@ -20,6 +20,7 @@ import android.test.AndroidTestCase;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO: write tests for returning default values with get() method
 public class PrefserTest extends AndroidTestCase {
 
     private Prefser prefser;

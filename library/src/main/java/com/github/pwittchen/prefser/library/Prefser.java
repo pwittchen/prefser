@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Prefser is a wrapper for Android sharedPreferences with object serialization.
+ * Prefser is a wrapper for Android SharedPreferences with object serialization.
  * <p/>
  * It uses mechanism of sharedPreferences to store primitives
  * and Gson library to store arrays, lists and custom objects.
@@ -90,6 +90,10 @@ public final class Prefser {
      * @return value from shared preferences associated with given key
      */
     public <T> T get(String key, Class classOfT) {
+        if(!contains(key)) {
+            return (T) new Object();
+        }
+
         return get(key, classOfT, null);
     }
 
@@ -106,6 +110,7 @@ public final class Prefser {
      */
     public <T> T get(String key, Class classOfT, T defaultValue) {
         checkNotNull(key, "key == null");
+        checkNotNull(classOfT, "classOfT == null");
 
         for (Map.Entry<Class, Getter> entry : getters.entrySet()) {
             if (classOfT.equals(entry.getKey())) {
@@ -151,6 +156,10 @@ public final class Prefser {
      * clears all shared preferences
      */
     public void clear() {
+        if(size() == 0) {
+            return;
+        }
+
         editor.clear().apply();
     }
 

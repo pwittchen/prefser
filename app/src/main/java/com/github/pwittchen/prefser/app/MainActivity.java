@@ -26,7 +26,7 @@ import com.github.pwittchen.prefser.library.Prefser;
 
 /**
  * This is simple exemplary app, which shows basic usage of Prefser,
- * which is wrapper for shared preferences.
+ * which is wrapper for SharedPreferences.
  */
 public class MainActivity extends ActionBarActivity {
 
