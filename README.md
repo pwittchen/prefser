@@ -1,4 +1,5 @@
-Prefser - wrapper for Android sharedPreferences with object serialization
-=========================================================================
+Prefser
+=======
+wrapper for Android sharedPreferences with object serialization
 
-TBD.
+Documentation and examples will be provided later.
