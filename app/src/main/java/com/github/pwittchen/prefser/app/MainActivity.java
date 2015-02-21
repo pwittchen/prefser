@@ -66,7 +66,10 @@ public class MainActivity extends ActionBarActivity {
                     public void call(String key) {
                         if (key.equals(MY_KEY)) {
                             value.setText(prefser.get(key, String.class, ""));
-                            Toast.makeText(MainActivity.this, String.format("value in %s changed", MY_KEY), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(
+                                    MainActivity.this,
+                                    String.format("value in %s changed", MY_KEY),
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
