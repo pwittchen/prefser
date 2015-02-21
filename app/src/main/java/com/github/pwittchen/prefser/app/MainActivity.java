@@ -29,6 +29,7 @@ import butterknife.OnClick;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -61,16 +62,20 @@ public class MainActivity extends ActionBarActivity {
         subscription = prefser.fromDefaultPreferences()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
+                .filter(new Func1<String, Boolean>() {
+                    @Override
+                    public Boolean call(String key) {
+                        return key.equals(MY_KEY);
+                    }
+                })
                 .subscribe(new Action1<String>() {
                     @Override
                     public void call(String key) {
-                        if (key.equals(MY_KEY)) {
-                            value.setText(prefser.get(key, String.class, ""));
-                            Toast.makeText(
-                                    MainActivity.this,
-                                    String.format("value in %s changed", MY_KEY),
-                                    Toast.LENGTH_SHORT).show();
-                        }
+                        value.setText(prefser.get(key, String.class, ""));
+                        Toast.makeText(
+                                MainActivity.this,
+                                String.format("value in %s changed", MY_KEY),
+                                Toast.LENGTH_SHORT).show();
                     }
                 });
     }
