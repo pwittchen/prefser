@@ -22,8 +22,15 @@
         android:text="@string/save" />
 
     <Button
+        android:id="@+id/put_lenny_face"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/save"
+        android:text="@string/put_lenny_face" />
+
+    <Button
         android:id="@+id/remove"
-        android:layout_below="@id/save"
+        android:layout_below="@id/put_lenny_face"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/remove"/>

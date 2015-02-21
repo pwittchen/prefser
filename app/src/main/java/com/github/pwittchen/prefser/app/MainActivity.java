@@ -17,12 +17,19 @@ package com.github.pwittchen.prefser.app;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.github.pwittchen.prefser.R;
 import com.github.pwittchen.prefser.library.Prefser;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * This is simple exemplary app, which shows basic usage of Prefser,
@@ -31,36 +38,58 @@ import com.github.pwittchen.prefser.library.Prefser;
 public class MainActivity extends ActionBarActivity {
 
     private Prefser prefser;
-    private EditText value;
-    private Button save;
-    private Button remove;
+    private final static String MY_KEY = "MY_KEY";
+    private Subscription subscription;
+
+    @InjectView(R.id.value)
+    protected EditText value;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.inject(this);
         prefser = new Prefser(this);
-        value = (EditText) findViewById(R.id.value);
-        save = (Button) findViewById(R.id.save);
-        remove = (Button) findViewById(R.id.remove);
+    }
 
-        final String myKey = "myKey";
-        final String myValue = prefser.get(myKey, String.class, "");
-        value.setText(myValue);
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                prefser.put(myKey, value.getText().toString());
-            }
-        });
+        value.setText(prefser.get(MY_KEY, String.class, ""));
 
-        remove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                prefser.remove(myKey);
-                value.setText(prefser.get(myKey, String.class, ""));
-            }
-        });
+        subscription = prefser.fromDefaultPreferences()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String key) {
+                        if (key.equals(MY_KEY)) {
+                            value.setText(prefser.get(key, String.class, ""));
+                            Toast.makeText(MainActivity.this, String.format("value in %s changed", MY_KEY), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        subscription.unsubscribe();
+    }
+
+    @OnClick(R.id.save)
+    public void onSaveClicked() {
+        prefser.put(MY_KEY, value.getText().toString());
+    }
+
+    @OnClick(R.id.put_lenny_face)
+    public void onPutLennyFaceClicked() {
+        prefser.put(MY_KEY, "Hi! I'm Lenny ( ͡° ͜ʖ ͡°)");
+    }
+
+    @OnClick(R.id.remove)
+    public void onRemoveClicked() {
+        prefser.remove(MY_KEY);
     }
 }

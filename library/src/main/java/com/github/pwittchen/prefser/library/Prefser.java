@@ -24,6 +24,9 @@ import com.google.gson.Gson;
 import java.util.HashMap;
 import java.util.Map;
 
+import rx.Observable;
+import rx.Subscriber;
+
 /**
  * Prefser is a wrapper for Android SharedPreferences with object serialization.
  * <p/>
@@ -43,6 +46,7 @@ public final class Prefser {
     private final SharedPreferences.Editor editor;
     private final Map<Class, Getter> getters = new HashMap<>();
     private final Gson gson = new Gson();
+    private SharedPreferences.OnSharedPreferenceChangeListener onChangeListener;
 
     private interface Getter {
         <T> T get(String key, Class classOfT, T defaultValue);
@@ -67,7 +71,7 @@ public final class Prefser {
         checkNotNull(sharedPreferences, "sharedPreferences == null");
         this.preferences = sharedPreferences;
         this.editor = preferences.edit();
-        putGetters();
+        createMapOfGetters();
     }
 
     /**
@@ -81,7 +85,7 @@ public final class Prefser {
     }
 
     /**
-     * gets value from shared preferences with a given key and type
+     * gets value from shared preferences with a given key and type,
      * default value is set to null
      *
      * @param key      key of the preference
@@ -122,6 +126,46 @@ public final class Prefser {
         } else {
             return defaultValue;
         }
+    }
+
+    /**
+     * returns RxJava Observable from default SharedPreferences
+     * used inside Prefser object.
+     * You can subscribe this Observable and every time,
+     * when SharedPreferences will change, subscriber will be notified
+     * about that (e.g. in call() method) and you will be able to read
+     * key of the value, which has been changed
+     *
+     * @return Observable with String containing key of the value in default sharedPreferences
+     */
+    public Observable<String> fromDefaultPreferences() {
+        return from(preferences);
+    }
+
+    /**
+     * returns RxJava Observable from SharedPreferences.
+     * You can subscribe this Observable and every time,
+     * when SharedPreferences will change, subscriber will be notified
+     * about that (e.g. in call() method) and you will be able to read
+     * key of the value, which has been changed
+     *
+     * @param sharedPreferences instance of SharedPreferences to be observed
+     * @return Observable with String containing key of the value in sharedPreferences
+     */
+    public Observable<String> from(final SharedPreferences sharedPreferences) {
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(final Subscriber<? super String> subscriber) {
+                onChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+                    @Override
+                    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                        subscriber.onNext(key);
+                    }
+                };
+
+                sharedPreferences.registerOnSharedPreferenceChangeListener(onChangeListener);
+            }
+        });
     }
 
     /**
@@ -175,7 +219,7 @@ public final class Prefser {
         return preferences.getAll().size();
     }
 
-    private void putGetters() {
+    private void createMapOfGetters() {
         getters.put(Boolean.class, new Getter() {
             @Override
             public <T> T get(String key, Class classOfT, T defaultValue) {

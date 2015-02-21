@@ -21,5 +21,7 @@ android {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.jakewharton:butterknife:6.1.0'
+    compile 'io.reactivex:rxandroid:0.24.0'
     compile project(':library')
 }
