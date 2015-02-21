@@ -18,12 +18,35 @@ package com.github.pwittchen.prefser.library;
 import android.test.AndroidTestCase;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 //TODO: write tests for returning default values with get() method
 public class PrefserTest extends AndroidTestCase {
 
     private Prefser prefser;
+
+    private class CustomClass {
+        private int valueOne;
+        private String valueTwo;
+
+        public CustomClass(int valueOne, String valueTwo) {
+            this.valueOne = valueOne;
+            this.valueTwo = valueTwo;
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            boolean isEqual = false;
+
+            if (other instanceof CustomClass) {
+                isEqual = ((CustomClass) other).valueOne == valueOne;
+                isEqual |= ((CustomClass) other).valueTwo.equals(valueTwo);
+            }
+
+            return isEqual;
+        }
+    }
 
     @Override
     public void setUp() {
@@ -66,7 +89,7 @@ public class PrefserTest extends AndroidTestCase {
         assertEquals(prefser.size(), 0);
     }
 
-    public void testRemove() throws Exception{
+    public void testRemove() throws Exception {
         // given
         prefser.put("key1", 1);
 
@@ -79,7 +102,7 @@ public class PrefserTest extends AndroidTestCase {
 
     }
 
-    public void testClear() throws Exception{
+    public void testClear() throws Exception {
         // given
         prefser.put("key1", 1);
         prefser.put("key2", 2);
@@ -96,13 +119,27 @@ public class PrefserTest extends AndroidTestCase {
     public void testPutBoolean() throws Exception {
         // given
         String givenKey = "sampleKey";
+        Boolean givenValue = true;
+
+        // when
+        prefser.put(givenKey, givenValue);
+
+        // then
+        Boolean readValue = prefser.get(givenKey, Boolean.class);
+        assertEquals(readValue, givenValue);
+        prefser.remove(givenKey);
+    }
+
+    public void testPutBooleanPrimitive() throws Exception {
+        // given
+        String givenKey = "sampleKey";
         boolean givenValue = true;
 
         // when
         prefser.put(givenKey, givenValue);
 
         // then
-        boolean readValue = prefser.get(givenKey, Boolean.class);
+        boolean readValue = prefser.get(givenKey, boolean.class);
         assertEquals(readValue, givenValue);
         prefser.remove(givenKey);
     }
@@ -110,18 +147,46 @@ public class PrefserTest extends AndroidTestCase {
     public void testPutFloat() throws Exception {
         // given
         String givenKey = "sampleKey";
-        float givenValue = 41;
+        Float givenValue = 41f;
 
         // when
         prefser.put(givenKey, givenValue);
 
         // then
-        float readValue = prefser.get(givenKey, Float.class);
+        Float readValue = prefser.get(givenKey, Float.class);
         assertEquals(readValue, givenValue);
         prefser.remove(givenKey);
     }
 
-    public void testPutInt() throws Exception {
+    public void testPutFloatPrimitive() throws Exception {
+        // given
+        String givenKey = "sampleKey";
+        float givenValue = 41f;
+
+        // when
+        prefser.put(givenKey, givenValue);
+
+        // then
+        float readValue = prefser.get(givenKey, float.class);
+        assertEquals(readValue, givenValue);
+        prefser.remove(givenKey);
+    }
+
+    public void testPutInteger() throws Exception {
+        // given
+        String givenKey = "sampleKey";
+        Integer givenValue = 42;
+
+        // when
+        prefser.put(givenKey, givenValue);
+
+        // then
+        Integer readValue = prefser.get(givenKey, Integer.class);
+        assertEquals(readValue, givenValue);
+        prefser.remove(givenKey);
+    }
+
+    public void testPutIntegerPrimitive() throws Exception {
         // given
         String givenKey = "sampleKey";
         int givenValue = 42;
@@ -130,7 +195,7 @@ public class PrefserTest extends AndroidTestCase {
         prefser.put(givenKey, givenValue);
 
         // then
-        int readValue = prefser.get(givenKey, Integer.class);
+        int readValue = prefser.get(givenKey, int.class);
         assertEquals(readValue, givenValue);
         prefser.remove(givenKey);
     }
@@ -138,18 +203,46 @@ public class PrefserTest extends AndroidTestCase {
     public void testPutLong() throws Exception {
         // given
         String givenKey = "sampleKey";
-        long givenValue = 43;
+        Long givenValue = 43l;
 
         // when
         prefser.put(givenKey, givenValue);
 
         // then
-        long readValue = prefser.get(givenKey, Long.class);
+        Long readValue = prefser.get(givenKey, Long.class);
+        assertEquals(readValue, givenValue);
+        prefser.remove(givenKey);
+    }
+
+    public void testPutLongPrimitive() throws Exception {
+        // given
+        String givenKey = "sampleKey";
+        long givenValue = 43l;
+
+        // when
+        prefser.put(givenKey, givenValue);
+
+        // then
+        long readValue = prefser.get(givenKey, long.class);
         assertEquals(readValue, givenValue);
         prefser.remove(givenKey);
     }
 
     public void testPutDouble() throws Exception {
+        // given
+        String givenKey = "sampleKey";
+        Double givenValue = 44.5;
+
+        // when
+        prefser.put(givenKey, givenValue);
+
+        // then
+        Double readValue = prefser.get(givenKey, Double.class);
+        assertEquals(readValue, givenValue);
+        prefser.remove(givenKey);
+    }
+
+    public void testPutDoublePrimitive() throws Exception {
         // given
         String givenKey = "sampleKey";
         double givenValue = 44.5;
@@ -158,7 +251,7 @@ public class PrefserTest extends AndroidTestCase {
         prefser.put(givenKey, givenValue);
 
         // then
-        double readValue = prefser.get(givenKey, Double.class);
+        double readValue = prefser.get(givenKey, double.class);
         assertEquals(readValue, givenValue);
         prefser.remove(givenKey);
     }
@@ -175,28 +268,6 @@ public class PrefserTest extends AndroidTestCase {
         String readValue = prefser.get(givenKey, String.class);
         assertEquals(readValue, givenValue);
         prefser.remove(givenKey);
-    }
-
-    private class CustomClass {
-        private int valueOne;
-        private String valueTwo;
-
-        public CustomClass(int valueOne, String valueTwo) {
-            this.valueOne = valueOne;
-            this.valueTwo = valueTwo;
-        }
-
-        @Override
-        public boolean equals(Object other) {
-            boolean isEqual = false;
-
-            if (other instanceof CustomClass) {
-                isEqual = ((CustomClass) other).valueOne == valueOne;
-                isEqual |= ((CustomClass) other).valueTwo.equals(valueTwo);
-            }
-
-            return isEqual;
-        }
     }
 
     public void testPutCustomObject() throws Exception {
@@ -216,31 +287,21 @@ public class PrefserTest extends AndroidTestCase {
     public void testPutListOfBooleans() throws Exception {
         // given
         String givenKey = "sampleKey";
-        List<Boolean> booleans = new ArrayList<>();
-        booleans.add(true);
-        booleans.add(false);
-        booleans.add(true);
+        List<Boolean> booleans = new ArrayList<>(Arrays.asList(true, false, true));
 
         // when
         prefser.put(givenKey, booleans);
 
         // then
         List<Boolean> readObject = prefser.get(givenKey, List.class);
-
-        assertEquals(readObject.get(0), booleans.get(0));
-        assertEquals(readObject.get(1), booleans.get(1));
-        assertEquals(readObject.get(2), booleans.get(2));
-
+        assertEquals(readObject, booleans);
         prefser.remove(givenKey);
     }
 
     public void testPutListOfFloats() throws Exception {
         // given
         String givenKey = "sampleKey";
-        List<Float> floats = new ArrayList<>();
-        floats.add(4f);
-        floats.add(5f);
-        floats.add(6f);
+        List<Float> floats = new ArrayList<>(Arrays.asList(4f, 5f, 6f));
 
         // when
         prefser.put(givenKey, floats);
@@ -258,16 +319,14 @@ public class PrefserTest extends AndroidTestCase {
         assertEquals(expectedNumberSecond.floatValue(), floats.get(1).floatValue());
         assertEquals(expectedNumberThird.floatValue(), floats.get(2).floatValue());
 
+
         prefser.remove(givenKey);
     }
 
     public void testPutListOfInts() throws Exception {
         // given
         String givenKey = "sampleKey";
-        List<Integer> ints = new ArrayList<>();
-        ints.add(4);
-        ints.add(5);
-        ints.add(6);
+        List<Integer> ints = new ArrayList<>(Arrays.asList(4, 5, 6));
 
         // when
         prefser.put(givenKey, ints);
@@ -291,10 +350,7 @@ public class PrefserTest extends AndroidTestCase {
     public void testPutListOfLongs() throws Exception {
         // given
         String givenKey = "sampleKey";
-        List<Long> ints = new ArrayList<>();
-        ints.add(4l);
-        ints.add(5l);
-        ints.add(6l);
+        List<Long> ints = new ArrayList<>(Arrays.asList(4l, 5l, 6l));
 
         // when
         prefser.put(givenKey, ints);
@@ -318,10 +374,7 @@ public class PrefserTest extends AndroidTestCase {
     public void testPutListOfDoubles() throws Exception {
         // given
         String givenKey = "sampleKey";
-        List<Double> doubles = new ArrayList<>();
-        doubles.add(4.0);
-        doubles.add(5.1);
-        doubles.add(6.2);
+        List<Double> doubles = new ArrayList<>(Arrays.asList(4.0, 5.1, 6.2));
 
         // when
         prefser.put(givenKey, doubles);
@@ -339,10 +392,7 @@ public class PrefserTest extends AndroidTestCase {
     public void testPutListOfStrings() throws Exception {
         // given
         String givenKey = "sampleKey";
-        List<String> strings = new ArrayList<>();
-        strings.add("one");
-        strings.add("two");
-        strings.add("three");
+        List<String> strings = new ArrayList<>(Arrays.asList("one", "two", "three"));
 
         // when
         prefser.put(givenKey, strings);
@@ -494,5 +544,301 @@ public class PrefserTest extends AndroidTestCase {
         assertEquals(readObject[2], customClassesArray[2]);
 
         prefser.remove(givenKey);
+    }
+
+    public void testShouldThrowAnExceptionWhenGettingValueForNotDefinedKeyAndDefaultValue() {
+        // given
+        prefser.clear();
+        String keyWhichDoesNotExist = "keyWhichDoesNotExist";
+        String exceptionMessageFormat = "Value with key %s could not be found";
+
+        try {
+            // when
+            boolean readValue = prefser.get(keyWhichDoesNotExist, Boolean.class);
+        } catch (Exception e) {
+            // then
+            assertEquals(e.getMessage(), String.format(exceptionMessageFormat, keyWhichDoesNotExist));
+        }
+    }
+
+    public void testGetDefaultBoolean() {
+        // given
+        prefser.clear();
+        String keyWhichDoesNotExist = "keyWhichDoesNotExist";
+        boolean defaultValue = true;
+
+        // when
+        boolean readValue = prefser.get(keyWhichDoesNotExist, Boolean.class, defaultValue);
+
+        // then
+        assertEquals(readValue, defaultValue);
+    }
+
+    public void testGetDefaultFloat() {
+        // given
+        prefser.clear();
+        String keyWhichDoesNotExist = "keyWhichDoesNotExist";
+        float defaultValue = 42f;
+
+        // when
+        float readValue = prefser.get(keyWhichDoesNotExist, Float.class, defaultValue);
+
+        // then
+        assertEquals(readValue, defaultValue);
+    }
+
+    public void testGetDefaultInteger() {
+        // given
+        prefser.clear();
+        String keyWhichDoesNotExist = "keyWhichDoesNotExist";
+        int defaultValue = 43;
+
+        // when
+        int readValue = prefser.get(keyWhichDoesNotExist, Integer.class, defaultValue);
+
+        // then
+        assertEquals(readValue, defaultValue);
+    }
+
+    public void testGetDefaultLong() {
+        // given
+        prefser.clear();
+        String keyWhichDoesNotExist = "keyWhichDoesNotExist";
+        long defaultValue = 44l;
+
+        // when
+        long readValue = prefser.get(keyWhichDoesNotExist, Long.class, defaultValue);
+
+        // then
+        assertEquals(readValue, defaultValue);
+    }
+
+    public void testGetDefaultDouble() {
+        // given
+        prefser.clear();
+        String keyWhichDoesNotExist = "keyWhichDoesNotExist";
+        double defaultValue = 45.6;
+
+        // when
+        double readValue = prefser.get(keyWhichDoesNotExist, Double.class, defaultValue);
+
+        // then
+        assertEquals(readValue, defaultValue);
+    }
+
+    public void testGetDefaultString() {
+        // given
+        prefser.clear();
+        String keyWhichDoesNotExist = "keyWhichDoesNotExist";
+        String defaultValue = "default string value";
+
+        // when
+        String readValue = prefser.get(keyWhichDoesNotExist, String.class, defaultValue);
+
+        // then
+        assertEquals(readValue, defaultValue);
+    }
+
+    public void testGetDefaultCustomObject() {
+        // given
+        prefser.clear();
+        String keyWhichDoesNotExist = "keyWhichDoesNotExist";
+        CustomClass defaultValue = new CustomClass(23, "string in default object");
+
+        // when
+        CustomClass readValue = prefser.get(keyWhichDoesNotExist, CustomClass.class, defaultValue);
+
+        // then
+        assertEquals(readValue, defaultValue);
+    }
+
+    public void testGetDefaultListOfBooleans() {
+        // given
+        prefser.clear();
+        String keyWhichDoesNotExist = "keyWhichDoesNotExist";
+        List<Boolean> defaultValue = new ArrayList<>(Arrays.asList(true, false, true));
+
+        // when
+        List<Boolean> readValue = prefser.get(keyWhichDoesNotExist, List.class, defaultValue);
+
+        // then
+        assertEquals(readValue, defaultValue);
+    }
+
+    public void testGetDefaultListOfFloats() {
+        // given
+        prefser.clear();
+        String keyWhichDoesNotExist = "keyWhichDoesNotExist";
+        List<Float> defaultValue = new ArrayList<>(Arrays.asList(1f, 2f, 3f));
+
+        // when
+        List<Float> readValue = prefser.get(keyWhichDoesNotExist, List.class, defaultValue);
+
+        // then
+        assertEquals(readValue, defaultValue);
+    }
+
+    public void testGetDefaultListOfIntegers() {
+        // given
+        prefser.clear();
+        String keyWhichDoesNotExist = "keyWhichDoesNotExist";
+        List<Integer> defaultValue = new ArrayList<>(Arrays.asList(1, 2, 3));
+
+        // when
+        List<Integer> readValue = prefser.get(keyWhichDoesNotExist, List.class, defaultValue);
+
+        // then
+        assertEquals(readValue, defaultValue);
+    }
+
+    public void testGetDefaultListOfLongs() {
+        // given
+        prefser.clear();
+        String keyWhichDoesNotExist = "keyWhichDoesNotExist";
+        List<Long> defaultValue = new ArrayList<>(Arrays.asList(1l, 2l, 3l));
+
+        // when
+        List<Long> readValue = prefser.get(keyWhichDoesNotExist, List.class, defaultValue);
+
+        // then
+        assertEquals(readValue, defaultValue);
+    }
+
+    public void testGetDefaultListOfDoubles() {
+        // given
+        prefser.clear();
+        String keyWhichDoesNotExist = "keyWhichDoesNotExist";
+        List<Double> defaultValue = new ArrayList<>(Arrays.asList(1.2, 2.3, 3.4));
+
+        // when
+        List<Double> readValue = prefser.get(keyWhichDoesNotExist, List.class, defaultValue);
+
+        // then
+        assertEquals(readValue, defaultValue);
+    }
+
+    public void testGetDefaultListOfStrings() {
+        // given
+        prefser.clear();
+        String keyWhichDoesNotExist = "keyWhichDoesNotExist";
+        List<String> defaultValue = new ArrayList<>(Arrays.asList("one", "two", "three"));
+
+        // when
+        List<String> readValue = prefser.get(keyWhichDoesNotExist, List.class, defaultValue);
+
+        // then
+        assertEquals(readValue, defaultValue);
+    }
+
+    public void testGetDefaultArrayOfBooleans() {
+        // given
+        prefser.clear();
+        String keyWhichDoesNotExist = "keyWhichDoesNotExist";
+        Boolean[] defaultValue = new Boolean[3];
+        defaultValue[0] = true;
+        defaultValue[1] = false;
+        defaultValue[2] = true;
+
+        // when
+        Boolean[] readValue = prefser.get(keyWhichDoesNotExist, Boolean[].class, defaultValue);
+
+        // then
+        assertEquals(readValue, defaultValue);
+    }
+
+    public void testGetDefaultArrayOfFloats() {
+        // given
+        prefser.clear();
+        String keyWhichDoesNotExist = "keyWhichDoesNotExist";
+        Float[] defaultValue = new Float[3];
+        defaultValue[0] = 1f;
+        defaultValue[1] = 2f;
+        defaultValue[2] = 3f;
+
+        // when
+        Float[] readValue = prefser.get(keyWhichDoesNotExist, Float[].class, defaultValue);
+
+        // then
+        assertEquals(readValue, defaultValue);
+    }
+
+    public void testGetDefaultArrayOfIntegers() {
+        // given
+        prefser.clear();
+        String keyWhichDoesNotExist = "keyWhichDoesNotExist";
+        Integer[] defaultValue = new Integer[3];
+        defaultValue[0] = 2;
+        defaultValue[1] = 3;
+        defaultValue[2] = 4;
+
+        // when
+        Integer[] readValue = prefser.get(keyWhichDoesNotExist, Integer[].class, defaultValue);
+
+        // then
+        assertEquals(readValue, defaultValue);
+    }
+
+    public void testGetDefaultArrayOfLongs() {
+        // given
+        prefser.clear();
+        String keyWhichDoesNotExist = "keyWhichDoesNotExist";
+        Long[] defaultValue = new Long[3];
+        defaultValue[0] = 3l;
+        defaultValue[1] = 4l;
+        defaultValue[2] = 5l;
+
+        // when
+        Long[] readValue = prefser.get(keyWhichDoesNotExist, Long[].class, defaultValue);
+
+        // then
+        assertEquals(readValue, defaultValue);
+    }
+
+    public void testGetDefaultArrayOfDoubles() {
+        // given
+        prefser.clear();
+        String keyWhichDoesNotExist = "keyWhichDoesNotExist";
+        Double[] defaultValue = new Double[3];
+        defaultValue[0] = 1.2;
+        defaultValue[1] = 3.0;
+        defaultValue[2] = 4.5;
+
+        // when
+        Double[] readValue = prefser.get(keyWhichDoesNotExist, Double[].class, defaultValue);
+
+        // then
+        assertEquals(readValue, defaultValue);
+    }
+
+    public void testGetDefaultArrayOfStrings() {
+        // given
+        prefser.clear();
+        String keyWhichDoesNotExist = "keyWhichDoesNotExist";
+        String[] defaultValue = new String[3];
+        defaultValue[0] = "first string";
+        defaultValue[1] = "next string";
+        defaultValue[2] = "yet another string";
+
+        // when
+        String[] readValue = prefser.get(keyWhichDoesNotExist, String[].class, defaultValue);
+
+        // then
+        assertEquals(readValue, defaultValue);
+    }
+
+    public void testGetDefaultArrayOfCustomObjects() {
+        // given
+        prefser.clear();
+        String keyWhichDoesNotExist = "keyWhichDoesNotExist";
+        CustomClass[] defaultValue = new CustomClass[3];
+        defaultValue[0] = new CustomClass(1, "Hey");
+        defaultValue[1] = new CustomClass(2, "Dude");
+        defaultValue[2] = new CustomClass(3, "Don't make it bad");
+
+        // when
+        CustomClass[] readValue = prefser.get(keyWhichDoesNotExist, CustomClass[].class, defaultValue);
+
+        // then
+        assertEquals(readValue, defaultValue);
     }
 }

@@ -91,7 +91,7 @@ public final class Prefser {
      */
     public <T> T get(String key, Class classOfT) {
         if (!contains(key)) {
-            throw new RuntimeException(String.format("value with key %s could not be found.", key));
+            throw new RuntimeException(String.format("Value with key %s could not be found", key));
         }
 
         return get(key, classOfT, null);
