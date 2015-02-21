@@ -28,10 +28,14 @@ import rx.Observable;
 import rx.Subscriber;
 
 /**
- * Prefser is a wrapper for Android SharedPreferences with object serialization.
+ * Prefser is a wrapper for Android SharedPreferences
+ * with object serialization and RxJava Observables.
  * <p/>
- * It uses mechanism of sharedPreferences to store primitives
+ * It uses mechanism of SharedPreferences to store primitives
  * and Gson library to store arrays, lists and custom objects.
+ * Thanks to RxJava, Prefser is able to listen changes
+ * in SharedPreferences and provides Observable data,
+ * which can be subscribed and returns key of the changed value.
  * <p/>
  * Basic Usage:
  * <pre>
@@ -39,7 +43,14 @@ import rx.Subscriber;
  *  prefser.put("key", putValue);
  *  String getValue = prefser.get("key", String.class);
  * </pre>
- * For more details check README.md file
+ * Subscribing Observable of SharedPreferences:
+ * <pre>
+ *  prefser.fromDefaultPreferences()
+ *      .observeOn(AndroidSchedulers.mainThread())
+ *      .subscribeOn(Schedulers.io())
+ *      ...
+ *      .subscribe(...);
+ * </pre>
  */
 public final class Prefser {
     private final SharedPreferences preferences;
@@ -53,7 +64,7 @@ public final class Prefser {
     }
 
     /**
-     * Creates Prefser object with default sharedPreferences from PreferenceManager
+     * Creates Prefser object with default SharedPreferences from PreferenceManager
      *
      * @param context Android Context
      */
@@ -62,10 +73,10 @@ public final class Prefser {
     }
 
     /**
-     * Creates Prefser object with provided object of sharedPreferences,
+     * Creates Prefser object with provided object of SharedPreferences,
      * which will be wrapped
      *
-     * @param sharedPreferences instance of sharedPreferences
+     * @param sharedPreferences instance of SharedPreferences
      */
     public Prefser(SharedPreferences sharedPreferences) {
         checkNotNull(sharedPreferences, "sharedPreferences == null");
@@ -85,13 +96,13 @@ public final class Prefser {
     }
 
     /**
-     * gets value from shared preferences with a given key and type,
+     * gets value from SharedPreferences with a given key and type,
      * default value is set to null
      *
      * @param key      key of the preference
      * @param classOfT class of T (e.g. String.class)
      * @param <T>      return type of the preference (e.g. String)
-     * @return value from shared preferences associated with given key
+     * @return value from SharedPreferences associated with given key
      */
     public <T> T get(String key, Class classOfT) {
         if (!contains(key)) {
@@ -102,14 +113,14 @@ public final class Prefser {
     }
 
     /**
-     * gets value from shared preferences with a given key and type
+     * gets value from SharedPreferences with a given key and type
      * if value is not found, we can return defaultValue
      *
      * @param key          key of the preference
      * @param classOfT     class of T (e.g. String.class)
      * @param defaultValue default value of the preference (e.g. "" or "undefined")
      * @param <T>          return type of the preference (e.g. String)
-     * @return value from shared preferences associated with given key or default value
+     * @return value from SharedPreferences associated with given key or default value
      */
     public <T> T get(String key, Class classOfT, T defaultValue) {
         checkNotNull(key, "key == null");
@@ -136,7 +147,7 @@ public final class Prefser {
      * about that (e.g. in call() method) and you will be able to read
      * key of the value, which has been changed
      *
-     * @return Observable with String containing key of the value in default sharedPreferences
+     * @return Observable with String containing key of the value in default SharedPreferences
      */
     public Observable<String> fromDefaultPreferences() {
         return from(preferences);
@@ -150,7 +161,7 @@ public final class Prefser {
      * key of the value, which has been changed
      *
      * @param sharedPreferences instance of SharedPreferences to be observed
-     * @return Observable with String containing key of the value in sharedPreferences
+     * @return Observable with String containing key of the value in SharedPreferences
      */
     public Observable<String> from(final SharedPreferences sharedPreferences) {
         return Observable.create(new Observable.OnSubscribe<String>() {
@@ -169,7 +180,7 @@ public final class Prefser {
     }
 
     /**
-     * puts value to the shared preferences
+     * puts value to the SharedPreferences
      *
      * @param key   key under which value will be stored
      * @param value value to be stored
@@ -200,7 +211,7 @@ public final class Prefser {
     }
 
     /**
-     * clears all shared preferences
+     * clears all SharedPreferences
      */
     public void clear() {
         if (size() == 0) {
@@ -211,7 +222,7 @@ public final class Prefser {
     }
 
     /**
-     * returns number of all items stored in sharedPreferences
+     * returns number of all items stored in SharedPreferences
      *
      * @return number of all stored items
      */

@@ -21,6 +21,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * TODO: write tests for RxJava Observables: from() and fromDefaultPreferences() methods
+ */
 public class PrefserTest extends AndroidTestCase {
 
     private Prefser prefser;
