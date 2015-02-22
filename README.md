@@ -91,7 +91,13 @@ prefser.put("myKey", Arrays.asList("one", "two", "three")); // put list of Strin
 Reading data
 ------------
 
-:construction: To Be Done. :construction:
+You can read data with the following method:
+
+```java
+<T> T get(String key, Class classOfT)
+```
+
+:construction: Examples will be added here. :construction:
 
 Subscribing for data updates
 ----------------------------
