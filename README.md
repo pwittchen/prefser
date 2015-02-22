@@ -171,13 +171,16 @@ Subscription subscription = prefser.fromDefaultPreferences()
             @Override
             public void call(String key) {
               // Perform any action you want.
-              // E.g. get value stored under this key 
+              // E.g. get value stored under key 
               // and display in a TextView.
             }
         });
 ```
 
-This subscription can be created e.g. in `onResume()` method, but it depends on your specific implementation and project requirements.
+This subscription can be created e.g. in `onResume()` method, but it depends on your specific implementation and project requirements. Now, everytime when data in SharedPreferences changes, subscriber will be notified under which key value was updated and it can react on that change.
+
+**Unsubscribing from Observable**
+
 When you are subscribing for the updates in Activity, please remember to unsubscribe your subscriber in `onPause()` method in the following way:
 
 ```java
