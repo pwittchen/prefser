@@ -767,10 +767,7 @@ public class PrefserTest extends AndroidTestCase {
         // given
         prefser.clear();
         String keyWhichDoesNotExist = "keyWhichDoesNotExist";
-        Boolean[] defaultValue = new Boolean[3];
-        defaultValue[0] = true;
-        defaultValue[1] = false;
-        defaultValue[2] = true;
+        Boolean[] defaultValue = new Boolean[]{true, false, true};
 
         // when
         Boolean[] readValue = prefser.get(keyWhichDoesNotExist, Boolean[].class, defaultValue);
@@ -783,10 +780,7 @@ public class PrefserTest extends AndroidTestCase {
         // given
         prefser.clear();
         String keyWhichDoesNotExist = "keyWhichDoesNotExist";
-        Float[] defaultValue = new Float[3];
-        defaultValue[0] = 1f;
-        defaultValue[1] = 2f;
-        defaultValue[2] = 3f;
+        Float[] defaultValue = new Float[]{1f, 2f, 3f};
 
         // when
         Float[] readValue = prefser.get(keyWhichDoesNotExist, Float[].class, defaultValue);
@@ -799,10 +793,7 @@ public class PrefserTest extends AndroidTestCase {
         // given
         prefser.clear();
         String keyWhichDoesNotExist = "keyWhichDoesNotExist";
-        Integer[] defaultValue = new Integer[3];
-        defaultValue[0] = 2;
-        defaultValue[1] = 3;
-        defaultValue[2] = 4;
+        Integer[] defaultValue = new Integer[]{2, 3, 4};
 
         // when
         Integer[] readValue = prefser.get(keyWhichDoesNotExist, Integer[].class, defaultValue);
@@ -815,10 +806,7 @@ public class PrefserTest extends AndroidTestCase {
         // given
         prefser.clear();
         String keyWhichDoesNotExist = "keyWhichDoesNotExist";
-        Long[] defaultValue = new Long[3];
-        defaultValue[0] = 3l;
-        defaultValue[1] = 4l;
-        defaultValue[2] = 5l;
+        Long[] defaultValue = new Long[]{3l, 4l, 5l};
 
         // when
         Long[] readValue = prefser.get(keyWhichDoesNotExist, Long[].class, defaultValue);
@@ -831,10 +819,7 @@ public class PrefserTest extends AndroidTestCase {
         // given
         prefser.clear();
         String keyWhichDoesNotExist = "keyWhichDoesNotExist";
-        Double[] defaultValue = new Double[3];
-        defaultValue[0] = 1.2;
-        defaultValue[1] = 3.0;
-        defaultValue[2] = 4.5;
+        Double[] defaultValue = new Double[]{1.2, 3.0, 4.5};
 
         // when
         Double[] readValue = prefser.get(keyWhichDoesNotExist, Double[].class, defaultValue);
@@ -847,10 +832,7 @@ public class PrefserTest extends AndroidTestCase {
         // given
         prefser.clear();
         String keyWhichDoesNotExist = "keyWhichDoesNotExist";
-        String[] defaultValue = new String[3];
-        defaultValue[0] = "first string";
-        defaultValue[1] = "next string";
-        defaultValue[2] = "yet another string";
+        String[] defaultValue = new String[]{"first", "next", "another one"};
 
         // when
         String[] readValue = prefser.get(keyWhichDoesNotExist, String[].class, defaultValue);
@@ -863,10 +845,11 @@ public class PrefserTest extends AndroidTestCase {
         // given
         prefser.clear();
         String keyWhichDoesNotExist = "keyWhichDoesNotExist";
-        CustomClass[] defaultValue = new CustomClass[3];
-        defaultValue[0] = new CustomClass(1, "Hey");
-        defaultValue[1] = new CustomClass(2, "Dude");
-        defaultValue[2] = new CustomClass(3, "Don't make it bad");
+        CustomClass[] defaultValue = new CustomClass[]{
+                new CustomClass(1, "Hey"),
+                new CustomClass(2, "Dude"),
+                new CustomClass(3, "Don't make it bad")
+        };
 
         // when
         CustomClass[] readValue = prefser.get(keyWhichDoesNotExist, CustomClass[].class, defaultValue);
