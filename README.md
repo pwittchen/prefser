@@ -136,6 +136,10 @@ CustomObject value = prefser.get("key", CustomObject.class); // reading CustomOb
  * Default value can be set for any kind of data in the same way.
  */
 Boolean value = prefser.get("key", Boolean.class, true);
+
+List<Double> value = prefser.get("key", List.class); // reading List of doubles
+List<String> value = prefser.get("key", List.class); // reading List of Strings
+
 ```
 
 :construction: More examples will be added here. :construction:
