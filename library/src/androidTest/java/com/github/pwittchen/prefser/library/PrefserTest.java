@@ -25,6 +25,7 @@ import java.util.Set;
 
 /**
  * TODO: write tests for RxJava Observables: from() and fromDefaultPreferences() methods
+ * TODO: write tests for null checks
  */
 public class PrefserTest extends AndroidTestCase {
 
