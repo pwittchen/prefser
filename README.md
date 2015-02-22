@@ -102,8 +102,10 @@ CustomObject[] objects = new CustomObject[]{
 
 prefser.put("key", objects);  // put array of CustomObjects
 
-prefser.put("key", new HashSet<>(Arrays.asList("one", "two", "three"))); // put set of Strings
-prefser.put("key", new HashSet<>(Arrays.asList(1.2, 3.4, 5.6)));         // put set of doubles
+Set<String> setOfStrings = new HashSet<>(Arrays.asList("one", "two", "three"));
+Set<Double> setOfDoubles = new HashSet<>(Arrays.asList(1.2, 3.4, 5.6));
+prefser.put("key", setOfStrings); // put set of Strings
+prefser.put("key", setOfDoubles); // put set of doubles
 ```
 
 Reading data
