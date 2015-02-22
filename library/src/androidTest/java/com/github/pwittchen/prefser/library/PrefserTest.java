@@ -15,6 +15,7 @@
  */
 package com.github.pwittchen.prefser.library;
 
+import android.content.SharedPreferences;
 import android.test.AndroidTestCase;
 
 import java.util.ArrayList;
@@ -23,10 +24,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * TODO: write tests for RxJava Observables: from() and fromDefaultPreferences() methods
- * TODO: write tests for null checks
- */
 public class PrefserTest extends AndroidTestCase {
 
     private Prefser prefser;
@@ -839,5 +836,103 @@ public class PrefserTest extends AndroidTestCase {
 
         // then
         assertEquals(readValue, defaultValue);
+    }
+
+    public void testShouldThrownAnExceptionWhenPreferencesAreNull() {
+        // given
+        SharedPreferences sharedPreferences = null;
+
+        try {
+            // when
+            new Prefser(sharedPreferences);
+        } catch (IllegalArgumentException e) {
+            // then
+            assertEquals("sharedPreferences == null", e.getMessage());
+        }
+    }
+
+    public void testShouldThrowAnExceptionWhenKeyForGetIsNull() {
+        // given
+        String key = null;
+        Class<String> classOfT = String.class;
+
+        try {
+            // when
+            prefser.get(key, classOfT);
+        } catch (IllegalArgumentException e) {
+            // then
+            assertEquals("key == null", e.getMessage());
+        }
+    }
+
+    public void testShouldThrowAnExceptionWhenClassOfTForGetIsNull() {
+        // given
+        String key = "someKey";
+        Class classOfT = null;
+        prefser.put(key, "someValue");
+
+        try {
+            // when
+            prefser.get(key, classOfT);
+        } catch (IllegalArgumentException e) {
+            // then
+            assertEquals("classOfT == null", e.getMessage());
+        } finally {
+            prefser.remove(key);
+        }
+    }
+
+    public void testFromSharedPreferencesShouldThrowAnExceptionWhenPreferencesAreNull() {
+        // given
+        SharedPreferences sharedPreferences = null;
+
+        try {
+            // when
+            prefser.from(sharedPreferences);
+        } catch (IllegalArgumentException e) {
+            // then
+            assertEquals("sharedPreferences == null", e.getMessage());
+        }
+    }
+
+    public void testPutShouldThrowAnExceptionWhenKeyIsNullForPut() {
+        // given
+        String key = null;
+        String value = "someValue";
+
+        try {
+            // when
+            prefser.put(key, value);
+        } catch (IllegalArgumentException e) {
+            // then
+            assertEquals("key == null", e.getMessage());
+        }
+    }
+
+    public void testPutShouldThrowAnExceptionWhenValueIsNullForPut() {
+        // given
+        String key = "someKey";
+        String value = null;
+
+        try {
+            // when
+            prefser.put(key, value);
+        } catch (IllegalArgumentException e) {
+            // then
+            assertEquals("value == null", e.getMessage());
+        }
+    }
+
+    public void testPutShouldThrowAnExceptionWhenKeyIsNullForRemove() {
+        // given
+        String key = null;
+
+        try {
+            // when
+            prefser.remove(key);
+        } catch (IllegalArgumentException e) {
+            // then
+            assertEquals("key == null", e.getMessage());
+        }
     }
 }

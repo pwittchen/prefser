@@ -105,6 +105,8 @@ public final class Prefser {
      * @return value from SharedPreferences associated with given key
      */
     public <T> T get(String key, Class classOfT) {
+        checkNotNull(key, "key == null");
+
         if (!contains(key)) {
             throw new RuntimeException(String.format("Value with key %s could not be found", key));
         }
@@ -123,7 +125,6 @@ public final class Prefser {
      * @return value from SharedPreferences associated with given key or default value
      */
     public <T> T get(String key, Class classOfT, T defaultValue) {
-        checkNotNull(key, "key == null");
         checkNotNull(classOfT, "classOfT == null");
 
         for (Map.Entry<Class, Getter> entry : getters.entrySet()) {
@@ -164,6 +165,8 @@ public final class Prefser {
      * @return Observable with String containing key of the value in SharedPreferences
      */
     public Observable<String> from(final SharedPreferences sharedPreferences) {
+        checkNotNull(sharedPreferences, "sharedPreferences == null");
+
         return Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(final Subscriber<? super String> subscriber) {
