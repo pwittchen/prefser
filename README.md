@@ -153,7 +153,7 @@ Set<Double> value = prefser.get("key", Set.class); // reading Set of Doubles
 Subscribing for data updates
 ----------------------------
 
-You can subscribe the following Observables from `Prefser` object:
+You can subscribe the following RxJava Observables from `Prefser` object:
 
 ```java
 Observable<String> from(final SharedPreferences sharedPreferences);
