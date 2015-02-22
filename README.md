@@ -2,7 +2,7 @@ Prefser
 =======
 Wrapper for Android [SharedPreferences](http://developer.android.com/reference/android/content/SharedPreferences.html) with object serialization and [RxJava](https://github.com/ReactiveX/RxJava) Observables
 
-:construction: Documentation is under construction. It will be extended. :construction:
+:construction: Documentation is under construction and it will be extended. :construction:
 
 Contents
 --------
@@ -83,7 +83,7 @@ prefser.put("myKey", Arrays.asList(1f, 2f, 3f));            // put list of float
 prefser.put("myKey", Arrays.asList(1, 2, 3));               // put list of integers
 prefser.put("myKey", Arrays.asList(1l, 2l, 3l));            // put list of longs
 prefser.put("myKey", Arrays.asList(1.2, 2.3, 3.4));         // put list of doubles
-prefser.put("myKey", Arrays.asList("one", "two", "three")); // put list of strings
+prefser.put("myKey", Arrays.asList("one", "two", "three")); // put list of Strings
 ```
 
 :construction: More examples will be added here. :construction:
