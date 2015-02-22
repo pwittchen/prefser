@@ -70,7 +70,7 @@ Reading data
 Caveats
 -------
 
-When you are going to store many numeric values under single key, you should use arrays instead of lists. Gson converts all numeric values on the lists into double, so you will have to deal with type conversion in case of using this data structure.
+When you are going to store many numeric values under single key, you should use arrays instead of Lists. Gson converts all numeric values on the Lists into double, so you will have to deal with type conversion in case of using List data structure.
 
 References
 ----------
