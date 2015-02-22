@@ -16,7 +16,7 @@ void put(String key, Object value)
 Classic SharedPreferences allows you to store only primitive data types and set of strings.
 
 Thanks to Gson serialization, Prefser allows you to store:
-* primitive data types
+* Primitive data types
  * boolean
  * float
  * int
