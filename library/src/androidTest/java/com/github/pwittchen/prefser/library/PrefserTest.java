@@ -414,10 +414,7 @@ public class PrefserTest extends AndroidTestCase {
     public void testPutArrayOfBooleans() {
         // given
         String givenKey = "sampleKey";
-        Boolean[] array = new Boolean[3];
-        array[0] = true;
-        array[1] = false;
-        array[2] = true;
+        Boolean[] array = new Boolean[]{true, false, true};
 
         // when
         prefser.put(givenKey, array);
@@ -434,10 +431,7 @@ public class PrefserTest extends AndroidTestCase {
     public void testPutArrayOfFloats() {
         // given
         String givenKey = "sampleKey";
-        Float[] array = new Float[3];
-        array[0] = 1f;
-        array[1] = 2f;
-        array[2] = 3f;
+        Float[] array = new Float[]{1f, 2f, 3f};
 
         // when
         prefser.put(givenKey, array);
@@ -454,10 +448,7 @@ public class PrefserTest extends AndroidTestCase {
     public void testPutArrayOfInts() {
         // given
         String givenKey = "sampleKey";
-        Integer[] array = new Integer[3];
-        array[0] = 1;
-        array[1] = 2;
-        array[2] = 3;
+        Integer[] array = new Integer[]{1, 2, 3};
 
         // when
         prefser.put(givenKey, array);
@@ -474,10 +465,7 @@ public class PrefserTest extends AndroidTestCase {
     public void testPutArrayOfLongs() {
         // given
         String givenKey = "sampleKey";
-        Long[] array = new Long[3];
-        array[0] = 1l;
-        array[1] = 2l;
-        array[2] = 3l;
+        Long[] array = new Long[]{1l, 2l, 3l};
 
         // when
         prefser.put(givenKey, array);
@@ -494,10 +482,7 @@ public class PrefserTest extends AndroidTestCase {
     public void testPutArrayOfDoubles() {
         // given
         String givenKey = "sampleKey";
-        Double[] array = new Double[3];
-        array[0] = 1.0;
-        array[1] = 2.3;
-        array[2] = 4.5;
+        Double[] array = new Double[]{1.0, 2.3, 4.5};
 
         // when
         prefser.put(givenKey, array);
@@ -514,10 +499,7 @@ public class PrefserTest extends AndroidTestCase {
     public void testPutArrayOfStrings() {
         // given
         String givenKey = "sampleKey";
-        String[] array = new String[3];
-        array[0] = "one";
-        array[1] = "two";
-        array[2] = "three";
+        String[] array = new String[]{"one", "two", "three"};
 
         // when
         prefser.put(givenKey, array);
@@ -534,10 +516,11 @@ public class PrefserTest extends AndroidTestCase {
     public void testPutArrayOfCustomObjects() {
         // given
         String givenKey = "sampleKey";
-        CustomClass[] customClassesArray = new CustomClass[3];
-        customClassesArray[0] = new CustomClass(1, "one");
-        customClassesArray[1] = new CustomClass(2, "two");
-        customClassesArray[2] = new CustomClass(3, "three");
+        CustomClass[] customClassesArray = new CustomClass[]{
+                new CustomClass(1, "one"),
+                new CustomClass(2, "two"),
+                new CustomClass(3, "three")
+        };
 
         // when
         prefser.put(givenKey, customClassesArray);
