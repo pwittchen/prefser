@@ -86,6 +86,21 @@ prefser.put("key", Arrays.asList(1, 2, 3));               // put list of integer
 prefser.put("key", Arrays.asList(1l, 2l, 3l));            // put list of longs
 prefser.put("key", Arrays.asList(1.2, 2.3, 3.4));         // put list of doubles
 prefser.put("key", Arrays.asList("one", "two", "three")); // put list of Strings
+
+prefser.put("key", new Boolean[]{true, false, true});     // put array of booleans
+prefser.put("key", new Float[]{1f, 2f, 3f});              // put array of floats
+prefser.put("key", new Integer[]{1, 2, 3});               // put array of integers
+prefser.put("key", new Long[]{1l, 2l, 3l});               // put array of longs
+prefser.put("key", new Double[]{1.2, 2.3, 3.4});          // put array of doubles
+prefser.put("key", new String[]{"one", "two", "three"});  // put array of Strings
+
+CustomObject[] objects = new CustomObject[]{
+   new CustomObject(), 
+   new CustomObject(), 
+   new CustomObject()
+};
+
+prefser.put("key", objects);  // put array of CustomObjects
 ```
 
 :construction: More examples will be added here. :construction:
