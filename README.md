@@ -1,4 +1,4 @@
-Prefser [![Build Status](https://travis-ci.org/pwittchen/prefser.svg)](https://travis-ci.org/pwittchen/prefser)
+Prefser [![Build Status](https://travis-ci.org/pwittchen/prefser.svg)](https://travis-ci.org/pwittchen/prefser) ![Maven Central](https://img.shields.io/maven-central/v/com.github.pwittchen/prefser.svg?style=flat)
 =======
 Wrapper for Android [SharedPreferences](http://developer.android.com/reference/android/content/SharedPreferences.html) with object serialization and [RxJava](https://github.com/ReactiveX/RxJava) Observables
 
