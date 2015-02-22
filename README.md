@@ -70,13 +70,13 @@ void put(String key, Object value);
 
 **Examples**
 ```java
-prefser.put("myKey1", true);               // put boolean
-prefser.put("myKey2", 43f);                // put float
-prefser.put("myKey3", 42);                 // put int
-prefser.put("myKey4", 42l);                // put long
-prefser.put("myKey5", 42.3);               // put double
-prefser.put("myKey3", "hello");            // put String
-prefser.put("myKey3", new CustomObject()); // put CustomObject
+prefser.put("myKey", true);               // put boolean
+prefser.put("myKey", 43f);                // put float
+prefser.put("myKey", 42);                 // put int
+prefser.put("myKey", 42l);                // put long
+prefser.put("myKey", 42.3);               // put double
+prefser.put("myKey", "hello");            // put String
+prefser.put("myKey", new CustomObject()); // put CustomObject
 ```
 
 :construction: More examples will be added here. :construction:
