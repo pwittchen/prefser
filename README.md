@@ -2,8 +2,6 @@ Prefser
 =======
 Wrapper for Android [SharedPreferences](http://developer.android.com/reference/android/content/SharedPreferences.html) with object serialization and [RxJava](https://github.com/ReactiveX/RxJava) Observables
 
-:construction: Documentation is under construction and it will be extended. :construction:
-
 Contents
 --------
 * [Overview](#overview)
@@ -162,9 +160,33 @@ Observable<String> from(final SharedPreferences sharedPreferences);
 Observable<String> fromDefaultPreferences();
 ```
 
-**Examples**
+**Example**
+```java
+Subscription subscription = prefser.fromDefaultPreferences()
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribeOn(Schedulers.io())
+        .filter(...) // you can filter your updates by keys
+        ...          // you can do anything else, what is possible with RxJava
+        .subscribe(new Action1<String>() {
+            @Override
+            public void call(String key) {
+              // Perform any action you want.
+              // E.g. get value stored under this key 
+              // and display in a TextView.
+            }
+        });
+```
 
-:construction: Examples will be added here. :construction:
+This subscription can be created e.g. in `onResume()` method, but it depends on your specific implementation and project requirements.
+When you are subscribing for the updates in Activity, please remember to unsubscribe your subscriber in `onPause()` method in the following way:
+
+```java
+@Override
+protected void onPause() {
+    super.onPause();
+    subscription.unsubscribe();
+}
+```
 
 Example
 -------
