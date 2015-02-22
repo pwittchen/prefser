@@ -77,6 +77,13 @@ prefser.put("myKey", 42l);                // put long
 prefser.put("myKey", 42.3);               // put double
 prefser.put("myKey", "hello");            // put String
 prefser.put("myKey", new CustomObject()); // put CustomObject
+
+prefser.put("myKey", Arrays.asList(true, false, true));     // put list of booleans
+prefser.put("myKey", Arrays.asList(1f, 2f, 3f));            // put list of floats
+prefser.put("myKey", Arrays.asList(1, 2, 3));               // put list of integers
+prefser.put("myKey", Arrays.asList(1l, 2l, 3l));            // put list of longs
+prefser.put("myKey", Arrays.asList(1.2, 2.3, 3.4));         // put list of doubles
+prefser.put("myKey", Arrays.asList("one", "two", "three")); // put list of strings
 ```
 
 :construction: More examples will be added here. :construction:
@@ -104,7 +111,8 @@ Tests are available in `library/src/androidTest/java/` directory.
 Caveats
 -------
 
-When you are going to store many numeric values under single key, you should use arrays instead of Lists. Gson converts all numeric values on the Lists into double, so you will have to deal with type conversion in case of using List data structure.
+* When you are going to store many numeric values under single key, you should use arrays instead of Lists. Gson converts all numeric values on the Lists into double, so you will have to deal with type conversion in case of using List data structure.
+* When you are going to store my custom objects under single key, you should use arrays instead of Lists, because Lists are not deserialized correctly for custom data types.
 
 References
 ----------
