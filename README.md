@@ -129,6 +129,13 @@ Long value = prefser.get("key", Long.class);                 // reading long
 Double value = prefser.get("key", Double.class);             // reading double
 String value = prefser.get("key", String.class);             // reading String
 CustomObject value = prefser.get("key", CustomObject.class); // reading CustomObject
+
+/**
+ * Reading boolean and setting default value. 
+ * This method will return "true", when key "key" doesn't exist.
+ * Default value can be set for any kind of data in the same way.
+ */
+Boolean value = prefser.get("key", Boolean.class, true);
 ```
 
 :construction: More examples will be added here. :construction:
