@@ -33,8 +33,7 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
- * This is simple exemplary app, which shows basic usage of Prefser,
- * which is wrapper for SharedPreferences.
+ * This is simple exemplary app, which shows basic usage of Prefser
  */
 public class MainActivity extends ActionBarActivity {
 
@@ -57,7 +56,8 @@ public class MainActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
 
-        value.setText(prefser.get(MY_KEY, String.class, ""));
+        String text = prefser.get(MY_KEY, String.class, "");
+        value.setText(text);
 
         subscription = prefser.fromDefaultPreferences()
                 .observeOn(AndroidSchedulers.mainThread())
