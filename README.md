@@ -72,20 +72,20 @@ void put(String key, Object value);
 **Examples**
 
 ```java
-prefser.put("myKey", true);               // put boolean
-prefser.put("myKey", 43f);                // put float
-prefser.put("myKey", 42);                 // put int
-prefser.put("myKey", 42l);                // put long
-prefser.put("myKey", 42.3);               // put double
-prefser.put("myKey", "hello");            // put String
-prefser.put("myKey", new CustomObject()); // put CustomObject
+prefser.put("key", true);               // put boolean
+prefser.put("key", 43f);                // put float
+prefser.put("key", 42);                 // put int
+prefser.put("key", 42l);                // put long
+prefser.put("key", 42.3);               // put double
+prefser.put("key", "hello");            // put String
+prefser.put("key", new CustomObject()); // put CustomObject
 
-prefser.put("myKey", Arrays.asList(true, false, true));     // put list of booleans
-prefser.put("myKey", Arrays.asList(1f, 2f, 3f));            // put list of floats
-prefser.put("myKey", Arrays.asList(1, 2, 3));               // put list of integers
-prefser.put("myKey", Arrays.asList(1l, 2l, 3l));            // put list of longs
-prefser.put("myKey", Arrays.asList(1.2, 2.3, 3.4));         // put list of doubles
-prefser.put("myKey", Arrays.asList("one", "two", "three")); // put list of Strings
+prefser.put("key", Arrays.asList(true, false, true));     // put list of booleans
+prefser.put("key", Arrays.asList(1f, 2f, 3f));            // put list of floats
+prefser.put("key", Arrays.asList(1, 2, 3));               // put list of integers
+prefser.put("key", Arrays.asList(1l, 2l, 3l));            // put list of longs
+prefser.put("key", Arrays.asList(1.2, 2.3, 3.4));         // put list of doubles
+prefser.put("key", Arrays.asList("one", "two", "three")); // put list of Strings
 ```
 
 :construction: More examples will be added here. :construction:
