@@ -4,6 +4,19 @@ Wrapper for Android [SharedPreferences](http://developer.android.com/reference/a
 
 :construction: Documentation is under construction. It will be extended. :construction:
 
+Contents
+--------
+* [Overview](#overview)
+* [Creating Prefser Object](#creating-prefser-object)
+* [Saving data](#saving-data)
+* [Reading data](#reading-data)
+* [Subscribing for data updates](#subscribing-for-data-updates)
+* [Example](#example)
+* [Tests](#tests)
+* [Caveats](#caveats)
+* [References](#references)
+* [License](#license)
+
 Overview
 --------
 
