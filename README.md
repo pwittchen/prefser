@@ -79,6 +79,11 @@ Example
 
 Example is available in the `app` directory.
 
+Tests
+-----
+
+Tests are available in `library/src/androidTest/java/` directory.
+
 Caveats
 -------
 
