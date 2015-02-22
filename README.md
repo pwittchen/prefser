@@ -7,7 +7,7 @@ Wrapper for Android [SharedPreferences](http://developer.android.com/reference/a
 Contents
 --------
 * [Overview](#overview)
-* [Creating Prefser Object](#creating-prefser-object)
+* [Creating Prefser object](#creating-prefser-object)
 * [Saving data](#saving-data)
 * [Reading data](#reading-data)
 * [Subscribing for data updates](#subscribing-for-data-updates)
@@ -49,7 +49,7 @@ Observable<String> fromDefaultPreferences()
 
 You can subscribe one of these observables and monitor updates of SharedPreferences with powerful RxJava.
 
-Creating Prefser Object
+Creating Prefser object
 -----------------------
 
 You can create `Prefser` object in the following ways:
