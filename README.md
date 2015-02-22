@@ -67,6 +67,16 @@ Reading data
 
 :construction: To Be Done. :construction:
 
+Subscribing for data updates
+----------------------------
+
+:construction: To Be Done. :construction:
+
+Example
+-------
+
+Example is available in the `app` directory.
+
 Caveats
 -------
 
