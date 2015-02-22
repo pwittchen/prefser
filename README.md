@@ -10,6 +10,7 @@ Contents
 * [Reading data](#reading-data)
 * [Subscribing for data updates](#subscribing-for-data-updates)
 * [Example](#example)
+* [Download](#download)
 * [Tests](#tests)
 * [Caveats](#caveats)
 * [References](#references)
@@ -195,6 +196,34 @@ Example
 -------
 
 Examplary app using `Prefser` is available in the `app` directory.
+
+Download
+--------
+
+If you want to use Observables, besides dependency to Prefser you should also add dependency to RxAndroid.
+
+You can depend on the library through Maven:
+
+```xml
+<dependency>
+    <groupId>com.github.pwittchen</groupId>
+    <artifactId>prefser</artifactId>
+    <version>1.0.0</version>
+</dependency>
+<dependency>
+    <groupId>io.reactivex</groupId>
+    <artifactId>rxandroid</artifactId>
+    <version>0.24.0</version>
+</dependency>
+```
+or through Gradle:
+
+```groovy
+dependencies {
+  compile 'com.github.pwittchen:prefser:1.0.0'
+  compile 'io.reactivex:rxandroid:0.24.0'
+}
+```
 
 Tests
 -----
