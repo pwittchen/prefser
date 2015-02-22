@@ -46,7 +46,7 @@ Observable<String> from(final SharedPreferences sharedPreferences);
 Observable<String> fromDefaultPreferences();
 ```
 
-You can subscribe one of these observables and monitor updates of SharedPreferences with powerful RxJava.
+You can subscribe one of these Observables and monitor updates of SharedPreferences with powerful RxJava.
 
 Creating Prefser object
 -----------------------
