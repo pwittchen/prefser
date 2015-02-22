@@ -62,6 +62,8 @@ prefser.put("myKey2", 42);
 prefser.put("myKey3", new CustomClass());
 ```
 
+:construction: More examples will be added here. :construction:
+
 Reading data
 ------------
 
