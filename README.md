@@ -67,6 +67,11 @@ Reading data
 
 :construction: To Be Done. :construction:
 
+Caveats
+-------
+
+When you are going to store many numeric values under single key, you should use arrays instead of lists. Gson converts all numeric values on the lists into double, so you will have to deal with type conversion in case of using this data structure.
+
 References
 ----------
 * [SharedPreferences](http://developer.android.com/reference/android/content/SharedPreferences.html)
