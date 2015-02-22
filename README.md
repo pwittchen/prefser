@@ -137,12 +137,20 @@ CustomObject value = prefser.get("key", CustomObject.class); // reading CustomOb
  */
 Boolean value = prefser.get("key", Boolean.class, true);
 
-List<Double> value = prefser.get("key", List.class); // reading List of doubles
-List<String> value = prefser.get("key", List.class); // reading List of Strings
+List<Double> value = prefser.get("key", List.class);   // reading List of doubles
+List<String> value = prefser.get("key", List.class);   // reading List of Strings
 
+Boolean[] value = prefser.get("key", Boolean[].class);           // reading array of booleans
+Float[] value = prefser.get("key", Float[].class);               // reading array of floats
+Integer[] value = prefser.get("key", Integer[].class);           // reading array of integers
+Long[] value = prefser.get("key", Long[].class);                 // reading array of longs
+Double[] value = prefser.get("key", Double[].class);             // reading array of doubles
+String[] value = prefser.get("key", String[].class);             // reading array of Strings
+CustomObject[] value = prefser.get("key", CustomObject[].class); // reading array of CustomObjects
+
+Set<String> value = prefser.get("key", Set.class); // reading Set of Strings
+Set<Double> value = prefser.get("key", Set.class); // reading Set of Doubles
 ```
-
-:construction: More examples will be added here. :construction:
 
 Subscribing for data updates
 ----------------------------
