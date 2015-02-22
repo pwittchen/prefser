@@ -64,11 +64,13 @@ Saving data
 -----------
 
 You can save data with the following method:
+
 ```java
 void put(String key, Object value);
 ```
 
 **Examples**
+
 ```java
 prefser.put("myKey", true);               // put boolean
 prefser.put("myKey", 43f);                // put float
@@ -97,12 +99,23 @@ You can read data with the following method:
 <T> T get(String key, Class classOfT)
 ```
 
+**Examples**
+
 :construction: Examples will be added here. :construction:
 
 Subscribing for data updates
 ----------------------------
 
-:construction: To Be Done. :construction:
+You can subscribe the following Observables from `Prefser` object:
+
+```java
+Observable<String> from(final SharedPreferences sharedPreferences)
+Observable<String> fromDefaultPreferences()
+```
+
+**Example**
+
+:construction: Example will be added here. :construction:
 
 Example
 -------
