@@ -165,7 +165,7 @@ Observable<String> fromDefaultPreferences();
 Subscription subscription = prefser.fromDefaultPreferences()
         .observeOn(AndroidSchedulers.mainThread())
         .subscribeOn(Schedulers.io())
-        .filter(...) // you can filter your updates by keys
+        .filter(...) // you can filter your updates by key
         ...          // you can do anything else, what is possible with RxJava
         .subscribe(new Action1<String>() {
             @Override
