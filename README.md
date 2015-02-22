@@ -20,10 +20,11 @@ Contents
 Overview
 --------
 
-Prefser wraps SharedPreferences and thanks to Java Generics provides you simpler API than classic SharedPreferences with only two methods:
+Prefser wraps SharedPreferences and thanks to Java Generics provides you simpler API than classic SharedPreferences with only three methods:
 ```java
-void put(String key, Object value)
-<T> T get(String key, Class classOfT)
+void put(String key, Object value);
+<T> T get(String key, Class classOfT);
+<T> T get(String key, Class classOfT, T defaultValue);
 ```
 
 Classic SharedPreferences allows you to store only primitive data types and set of strings.
@@ -43,8 +44,8 @@ Thanks to Gson serialization, Prefser allows you to store:
 
 In addition, Prefser transforms [OnSharedPreferenceChangeListener](http://developer.android.com/reference/android/content/SharedPreferences.OnSharedPreferenceChangeListener.html) into Observables from RxJava:
 ```java
-Observable<String> from(final SharedPreferences sharedPreferences)
-Observable<String> fromDefaultPreferences()
+Observable<String> from(final SharedPreferences sharedPreferences);
+Observable<String> fromDefaultPreferences();
 ```
 
 You can subscribe one of these observables and monitor updates of SharedPreferences with powerful RxJava.
@@ -100,7 +101,7 @@ CustomObject[] objects = new CustomObject[]{
    new CustomObject()
 };
 
-prefser.put("key", objects);  // put array of CustomObjects
+prefser.put("key", objects); // put array of CustomObjects
 
 Set<String> setOfStrings = new HashSet<>(Arrays.asList("one", "two", "three"));
 Set<Double> setOfDoubles = new HashSet<>(Arrays.asList(1.2, 3.4, 5.6));
@@ -111,15 +112,26 @@ prefser.put("key", setOfDoubles); // put set of doubles
 Reading data
 ------------
 
-You can read data with the following method:
+You can read data with the following methods:
 
 ```java
-<T> T get(String key, Class classOfT)
+<T> T get(String key, Class classOfT);
+<T> T get(String key, Class classOfT, T defaultValue);
 ```
 
 **Examples**
 
-:construction: Examples will be added here. :construction:
+```java
+Boolean value = prefser.get("key", Boolean.class);           // reading boolean
+Float value = prefser.get("key", Float.class);               // reading float
+Integer value = prefser.get("key", Integer.class);           // reading integer
+Long value = prefser.get("key", Long.class);                 // reading long
+Double value = prefser.get("key", Double.class);             // reading double
+String value = prefser.get("key", String.class);             // reading String
+CustomObject value = prefser.get("key", CustomObject.class); // reading CustomObject
+```
+
+:construction: More examples will be added here. :construction:
 
 Subscribing for data updates
 ----------------------------
@@ -127,8 +139,8 @@ Subscribing for data updates
 You can subscribe the following Observables from `Prefser` object:
 
 ```java
-Observable<String> from(final SharedPreferences sharedPreferences)
-Observable<String> fromDefaultPreferences()
+Observable<String> from(final SharedPreferences sharedPreferences);
+Observable<String> fromDefaultPreferences();
 ```
 
 **Examples**
