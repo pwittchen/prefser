@@ -19,7 +19,9 @@ import android.test.AndroidTestCase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * TODO: write tests for RxJava Observables: from() and fromDefaultPreferences() methods
@@ -545,6 +547,34 @@ public class PrefserTest extends AndroidTestCase {
         assertEquals(readObject[1], customClassesArray[1]);
         assertEquals(readObject[2], customClassesArray[2]);
 
+        prefser.remove(givenKey);
+    }
+
+    public void testPutSetOfStrings() {
+        // given
+        Set<String> strings = new HashSet<>(Arrays.asList("one", "two", "three"));
+        String givenKey = "sampleKey";
+
+        // when
+        prefser.put(givenKey, strings);
+
+        // then
+        Set<String> readObject = prefser.get(givenKey, Set.class);
+        assertEquals(readObject, strings);
+        prefser.remove(givenKey);
+    }
+
+    public void testPutSetOfDoubles() {
+        // given
+        Set<Double> strings = new HashSet<>(Arrays.asList(1.2, 2.3, 3.0));
+        String givenKey = "sampleKey";
+
+        // when
+        prefser.put(givenKey, strings);
+
+        // then
+        Set<Double> readObject = prefser.get(givenKey, Set.class);
+        assertEquals(readObject, strings);
         prefser.remove(givenKey);
     }
 
