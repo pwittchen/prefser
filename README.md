@@ -101,9 +101,10 @@ CustomObject[] objects = new CustomObject[]{
 };
 
 prefser.put("key", objects);  // put array of CustomObjects
-```
 
-:construction: More examples will be added here. :construction:
+prefser.put("key", new HashSet<>(Arrays.asList("one", "two", "three"))); // put set of Strings
+prefser.put("key", new HashSet<>(Arrays.asList(1.2, 3.4, 5.6)));         // put set of doubles
+```
 
 Reading data
 ------------
