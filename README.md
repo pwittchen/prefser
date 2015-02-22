@@ -8,8 +8,10 @@ Overview
 --------
 
 Prefser wraps SharedPreferences and thanks to Java Generics provides you simpler API than classic SharedPreferences with only two methods:
-* `void put(String key, Object value)`
-* `<T> T get(String key, Class classOfT)`
+```java
+void put(String key, Object value)
+<T> T get(String key, Class classOfT)
+```
 
 Classic SharedPreferences allows you to store only primitive data types and set of strings.
 
@@ -27,11 +29,43 @@ Thanks to Gson serialization, Prefser allows you to store:
 * Sets
 
 In addition, Prefser transforms [OnSharedPreferenceChangeListener](http://developer.android.com/reference/android/content/SharedPreferences.OnSharedPreferenceChangeListener.html) into Observables from RxJava:
-
-* `Observable<String> from(final SharedPreferences sharedPreferences)`
-* `Observable<String> fromDefaultPreferences()`
+```java
+Observable<String> from(final SharedPreferences sharedPreferences)
+Observable<String> fromDefaultPreferences()
+```
 
 You can subscribe one of these observables and monitor updates of SharedPreferences with powerful RxJava.
+
+Creating Prefser Object
+-----------------------
+
+You can create `Prefser` object in the following ways:
+```java
+Prefser prefser = new Prefser(context);
+Prefser prefser = new Prefser(sharedPreferences);
+```
+ 
+When you create `Prefser` object with Android Context, it will use default `SharedPreferences` from `PreferenceManager`.
+
+Saving data
+-----------
+
+You can save data with the following method:
+```java
+void put(String key, Object value);
+```
+
+**Examples**
+```java
+prefser.put("myKey1", "myValue");
+prefser.put("myKey2", 42);
+prefser.put("myKey3", new CustomClass());
+```
+
+Reading data
+------------
+
+:construction: To Be Done. :construction:
 
 References
 ----------
