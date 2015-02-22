@@ -113,14 +113,14 @@ Observable<String> from(final SharedPreferences sharedPreferences)
 Observable<String> fromDefaultPreferences()
 ```
 
-**Example**
+**Examples**
 
-:construction: Example will be added here. :construction:
+:construction: Examples will be added here. :construction:
 
 Example
 -------
 
-Example is available in the `app` directory.
+Examplary app using `Prefser` is available in the `app` directory.
 
 Tests
 -----
