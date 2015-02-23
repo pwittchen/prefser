@@ -125,6 +125,7 @@ public final class Prefser {
      * @return value from SharedPreferences associated with given key or default value
      */
     public <T> T get(String key, Class classOfT, T defaultValue) {
+        checkNotNull(key, "key == null");
         checkNotNull(classOfT, "classOfT == null");
 
         for (Map.Entry<Class, Getter> entry : getters.entrySet()) {

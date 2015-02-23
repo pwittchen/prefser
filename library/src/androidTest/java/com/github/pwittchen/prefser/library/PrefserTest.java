@@ -882,6 +882,40 @@ public class PrefserTest extends AndroidTestCase {
         }
     }
 
+    public void testShouldThrowAnExceptionWhenKeyForGetWithDefaultValueIsNull() {
+        // given
+        String key = null;
+        Class<String> classOfT = String.class;
+        String defaultValue = "some default value";
+
+        try {
+            // when
+            prefser.get(key, classOfT, defaultValue);
+        } catch (IllegalArgumentException e) {
+            // then
+            assertEquals("key == null", e.getMessage());
+        }
+    }
+
+    public void testShouldThrowAnExceptionWhenClassOfTForGetWithDefaultValueIsNull() {
+        // given
+        String key = "someKey";
+        Class<String> classOfT = null;
+        String defaultValue = "some default value";
+        prefser.put(key, "someValue");
+
+        try {
+            // when
+            prefser.get(key, classOfT, defaultValue);
+        } catch (IllegalArgumentException e) {
+            // then
+            assertEquals("classOfT == null", e.getMessage());
+        } finally {
+            prefser.remove(key
+            );
+        }
+    }
+
     public void testFromSharedPreferencesShouldThrowAnExceptionWhenPreferencesAreNull() {
         // given
         SharedPreferences sharedPreferences = null;
