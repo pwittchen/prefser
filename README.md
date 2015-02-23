@@ -10,6 +10,7 @@ Contents
 * [Reading data](#reading-data)
 * [Contains data](#contains-data)
 * [Removing data](#removing-data)
+* [Size of data](#size-of-data)
 * [Subscribing for data updates](#subscribing-for-data-updates)
 * [Example](#example)
 * [Download](#download)
@@ -175,6 +176,15 @@ When you want to clear all SharedPreferences you can use `clear()` method as fol
 
 ```java
 prefser.clear();
+```
+
+Size of data
+------------
+
+You can read number of all items stored in the SharedPreferences in the following way:
+
+```java
+prefser.size()
 ```
 
 Subscribing for data updates
