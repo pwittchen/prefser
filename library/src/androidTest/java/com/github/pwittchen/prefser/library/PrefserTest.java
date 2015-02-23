@@ -902,7 +902,6 @@ public class PrefserTest extends AndroidTestCase {
         String key = "someKey";
         Class<String> classOfT = null;
         String defaultValue = "some default value";
-        prefser.put(key, "someValue");
 
         try {
             // when
@@ -910,9 +909,6 @@ public class PrefserTest extends AndroidTestCase {
         } catch (IllegalArgumentException e) {
             // then
             assertEquals("classOfT == null", e.getMessage());
-        } finally {
-            prefser.remove(key
-            );
         }
     }
 
