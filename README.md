@@ -8,6 +8,8 @@ Contents
 * [Creating Prefser object](#creating-prefser-object)
 * [Saving data](#saving-data)
 * [Reading data](#reading-data)
+* [Contains data](#contains-data)
+* [Removing data](#removing-data)
 * [Subscribing for data updates](#subscribing-for-data-updates)
 * [Example](#example)
 * [Download](#download)
@@ -149,6 +151,30 @@ CustomObject[] value = prefser.get("key", CustomObject[].class); // reading arra
 
 Set<String> value = prefser.get("key", Set.class); // reading Set of Strings
 Set<Double> value = prefser.get("key", Set.class); // reading Set of Doubles
+```
+
+Contains data
+-------------
+
+You can check if data exists under a specified key in the following way:
+
+```java
+prefser.contains("key");
+```
+
+Removing data
+-------------
+
+You can remove data under specified key in the following way:
+
+```java
+prefser.remove("key");
+```
+
+When you want to clear all SharedPreferences you can use `clear()` method as follows:
+
+```java
+prefser.clear();
 ```
 
 Subscribing for data updates
