@@ -29,7 +29,7 @@ void put(String key, Object value);
 <T> T get(String key, Class classOfT, T defaultValue);
 ```
 
-Classic SharedPreferences allows you to store only primitive data types and set of strings.
+Classic SharedPreferences allows you to store only primitive data types, Strings and Set of Strings.
 
 Thanks to Gson serialization, Prefser allows you to store:
 * Primitive data types
