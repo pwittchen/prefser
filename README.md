@@ -233,6 +233,8 @@ Example
 
 Examplary app using `Prefser` is available in the `app` directory.
 
+If you want to use `Prefser` with [Dagger](https://github.com/square/dagger/), check out examplary app in `app-dagger` directory.
+
 Download
 --------
 
