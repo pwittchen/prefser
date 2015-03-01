@@ -2,6 +2,8 @@ Prefser [![Build Status](https://travis-ci.org/pwittchen/prefser.svg)](https://t
 =======
 Wrapper for Android [SharedPreferences](http://developer.android.com/reference/android/content/SharedPreferences.html) with object serialization and [RxJava](https://github.com/ReactiveX/RxJava) Observables
 
+min sdk version = 9
+
 Contents
 --------
 * [Overview](#overview)
@@ -246,7 +248,7 @@ You can depend on the library through Maven:
 <dependency>
     <groupId>com.github.pwittchen</groupId>
     <artifactId>prefser</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 </dependency>
 <dependency>
     <groupId>io.reactivex</groupId>
@@ -258,7 +260,7 @@ or through Gradle:
 
 ```groovy
 dependencies {
-  compile 'com.github.pwittchen:prefser:1.0.1'
+  compile 'com.github.pwittchen:prefser:1.0.2'
   compile 'io.reactivex:rxandroid:0.24.0'
 }
 ```
