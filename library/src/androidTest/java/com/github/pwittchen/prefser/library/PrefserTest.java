@@ -114,7 +114,6 @@ public final class PrefserTest {
 
         // then
         assertThat(prefser.contains(givenKey)).isFalse();
-
     }
 
     @Test
