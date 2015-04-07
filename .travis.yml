@@ -9,4 +9,4 @@ install:
   - true
 
 script:
-  - ./gradlew build
+  - ./gradlew clean build
