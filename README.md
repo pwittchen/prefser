@@ -10,6 +10,7 @@ Contents
 * [Creating Prefser object](#creating-prefser-object)
 * [Saving data](#saving-data)
 * [Reading data](#reading-data)
+* [Reading data from Observables](#reading-data-from-observables)
 * [Contains method](#contains-method)
 * [Removing data](#removing-data)
 * [Size of data](#size-of-data)
@@ -52,7 +53,8 @@ Observable<String> from(final SharedPreferences sharedPreferences);
 Observable<String> fromDefaultPreferences();
 ```
 
-You can subscribe one of these Observables and monitor updates of SharedPreferences with powerful RxJava.
+You can subscribe one of these Observables and [monitor updates of SharedPreferences](#subscribing-for-data-updates) with powerful RxJava.
+You can also [read data from RxJava Observables](#reading-data-from-observables) in order to monitor single shared preference with a specified key.
 
 Creating Prefser object
 -----------------------
@@ -155,6 +157,37 @@ CustomObject[] value = prefser.get("key", CustomObject[].class); // reading arra
 Set<String> value = prefser.get("key", Set.class); // reading Set of Strings
 Set<Double> value = prefser.get("key", Set.class); // reading Set of Doubles
 ```
+Reading data from Observables
+-----------------------------
+
+You can read data from the following RxJava Observables:
+
+```java
+<T> Observable<T> getObservable(final String key, final Class classOfT)
+<T> Observable<T> getObservable(final String key, final Class classOfT, final T defaultValue)
+```
+
+**Note**
+
+Use it, when you want to observe single preference under a specified key.
+When you want to observe many preferences, use [from(SharedPreferences) or fromDefaultPreferences()](#subscribing-for-data-updates) method.
+
+**Example**
+
+```java
+Subscription subscription = prefser.getObservable(key, String.class, "default value")
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribeOn(Schedulers.io())
+        ... // you can do anything else, what is possible with RxJava
+        .subscribe(new Action1<String>() {
+            @Override
+            public void call(String key) {
+                // Perform any action you want.
+                // E.g. get value stored under key
+                // and display in a TextView.
+            }
+        });
+```
 
 Contains method
 -------------
@@ -198,6 +231,11 @@ You can subscribe the following RxJava Observables from `Prefser` object:
 Observable<String> from(final SharedPreferences sharedPreferences);
 Observable<String> fromDefaultPreferences();
 ```
+
+**Note**
+
+Use it, when you want to observe many shared preferences.
+If you want to observe single preference under as specified key, use [getObservable()](#reading-data-from-observables) method.
 
 **Example**
 ```java

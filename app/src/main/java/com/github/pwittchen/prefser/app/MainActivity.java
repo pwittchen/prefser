@@ -26,6 +26,7 @@ import com.github.pwittchen.prefser.library.Prefser;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -38,8 +39,10 @@ import rx.schedulers.Schedulers;
 public class MainActivity extends ActionBarActivity {
 
     private Prefser prefser;
+    private final static String EMPTY_STRING = "";
     private final static String MY_KEY = "MY_KEY";
-    private Subscription subscription;
+    private Subscription subscriptionForAllPreferences;
+    private Subscription subscriptionForSinglePreference;
 
     @InjectView(R.id.value)
     protected EditText value;
@@ -59,7 +62,15 @@ public class MainActivity extends ActionBarActivity {
         String text = prefser.get(MY_KEY, String.class, "");
         value.setText(text);
 
-        subscription = prefser.fromDefaultPreferences()
+        // in this project two subscriptions were created just for an example
+        // in real life, one subscription should be enough for case like that
+
+        createSubscriptionForAllPreferences();
+        createSubscriptionForSinglePreference();
+    }
+
+    private void createSubscriptionForAllPreferences() {
+        subscriptionForAllPreferences = prefser.fromDefaultPreferences()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .filter(new Func1<String, Boolean>() {
@@ -71,10 +82,47 @@ public class MainActivity extends ActionBarActivity {
                 .subscribe(new Action1<String>() {
                     @Override
                     public void call(String key) {
-                        value.setText(prefser.get(key, String.class, ""));
+                        value.setText(prefser.get(key, String.class, EMPTY_STRING));
                         Toast.makeText(
                                 MainActivity.this,
-                                String.format("value in %s changed", MY_KEY),
+                                String.format("Value in %s changed", MY_KEY),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void createSubscriptionForSinglePreference() {
+
+        // here, we created new Subscriber as an extended example,
+        // but we can also use simple Action1 interface with call(String key) method
+        // as in createSubscriptionForAllPreferences() method
+
+        subscriptionForSinglePreference = prefser.getObservable(MY_KEY, String.class)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<Object>() {
+                    @Override
+                    public void onCompleted() {
+                        // this will never be called until we call it explicitly
+                        // subscriber.onCompleted() is not called
+                        // in Observable<String> from(final SharedPreferences sharedPreferences)
+                        // method inside Prefser class, because we want to observe preference constantly
+                        // and we do not want to terminate subscriber
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(
+                                MainActivity.this,
+                                String.format("Problem with accessing key %", MY_KEY),
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNext(Object o) {
+                        Toast.makeText(
+                                MainActivity.this,
+                                String.format("Value in %s changed, really!", MY_KEY),
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -83,7 +131,8 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        subscription.unsubscribe();
+        subscriptionForAllPreferences.unsubscribe();
+        subscriptionForSinglePreference.unsubscribe();
     }
 
     @OnClick(R.id.save)

@@ -23,9 +23,11 @@ import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.Subscriber;
+import rx.functions.Func1;
 
 /**
  * Prefser is a wrapper for Android SharedPreferences
@@ -93,6 +95,45 @@ public final class Prefser {
      */
     public boolean contains(String key) {
         return preferences.contains(key);
+    }
+
+    /**
+     * gets value from SharedPreferences with a given key and type
+     * as a RxJava Observable, which can be subscribed
+     *
+     * @param key      key of the preference
+     * @param classOfT class of T (e.g. String.class)
+     * @param <T>      return type of the preference (e.g. String)
+     * @return Observable value from SharedPreferences associated with given key or default value
+     */
+    public <T> Observable<T> getObservable(final String key, final Class classOfT) {
+        return getObservable(key, classOfT, null);
+    }
+
+    /**
+     * gets value from SharedPreferences with a given key and type
+     * as a RxJava Observable, which can be subscribed
+     * if value is not found, we can return defaultValue
+     *
+     * @param key          key of the preference
+     * @param classOfT     class of T (e.g. String.class)
+     * @param defaultValue default value of the preference (e.g. "" or "undefined")
+     * @param <T>          return type of the preference (e.g. String)
+     * @return Observable value from SharedPreferences associated with given key or default value
+     */
+    public <T> Observable<T> getObservable(final String key, final Class classOfT, final T defaultValue) {
+        return from(preferences)
+                .filter(new Func1<String, Boolean>() {
+                    @Override
+                    public Boolean call(String filteredKey) {
+                        return key.equals(filteredKey);
+                    }
+                }).map(new Func1<String, T>() {
+                    @Override
+                    public T call(String s) {
+                        return get(key, classOfT, defaultValue);
+                    }
+                });
     }
 
     /**
