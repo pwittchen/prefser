@@ -25,10 +25,9 @@ Contents
 Overview
 --------
 
-Prefser wraps SharedPreferences and thanks to Java Generics provides you simpler API than classic SharedPreferences with only three methods:
+Prefser wraps SharedPreferences and thanks to Java Generics provides you simpler API than classic SharedPreferences with only two methods:
 ```java
 void put(String key, Object value);
-<T> T get(String key, Class classOfT);
 <T> T get(String key, Class classOfT, T defaultValue);
 ```
 
@@ -49,8 +48,8 @@ Thanks to Gson serialization, Prefser allows you to store:
 
 In addition, Prefser transforms [OnSharedPreferenceChangeListener](http://developer.android.com/reference/android/content/SharedPreferences.OnSharedPreferenceChangeListener.html) into Observables from RxJava:
 ```java
-Observable<String> from(final SharedPreferences sharedPreferences);
-Observable<String> fromDefaultPreferences();
+Observable<String> observe(final SharedPreferences sharedPreferences);
+Observable<String> observeDefaultPreferences();
 ```
 
 You can subscribe one of these Observables and [monitor updates of SharedPreferences](#subscribing-for-data-updates) with powerful RxJava.
@@ -111,71 +110,74 @@ prefser.put("key", objects); // put array of CustomObjects
 
 Set<String> setOfStrings = new HashSet<>(Arrays.asList("one", "two", "three"));
 Set<Double> setOfDoubles = new HashSet<>(Arrays.asList(1.2, 3.4, 5.6));
-prefser.put("key", setOfStrings); // put set of Strings
+prefser.getPreferences().edit().putStringSet("key", setOfStrings).apply(); // put Set of Strings in a "classical way"
 prefser.put("key", setOfDoubles); // put set of doubles
 ```
 
 Reading data
 ------------
 
-You can read data with the following methods:
+You can read data with the following method:
 
 ```java
-<T> T get(String key, Class classOfT);
 <T> T get(String key, Class classOfT, T defaultValue);
 ```
 
 **Examples**
 
 ```java
-Boolean value = prefser.get("key", Boolean.class);           // reading boolean
-Float value = prefser.get("key", Float.class);               // reading float
-Integer value = prefser.get("key", Integer.class);           // reading integer
-Long value = prefser.get("key", Long.class);                 // reading long
-Double value = prefser.get("key", Double.class);             // reading double
-String value = prefser.get("key", String.class);             // reading String
-CustomObject value = prefser.get("key", CustomObject.class); // reading CustomObject
 
-/**
- * Reading boolean and setting default value. 
- * This method will return "true", when key "key" doesn't exist.
- * Default value can be set for any kind of data in the same way.
- */
-Boolean value = prefser.get("key", Boolean.class, true);
+// reading primitive types
 
-List<Double> value = prefser.get("key", List.class);   // reading List of doubles
-List<String> value = prefser.get("key", List.class);   // reading List of Strings
+Boolean value = prefser.get("key", Boolean.class, false);
+Float value = prefser.get("key", Float.class, 1.0f);
+Integer value = prefser.get("key", Integer.class, 1);
+Long value = prefser.get("key", Long.class, 1.0l);
+Double value = prefser.get("key", Double.class, 1.0);
+String value = prefser.get("key", String.class, "default string");
 
-Boolean[] value = prefser.get("key", Boolean[].class);           // reading array of booleans
-Float[] value = prefser.get("key", Float[].class);               // reading array of floats
-Integer[] value = prefser.get("key", Integer[].class);           // reading array of integers
-Long[] value = prefser.get("key", Long[].class);                 // reading array of longs
-Double[] value = prefser.get("key", Double[].class);             // reading array of doubles
-String[] value = prefser.get("key", String[].class);             // reading array of Strings
-CustomObject[] value = prefser.get("key", CustomObject[].class); // reading array of CustomObjects
+// reading custom object
 
-Set<String> value = prefser.get("key", Set.class); // reading Set of Strings
-Set<Double> value = prefser.get("key", Set.class); // reading Set of Doubles
+CustomObject value = prefser.get("key", CustomObject.class, new CustomObject());
+
+// reading lists
+
+List<Double> value = prefser.get("key", List.class, new ArrayList<>());
+List<String> value = prefser.get("key", List.class, new ArrayList<>());
+
+// reading arrays
+
+Boolean[] value = prefser.get("key", Boolean[].class, new Boolean[]{});
+Float[] value = prefser.get("key", Float[].class, new Float[]{});
+Integer[] value = prefser.get("key", Integer[].class, new Integer[]{});
+Long[] value = prefser.get("key", Long[].class, new Long[]{});
+Double[] value = prefser.get("key", Double[].class, new Double[]{});
+String[] value = prefser.get("key", String[].class, new String[]{});
+CustomObject[] value = prefser.get("key", CustomObject[].class, new CustomObject[]{});
+
+// reading sets
+
+Set<String> value = prefser.getPreferences().getStringSet("key", new HashSet<>()); // accessing set of strings in a "classical way"
+Set<Double> value = prefser.get("key", Set.class, new HashSet<>());
 ```
 Reading data from Observables
 -----------------------------
 
-You can read data from the following RxJava Observables:
+You can observe changes of data with the following RxJava Observable:
 
 ```java
-<T> Observable<T> getObservable(final String key, final Class classOfT)
-<T> Observable<T> getObservable(final String key, final Class classOfT, final T defaultValue)
+<T> Observable<T> observe(final String key, final Class classOfT, final T defaultValue)
 ```
 
 **Note**
 
 Use it, when you want to observe single preference under a specified key.
-When you want to observe many preferences, use [from(SharedPreferences) or fromDefaultPreferences()](#subscribing-for-data-updates) method.
+When you want to observe many preferences, use [observe(SharedPreferences) or observeDefaultPreferences()](#subscribing-for-data-updates) method.
 
 **Example**
 
 ```java
-Subscription subscription = prefser.getObservable(key, String.class, "default value")
+Subscription subscription = prefser.observe(key, String.class, "default value")
         .observeOn(AndroidSchedulers.mainThread())
         .subscribeOn(Schedulers.io())
         ... // you can do anything else, what is possible with RxJava
@@ -228,18 +230,18 @@ Subscribing for data updates
 You can subscribe the following RxJava Observables from `Prefser` object:
 
 ```java
-Observable<String> from(final SharedPreferences sharedPreferences);
-Observable<String> fromDefaultPreferences();
+Observable<String> observe(final SharedPreferences sharedPreferences);
+Observable<String> observeDefaultPreferences();
 ```
 
 **Note**
 
 Use it, when you want to observe many shared preferences.
-If you want to observe single preference under as specified key, use [getObservable()](#reading-data-from-observables) method.
+If you want to observe single preference under as specified key, use [observe()](#reading-data-from-observables) method.
 
 **Example**
 ```java
-Subscription subscription = prefser.fromDefaultPreferences()
+Subscription subscription = prefser.observeDefaultPreferences()
         .observeOn(AndroidSchedulers.mainThread())
         .subscribeOn(Schedulers.io())
         .filter(...) // you can filter your updates by key
@@ -313,6 +315,7 @@ Caveats
 
 * When you are going to store many numeric values under single key, you should use arrays instead of Lists. Gson converts all numeric values on the Lists into double, so you will have to deal with type conversion in case of using List data structure.
 * When you are going to store many custom objects under single key, you should use arrays instead of Lists, because Lists are not deserialized correctly for custom data types.
+* Set of Strings should be saved and read in a "classical way" with getPreferences() method.
 
 References
 ----------

@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -41,12 +42,12 @@ import rx.functions.Func1;
  * Basic Usage:
  * <pre>
  *  Prefser prefser = new Prefser(context);
- *  prefser.put("key", putValue);
- *  String getValue = prefser.get("key", String.class);
+ *  prefser.put("key", value);
+ *  String getValue = prefser.get("key", String.class, defaultValue);
  * </pre>
  * Subscribing Observable of SharedPreferences:
  * <pre>
- *  prefser.fromDefaultPreferences()
+ *  prefser.observeDefaultPreferences()
  *      .observeOn(AndroidSchedulers.mainThread())
  *      .subscribeOn(Schedulers.io())
  *      ...
@@ -56,12 +57,13 @@ import rx.functions.Func1;
 public final class Prefser {
     private final SharedPreferences preferences;
     private final SharedPreferences.Editor editor;
-    private final Map<Class, Getter> getters = new HashMap<>();
+    private final Map<Class, Accessor> accessors = new HashMap<>();
     private final Gson gson = new Gson();
     private SharedPreferences.OnSharedPreferenceChangeListener onChangeListener;
 
-    private interface Getter {
+    private interface Accessor {
         <T> T get(String key, Class classOfT, T defaultValue);
+        void put(String key, Object value);
     }
 
     /**
@@ -83,7 +85,15 @@ public final class Prefser {
         checkNotNull(sharedPreferences, "sharedPreferences == null");
         this.preferences = sharedPreferences;
         this.editor = preferences.edit();
-        createMapOfGetters();
+        initAccessors();
+    }
+
+    /**
+     * Returns SharedPreferences in case, we want to manipulate them without Prefser
+     * @return SharedPreferences
+     */
+    public SharedPreferences getPreferences() {
+        return preferences;
     }
 
     /**
@@ -99,19 +109,6 @@ public final class Prefser {
     /**
      * gets value from SharedPreferences with a given key and type
      * as a RxJava Observable, which can be subscribed
-     *
-     * @param key      key of the preference
-     * @param classOfT class of T (e.g. String.class)
-     * @param <T>      return type of the preference (e.g. String)
-     * @return Observable value from SharedPreferences associated with given key or default value
-     */
-    public <T> Observable<T> getObservable(final String key, final Class classOfT) {
-        return getObservable(key, classOfT, null);
-    }
-
-    /**
-     * gets value from SharedPreferences with a given key and type
-     * as a RxJava Observable, which can be subscribed
      * if value is not found, we can return defaultValue
      *
      * @param key          key of the preference
@@ -120,8 +117,8 @@ public final class Prefser {
      * @param <T>          return type of the preference (e.g. String)
      * @return Observable value from SharedPreferences associated with given key or default value
      */
-    public <T> Observable<T> getObservable(final String key, final Class classOfT, final T defaultValue) {
-        return from(preferences)
+    public <T> Observable<T> observe(final String key, final Class classOfT, final T defaultValue) {
+        return observe(preferences)
                 .filter(new Func1<String, Boolean>() {
                     @Override
                     public Boolean call(String filteredKey) {
@@ -133,25 +130,6 @@ public final class Prefser {
                         return get(key, classOfT, defaultValue);
                     }
                 });
-    }
-
-    /**
-     * gets value from SharedPreferences with a given key and type,
-     * default value is set to null
-     *
-     * @param key      key of the preference
-     * @param classOfT class of T (e.g. String.class)
-     * @param <T>      return type of the preference (e.g. String)
-     * @return value from SharedPreferences associated with given key
-     */
-    public <T> T get(String key, Class classOfT) {
-        checkNotNull(key, "key == null");
-
-        if (!contains(key)) {
-            throw new RuntimeException(String.format("Value with key %s could not be found", key));
-        }
-
-        return get(key, classOfT, null);
     }
 
     /**
@@ -168,7 +146,7 @@ public final class Prefser {
         checkNotNull(key, "key == null");
         checkNotNull(classOfT, "classOfT == null");
 
-        for (Map.Entry<Class, Getter> entry : getters.entrySet()) {
+        for (Map.Entry<Class, Accessor> entry : accessors.entrySet()) {
             if (classOfT.equals(entry.getKey())) {
                 return (entry.getValue()).get(key, classOfT, defaultValue);
             }
@@ -191,8 +169,8 @@ public final class Prefser {
      *
      * @return Observable with String containing key of the value in default SharedPreferences
      */
-    public Observable<String> fromDefaultPreferences() {
-        return from(preferences);
+    public Observable<String> observeDefaultPreferences() {
+        return observe(preferences);
     }
 
     /**
@@ -205,7 +183,7 @@ public final class Prefser {
      * @param sharedPreferences instance of SharedPreferences to be observed
      * @return Observable with String containing key of the value in SharedPreferences
      */
-    public Observable<String> from(final SharedPreferences sharedPreferences) {
+    public Observable<String> observe(final SharedPreferences sharedPreferences) {
         checkNotNull(sharedPreferences, "sharedPreferences == null");
 
         return Observable.create(new Observable.OnSubscribe<String>() {
@@ -233,11 +211,20 @@ public final class Prefser {
         checkNotNull(key, "key == null");
         checkNotNull(value, "value == null");
 
-        if (!getters.containsKey(value.getClass())) {
+        if (!accessors.containsKey(value.getClass())) {
             value = gson.toJson(value);
+            editor.putString(key, String.valueOf(value)).apply();
+            return;
         }
 
-        editor.putString(key, String.valueOf(value)).apply();
+        Class classOfValue = value.getClass();
+
+        for (Map.Entry<Class, Accessor> entry : accessors.entrySet()) {
+            if (classOfValue.equals(entry.getKey())) {
+                (entry.getValue()).put(key, value);
+                break;
+            }
+        }
     }
 
     /**
@@ -274,46 +261,82 @@ public final class Prefser {
         return preferences.getAll().size();
     }
 
-    private void createMapOfGetters() {
-        getters.put(Boolean.class, new Getter() {
+    private void initAccessors() {
+        accessors.put(Boolean.class, new Accessor() {
             @Override
             public <T> T get(String key, Class classOfT, T defaultValue) {
-                return (T) Boolean.valueOf(preferences.getString(key, String.valueOf(defaultValue)));
+                return (T) Boolean.valueOf(preferences.getBoolean(key, (Boolean) defaultValue));
+            }
+
+            @Override
+            public void put(String key, Object value) {
+                editor.putBoolean(key, (Boolean) value)
+                        .apply();
             }
         });
 
-        getters.put(Float.class, new Getter() {
+        accessors.put(Float.class, new Accessor() {
             @Override
             public <T> T get(String key, Class classOfT, T defaultValue) {
-                return (T) Float.valueOf(preferences.getString(key, String.valueOf(defaultValue)));
+                return (T) Float.valueOf(preferences.getFloat(key, (Float) defaultValue));
+            }
+
+            @Override
+            public void put(String key, Object value) {
+                editor.putFloat(key, (Float) value)
+                        .apply();
             }
         });
 
-        getters.put(Integer.class, new Getter() {
+        accessors.put(Integer.class, new Accessor() {
             @Override
             public <T> T get(String key, Class classOfT, T defaultValue) {
-                return (T) Integer.valueOf(preferences.getString(key, String.valueOf(defaultValue)));
+                return (T) Integer.valueOf(preferences.getInt(key, (Integer) defaultValue));
+            }
+
+            @Override
+            public void put(String key, Object value) {
+                editor.putInt(key, (Integer) value)
+                        .apply();
             }
         });
 
-        getters.put(Long.class, new Getter() {
+        accessors.put(Long.class, new Accessor() {
             @Override
             public <T> T get(String key, Class classOfT, T defaultValue) {
-                return (T) Long.valueOf(preferences.getString(key, String.valueOf(defaultValue)));
+                return (T) Long.valueOf(preferences.getLong(key, (Long) defaultValue));
+            }
+
+            @Override
+            public void put(String key, Object value) {
+                editor.putLong(key, (Long) value)
+                        .apply();
             }
         });
 
-        getters.put(Double.class, new Getter() {
+        accessors.put(Double.class, new Accessor() {
             @Override
             public <T> T get(String key, Class classOfT, T defaultValue) {
                 return (T) Double.valueOf(preferences.getString(key, String.valueOf(defaultValue)));
             }
+
+            @Override
+            public void put(String key, Object value) {
+                editor.putString(key, String.valueOf(value))
+                        .apply();
+            }
         });
 
-        getters.put(String.class, new Getter() {
+        accessors.put(String.class, new Accessor() {
             @Override
             public <T> T get(String key, Class classOfT, T defaultValue) {
                 return (T) preferences.getString(key, String.valueOf(defaultValue));
+            }
+
+            @Override
+            public void put(String key, Object value) {
+                editor.putString(key, String.valueOf(value))
+                        .apply();
             }
         });
     }

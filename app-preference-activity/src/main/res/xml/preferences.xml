@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+        android:key="user_name"
+        android:defaultValue=""
+        android:title="Your Name"
+        android:summary="Please provide your username"/>
+    <CheckBoxPreference
+        android:key="application_updates"
+        android:defaultValue="false"
+        android:title="Application Updates"
+        android:summary="This option if selected will allow the application to check for latest versions."/>
+    <ListPreference
+        android:key="download_type"
+        android:defaultValue="1"
+        android:title="Download Details"
+        android:summary="Select the kind of data that you would like to download"
+        android:entries="@array/download_entries"
+        android:entryValues="@array/download_values"/>
+    <MultiSelectListPreference
+        android:key="notification_type"
+        android:title="Notification Details"
+        android:summary="Select the kind of notification you would like to receive"
+        android:entries="@array/notification_entries"
+        android:entryValues="@array/notification_values"/>
+    <SwitchPreference
+        android:key="screen_on"
+        android:defaultValue="false"
+        android:title="Screen turned on"
+        android:switchTextOn="On"
+        android:switchTextOff="Off"
+        android:summaryOn="This option if selected will allow the application to keep screen on"
+        android:summaryOff="This option if selected will allow the application to keep screen off"/>
+</PreferenceScreen>

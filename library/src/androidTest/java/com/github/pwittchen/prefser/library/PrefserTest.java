@@ -15,12 +15,14 @@
  */
 package com.github.pwittchen.prefser.library;
 
+import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -62,6 +64,7 @@ public final class PrefserTest {
     @Before
     public void setUp() {
         prefser = new Prefser(InstrumentationRegistry.getContext());
+        prefser.clear();
     }
 
     @After
@@ -69,9 +72,31 @@ public final class PrefserTest {
         prefser.clear();
     }
 
+    public void testPrefserShouldNotBeNull() {
+        // given: prefser declaration
+
+        // when: prefser initialization in setUp() method
+
+        // then
+        assertThat(prefser).isNotNull();
+    }
+
+    @Test
+    public void testPreferencesShouldNotBeNull() {
+        // given
+        prefser.clear();
+
+        // when
+        SharedPreferences preferences = prefser.getPreferences();
+
+        // then
+        assertThat(preferences).isNotNull();
+    }
+
     @Test
     public void testContains() throws Exception {
         // given
+        prefser.clear();
         String givenValue = "sample value";
         String givenKey = "sampleKey";
 
@@ -135,14 +160,16 @@ public final class PrefserTest {
     @Test
     public void testPutBoolean() throws Exception {
         // given
+        prefser.clear();
         String givenKey = "sampleKey";
         Boolean givenValue = true;
+        Boolean defaultValue = false;
 
         // when
         prefser.put(givenKey, givenValue);
 
         // then
-        Boolean readValue = prefser.get(givenKey, Boolean.class);
+        Boolean readValue = prefser.get(givenKey, Boolean.class, defaultValue);
         assertThat(givenValue).isEqualTo(readValue);
         prefser.remove(givenKey);
     }
@@ -150,14 +177,16 @@ public final class PrefserTest {
     @Test
     public void testPutBooleanPrimitive() throws Exception {
         // given
+        prefser.clear();
         String givenKey = "sampleKey";
         boolean givenValue = true;
+        boolean defaultValue = false;
 
         // when
         prefser.put(givenKey, givenValue);
 
         // then
-        boolean readValue = prefser.get(givenKey, boolean.class);
+        boolean readValue = prefser.get(givenKey, Boolean.class, defaultValue);
         assertThat(givenValue).isEqualTo(readValue);
         prefser.remove(givenKey);
     }
@@ -165,14 +194,16 @@ public final class PrefserTest {
     @Test
     public void testPutFloat() throws Exception {
         // given
+        prefser.clear();
         String givenKey = "sampleKey";
         Float givenValue = 41f;
+        Float defaultValue = 42f;
 
         // when
         prefser.put(givenKey, givenValue);
 
         // then
-        Float readValue = prefser.get(givenKey, Float.class);
+        Float readValue = prefser.get(givenKey, Float.class, defaultValue);
         assertThat(givenValue).isEqualTo(readValue);
         prefser.remove(givenKey);
     }
@@ -180,14 +211,16 @@ public final class PrefserTest {
     @Test
     public void testPutFloatPrimitive() throws Exception {
         // given
+        prefser.clear();
         String givenKey = "sampleKey";
         float givenValue = 41f;
+        float defaultValue = 42f;
 
         // when
         prefser.put(givenKey, givenValue);
 
         // then
-        float readValue = prefser.get(givenKey, float.class);
+        float readValue = prefser.get(givenKey, Float.class, defaultValue);
         assertThat(givenValue).isEqualTo(readValue);
         prefser.remove(givenKey);
     }
@@ -195,14 +228,16 @@ public final class PrefserTest {
     @Test
     public void testPutInteger() throws Exception {
         // given
+        prefser.clear();
         String givenKey = "sampleKey";
         Integer givenValue = 42;
+        Integer defaultValue = 43;
 
         // when
         prefser.put(givenKey, givenValue);
 
         // then
-        Integer readValue = prefser.get(givenKey, Integer.class);
+        Integer readValue = prefser.get(givenKey, Integer.class, defaultValue);
         assertThat(givenValue).isEqualTo(readValue);
         prefser.remove(givenKey);
     }
@@ -210,14 +245,16 @@ public final class PrefserTest {
     @Test
     public void testPutIntegerPrimitive() throws Exception {
         // given
+        prefser.clear();
         String givenKey = "sampleKey";
         int givenValue = 42;
+        int defaultValue = 43;
 
         // when
         prefser.put(givenKey, givenValue);
 
         // then
-        int readValue = prefser.get(givenKey, int.class);
+        int readValue = prefser.get(givenKey, Integer.class, defaultValue);
         assertThat(givenValue).isEqualTo(readValue);
         prefser.remove(givenKey);
     }
@@ -225,14 +262,16 @@ public final class PrefserTest {
     @Test
     public void testPutLong() throws Exception {
         // given
+        prefser.clear();
         String givenKey = "sampleKey";
         Long givenValue = 43l;
+        Long defaultValue = 44l;
 
         // when
         prefser.put(givenKey, givenValue);
 
         // then
-        Long readValue = prefser.get(givenKey, Long.class);
+        Long readValue = prefser.get(givenKey, Long.class, defaultValue);
         assertThat(givenValue).isEqualTo(readValue);
         prefser.remove(givenKey);
     }
@@ -240,14 +279,16 @@ public final class PrefserTest {
     @Test
     public void testPutLongPrimitive() throws Exception {
         // given
+        prefser.clear();
         String givenKey = "sampleKey";
         long givenValue = 43l;
+        long defaultValue = 44l;
 
         // when
         prefser.put(givenKey, givenValue);
 
         // then
-        long readValue = prefser.get(givenKey, long.class);
+        long readValue = prefser.get(givenKey, Long.class, defaultValue);
         assertThat(givenValue).isEqualTo(readValue);
         prefser.remove(givenKey);
     }
@@ -255,14 +296,16 @@ public final class PrefserTest {
     @Test
     public void testPutDouble() throws Exception {
         // given
+        prefser.clear();
         String givenKey = "sampleKey";
         Double givenValue = 44.5;
+        Double defaultValue = 46.7;
 
         // when
         prefser.put(givenKey, givenValue);
 
         // then
-        Double readValue = prefser.get(givenKey, Double.class);
+        Double readValue = prefser.get(givenKey, Double.class, defaultValue);
         assertThat(givenValue).isEqualTo(readValue);
         prefser.remove(givenKey);
     }
@@ -270,14 +313,16 @@ public final class PrefserTest {
     @Test
     public void testPutDoublePrimitive() throws Exception {
         // given
+        prefser.clear();
         String givenKey = "sampleKey";
         double givenValue = 44.5;
+        double defaultValue = 48.3;
 
         // when
         prefser.put(givenKey, givenValue);
 
         // then
-        double readValue = prefser.get(givenKey, double.class);
+        double readValue = prefser.get(givenKey, Double.class, defaultValue);
         assertThat(givenValue).isEqualTo(readValue);
         prefser.remove(givenKey);
     }
@@ -285,14 +330,16 @@ public final class PrefserTest {
     @Test
     public void testPutString() throws Exception {
         // given
+        prefser.clear();
         String givenKey = "sampleKey";
         String givenValue = "sampleValueExplicit";
+        String defaultValue = "sampleDefaultValue";
 
         // when
         prefser.put(givenKey, givenValue);
 
         // then
-        String readValue = prefser.get(givenKey, String.class);
+        String readValue = prefser.get(givenKey, String.class, defaultValue);
         assertThat(givenValue).isEqualTo(readValue);
         prefser.remove(givenKey);
     }
@@ -300,14 +347,16 @@ public final class PrefserTest {
     @Test
     public void testPutCustomObject() throws Exception {
         // given
+        prefser.clear();
         String givenKey = "sampleKey";
         CustomClass givenObject = new CustomClass(23, "someText");
+        CustomClass defaultObject = new CustomClass(67, "defaultText");
 
         // when
         prefser.put(givenKey, givenObject);
 
         // then
-        CustomClass readObject = prefser.get(givenKey, CustomClass.class);
+        CustomClass readObject = prefser.get(givenKey, CustomClass.class, defaultObject);
         assertThat(givenObject).isEqualTo(readObject);
         prefser.remove(givenKey);
     }
@@ -315,104 +364,33 @@ public final class PrefserTest {
     @Test
     public void testPutListOfBooleans() throws Exception {
         // given
+        prefser.clear();
         String givenKey = "sampleKey";
         List<Boolean> booleans = new ArrayList<>(Arrays.asList(true, false, true));
+        List<Boolean> defaultBooleans = new ArrayList<>(Arrays.asList(false, false, false));
 
         // when
         prefser.put(givenKey, booleans);
 
         // then
-        List<Boolean> readObject = prefser.get(givenKey, List.class);
+        List<Boolean> readObject = prefser.get(givenKey, List.class, defaultBooleans);
         assertThat(booleans).isEqualTo(readObject);
-        prefser.remove(givenKey);
-    }
-
-    @Test
-    public void testPutListOfFloats() throws Exception {
-        // given
-        String givenKey = "sampleKey";
-        List<Float> floats = new ArrayList<>(Arrays.asList(4f, 5f, 6f));
-
-        // when
-        prefser.put(givenKey, floats);
-
-        // then
-        // if we read list of different type of number than double,
-        // we should declare List<Number> due to implementation of Gson
-        List<Number> readObject = prefser.get(givenKey, List.class);
-
-        Double expectedNumberFirst = readObject.get(0).doubleValue();
-        Double expectedNumberSecond = readObject.get(1).doubleValue();
-        Double expectedNumberThird = readObject.get(2).doubleValue();
-
-        assertThat(expectedNumberFirst.floatValue()).isEqualTo(floats.get(0).floatValue());
-        assertThat(expectedNumberSecond.floatValue()).isEqualTo(floats.get(1).floatValue());
-        assertThat(expectedNumberThird.floatValue()).isEqualTo(floats.get(2).floatValue());
-
-        prefser.remove(givenKey);
-    }
-
-    @Test
-    public void testPutListOfInts() throws Exception {
-        // given
-        String givenKey = "sampleKey";
-        List<Integer> ints = new ArrayList<>(Arrays.asList(4, 5, 6));
-
-        // when
-        prefser.put(givenKey, ints);
-
-        // then
-        // if we read list of different type of number than double,
-        // we should declare List<Number> due to implementation of Gson
-        List<Number> readObject = prefser.get(givenKey, List.class);
-
-        Double expectedNumberFirst = readObject.get(0).doubleValue();
-        Double expectedNumberSecond = readObject.get(1).doubleValue();
-        Double expectedNumberThird = readObject.get(2).doubleValue();
-
-        assertThat(expectedNumberFirst.intValue()).isEqualTo(ints.get(0).intValue());
-        assertThat(expectedNumberSecond.intValue()).isEqualTo(ints.get(1).intValue());
-        assertThat(expectedNumberThird.intValue()).isEqualTo(ints.get(2).intValue());
-
-        prefser.remove(givenKey);
-    }
-
-    @Test
-    public void testPutListOfLongs() throws Exception {
-        // given
-        String givenKey = "sampleKey";
-        List<Long> ints = new ArrayList<>(Arrays.asList(4l, 5l, 6l));
-
-        // when
-        prefser.put(givenKey, ints);
-
-        // then
-        // if we read list of different type of number than double,
-        // we should declare List<Number> due to implementation of Gson
-        List<Number> readObject = prefser.get(givenKey, List.class);
-
-        Double expectedNumberFirst = readObject.get(0).doubleValue();
-        Double expectedNumberSecond = readObject.get(1).doubleValue();
-        Double expectedNumberThird = readObject.get(2).doubleValue();
-
-        assertThat(expectedNumberFirst.longValue()).isEqualTo(ints.get(0).longValue());
-        assertThat(expectedNumberSecond.longValue()).isEqualTo(ints.get(1).longValue());
-        assertThat(expectedNumberThird.longValue()).isEqualTo(ints.get(2).longValue());
-
         prefser.remove(givenKey);
     }
 
     @Test
     public void testPutListOfDoubles() throws Exception {
         // given
+        prefser.clear();
         String givenKey = "sampleKey";
         List<Double> doubles = new ArrayList<>(Arrays.asList(4.0, 5.1, 6.2));
+        List<Double> defaultDoubles = new ArrayList<>(Arrays.asList(4.0, 5.1, 6.2));
 
         // when
         prefser.put(givenKey, doubles);
 
         // then
-        List<Double> readObject = prefser.get(givenKey, List.class);
+        List<Double> readObject = prefser.get(givenKey, List.class, defaultDoubles);
 
         assertThat(readObject.get(0)).isEqualTo(doubles.get(0));
         assertThat(readObject.get(1)).isEqualTo(doubles.get(1));
@@ -424,14 +402,16 @@ public final class PrefserTest {
     @Test
     public void testPutListOfStrings() throws Exception {
         // given
+        prefser.clear();
         String givenKey = "sampleKey";
         List<String> strings = new ArrayList<>(Arrays.asList("one", "two", "three"));
+        List<String> defaultStrings = new ArrayList<>(Arrays.asList("default", "string", "values"));
 
         // when
         prefser.put(givenKey, strings);
 
         // then
-        List<String> readObject = prefser.get(givenKey, List.class);
+        List<String> readObject = prefser.get(givenKey, List.class, defaultStrings);
 
         assertThat(readObject.get(0)).isEqualTo(strings.get(0));
         assertThat(readObject.get(1)).isEqualTo(strings.get(1));
@@ -443,14 +423,16 @@ public final class PrefserTest {
     @Test
     public void testPutArrayOfBooleans() {
         // given
+        prefser.clear();
         String givenKey = "sampleKey";
         Boolean[] array = new Boolean[]{true, false, true};
+        Boolean[] defaultArray = new Boolean[]{false, false, false};
 
         // when
         prefser.put(givenKey, array);
 
         // then
-        Boolean[] readObject = prefser.get(givenKey, Boolean[].class);
+        Boolean[] readObject = prefser.get(givenKey, Boolean[].class, defaultArray);
 
         assertThat(readObject[0]).isEqualTo(array[0]);
         assertThat(readObject[1]).isEqualTo(array[1]);
@@ -462,14 +444,16 @@ public final class PrefserTest {
     @Test
     public void testPutArrayOfFloats() {
         // given
+        prefser.clear();
         String givenKey = "sampleKey";
         Float[] array = new Float[]{1f, 2f, 3f};
+        Float[] defaultArray = new Float[]{1f, 1f, 1f};
 
         // when
         prefser.put(givenKey, array);
 
         // then
-        Float[] readObject = prefser.get(givenKey, Float[].class);
+        Float[] readObject = prefser.get(givenKey, Float[].class, defaultArray);
 
         assertThat(readObject[0]).isEqualTo(array[0]);
         assertThat(readObject[1]).isEqualTo(array[1]);
@@ -481,14 +465,16 @@ public final class PrefserTest {
     @Test
     public void testPutArrayOfInts() {
         // given
+        prefser.clear();
         String givenKey = "sampleKey";
         Integer[] array = new Integer[]{1, 2, 3};
+        Integer[] defaultArray = new Integer[]{0, 0, 0};
 
         // when
         prefser.put(givenKey, array);
 
         // then
-        Integer[] readObject = prefser.get(givenKey, Integer[].class);
+        Integer[] readObject = prefser.get(givenKey, Integer[].class, defaultArray);
 
         assertThat(readObject[0]).isEqualTo(array[0]);
         assertThat(readObject[1]).isEqualTo(array[1]);
@@ -500,14 +486,16 @@ public final class PrefserTest {
     @Test
     public void testPutArrayOfLongs() {
         // given
+        prefser.clear();
         String givenKey = "sampleKey";
         Long[] array = new Long[]{1l, 2l, 3l};
+        Long[] defaultArray = new Long[]{1l, 1l, 1l};
 
         // when
         prefser.put(givenKey, array);
 
         // then
-        Long[] readObject = prefser.get(givenKey, Long[].class);
+        Long[] readObject = prefser.get(givenKey, Long[].class, defaultArray);
 
         assertThat(readObject[0]).isEqualTo(array[0]);
         assertThat(readObject[1]).isEqualTo(array[1]);
@@ -519,14 +507,16 @@ public final class PrefserTest {
     @Test
     public void testPutArrayOfDoubles() {
         // given
+        prefser.clear();
         String givenKey = "sampleKey";
         Double[] array = new Double[]{1.0, 2.3, 4.5};
+        Double[] defaultArray = new Double[]{1.0, 1.0, 1.0};
 
         // when
         prefser.put(givenKey, array);
 
         // then
-        Double[] readObject = prefser.get(givenKey, Double[].class);
+        Double[] readObject = prefser.get(givenKey, Double[].class, defaultArray);
 
         assertThat(readObject[0]).isEqualTo(array[0]);
         assertThat(readObject[1]).isEqualTo(array[1]);
@@ -538,14 +528,16 @@ public final class PrefserTest {
     @Test
     public void testPutArrayOfStrings() {
         // given
+        prefser.clear();
         String givenKey = "sampleKey";
         String[] array = new String[]{"one", "two", "three"};
+        String[] defaultArray = new String[]{"", "", ""};
 
         // when
         prefser.put(givenKey, array);
 
         // then
-        String[] readObject = prefser.get(givenKey, String[].class);
+        String[] readObject = prefser.get(givenKey, String[].class, defaultArray);
 
         assertThat(readObject[0]).isEqualTo(array[0]);
         assertThat(readObject[1]).isEqualTo(array[1]);
@@ -555,8 +547,30 @@ public final class PrefserTest {
     }
 
     @Test
+    @TargetApi(value = 11)
+    @SuppressWarnings("deprecation of assertThat for Java Collections")
+    public void testPutSetOfStrings() {
+        // given
+        prefser.clear();
+        Set<String> strings = new HashSet<>(Arrays.asList("one", "two", "three"));
+        Set<String> defaultStrings = new HashSet<>(Arrays.asList("this", "is", "default"));
+        String givenKey = "sampleKey";
+
+        // when
+        // we put set of string in a "classical way"
+        prefser.getPreferences().edit().putStringSet(givenKey, strings).apply();
+
+        // then
+        // we read set of string in a "classical way"
+        Set<String> readObject = prefser.getPreferences().getStringSet(givenKey, defaultStrings);
+        assertThat(readObject).isEqualTo(strings);
+        prefser.remove(givenKey);
+    }
+
+    @Test
     public void testPutArrayOfCustomObjects() {
         // given
+        prefser.clear();
         String givenKey = "sampleKey";
         CustomClass[] customClassesArray = new CustomClass[]{
                 new CustomClass(1, "one"),
@@ -564,11 +578,17 @@ public final class PrefserTest {
                 new CustomClass(3, "three")
         };
 
+        CustomClass[] defaultCustomClassesArray = new CustomClass[]{
+                new CustomClass(1, ""),
+                new CustomClass(1, ""),
+                new CustomClass(1, "")
+        };
+
         // when
         prefser.put(givenKey, customClassesArray);
 
         // then
-        CustomClass[] readObject = prefser.get(givenKey, CustomClass[].class);
+        CustomClass[] readObject = prefser.get(givenKey, CustomClass[].class, defaultCustomClassesArray);
 
         assertThat(readObject[0]).isEqualTo(customClassesArray[0]);
         assertThat(readObject[1]).isEqualTo(customClassesArray[1]);
@@ -579,47 +599,20 @@ public final class PrefserTest {
 
     @Test
     @SuppressWarnings("deprecation of assertThat for Java Collections")
-    public void testPutSetOfStrings() {
-        // given
-        Set<String> strings = new HashSet<>(Arrays.asList("one", "two", "three"));
-        String givenKey = "sampleKey";
-
-        // when
-        prefser.put(givenKey, strings);
-
-        // then
-        Set<String> readObject = prefser.get(givenKey, Set.class);
-        assertThat(readObject).isEqualTo(strings);
-        prefser.remove(givenKey);
-    }
-
-    @Test
-    @SuppressWarnings("deprecation of assertThat for Java Collections")
     public void testPutSetOfDoubles() {
         // given
-        Set<Double> strings = new HashSet<>(Arrays.asList(1.2, 2.3, 3.0));
+        prefser.clear();
+        Set<Double> doubles = new HashSet<>(Arrays.asList(1.2, 2.3, 3.0));
+        Set<Double> defaultDoubles = new HashSet<>(Arrays.asList(1.0, 1.0, 1.0));
         String givenKey = "sampleKey";
 
         // when
-        prefser.put(givenKey, strings);
+        prefser.put(givenKey, doubles);
 
         // then
-        Set<Double> readObject = prefser.get(givenKey, Set.class);
-        assertThat(readObject).isEqualTo(strings);
+        Set<Double> readObject = prefser.get(givenKey, Set.class, defaultDoubles);
+        assertThat(readObject).isEqualTo(doubles);
         prefser.remove(givenKey);
-    }
-
-    @Test(expected = Exception.class)
-    public void testShouldThrowAnExceptionWhenGettingValueForNotDefinedKeyAndDefaultValue() {
-        // given
-        prefser.clear();
-        String keyWhichDoesNotExist = "keyWhichDoesNotExist";
-
-        // when
-        boolean readValue = prefser.get(keyWhichDoesNotExist, Boolean.class);
-
-        // then
-        // throw an exception
     }
 
     @Test
@@ -925,7 +918,7 @@ public final class PrefserTest {
         Class<String> classOfT = String.class;
 
         // when
-        prefser.get(key, classOfT);
+        prefser.get(key, classOfT, "");
 
         // then
         // throw an exception
@@ -939,7 +932,7 @@ public final class PrefserTest {
         prefser.put(key, "someValue");
 
         // when
-        prefser.get(key, classOfT);
+        prefser.get(key, classOfT, "");
 
         // then
         // throw an exception
@@ -979,7 +972,7 @@ public final class PrefserTest {
         SharedPreferences sharedPreferences = null;
 
         // when
-        prefser.from(sharedPreferences);
+        prefser.observe(sharedPreferences);
 
         // then
         // throw an exception
