@@ -14,8 +14,6 @@ import butterknife.OnClick;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -31,7 +29,6 @@ public class MainActivity extends BaseActivity {
 
     private final static String EMPTY_STRING = "";
     private final static String MY_KEY = "MY_KEY";
-    private Subscription subscriptionForAllPreferences;
     private Subscription subscriptionForSinglePreference;
 
     @Override
@@ -45,36 +42,10 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
-        String text = prefser.get(MY_KEY, String.class, "");
+        String text = prefser.get(MY_KEY, String.class, EMPTY_STRING);
         value.setText(text);
 
-        // In this project two subscriptions were created just for an example
-        // In real life, one subscription should be enough for case like that
-
-        createSubscriptionForAllPreferences();
         createSubscriptionForSinglePreference();
-    }
-
-    private void createSubscriptionForAllPreferences() {
-        subscriptionForAllPreferences = prefser.fromDefaultPreferences()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .filter(new Func1<String, Boolean>() {
-                    @Override
-                    public Boolean call(String key) {
-                        return key.equals(MY_KEY);
-                    }
-                })
-                .subscribe(new Action1<String>() {
-                    @Override
-                    public void call(String key) {
-                        value.setText(prefser.get(key, String.class, EMPTY_STRING));
-                        Toast.makeText(
-                                MainActivity.this,
-                                String.format("Value in %s changed", key),
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
     }
 
     private void createSubscriptionForSinglePreference() {
@@ -83,7 +54,7 @@ public class MainActivity extends BaseActivity {
         // but we can also use simple Action1 interface with call(String key) method
         // as in createSubscriptionForAllPreferences() method
 
-        subscriptionForSinglePreference = prefser.getObservable(MY_KEY, String.class)
+        subscriptionForSinglePreference = prefser.observe(MY_KEY, String.class, EMPTY_STRING)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<Object>() {
@@ -91,7 +62,7 @@ public class MainActivity extends BaseActivity {
                     public void onCompleted() {
                         // this will never be called until we call it explicitly
                         // subscriber.onCompleted() is not called
-                        // in Observable<String> from(final SharedPreferences sharedPreferences)
+                        // in Observable<String> observe(final SharedPreferences sharedPreferences)
                         // method inside Prefser class, because we want to observe preference constantly
                         // and we do not want to terminate subscriber
                     }
@@ -106,6 +77,7 @@ public class MainActivity extends BaseActivity {
 
                     @Override
                     public void onNext(Object o) {
+                        value.setText(String.valueOf(o));
                         Toast.makeText(
                                 MainActivity.this,
                                 String.format("Value in %s changed, really!", MY_KEY),
@@ -117,7 +89,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        subscriptionForAllPreferences.unsubscribe();
         subscriptionForSinglePreference.unsubscribe();
     }
 

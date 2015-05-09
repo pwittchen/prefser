@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">App with PreferenceActivity</string>
+    <string name="show_settings">show settings activity</string>
+</resources>
