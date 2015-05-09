@@ -302,7 +302,7 @@ You can depend on the library through Maven:
 <dependency>
     <groupId>com.github.pwittchen</groupId>
     <artifactId>prefser</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
 </dependency>
 <dependency>
     <groupId>io.reactivex</groupId>
@@ -314,7 +314,7 @@ or through Gradle:
 
 ```groovy
 dependencies {
-  compile 'com.github.pwittchen:prefser:1.0.3'
+  compile 'com.github.pwittchen:prefser:1.0.4'
   compile 'io.reactivex:rxandroid:0.24.0'
 }
 ```
