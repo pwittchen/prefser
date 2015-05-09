@@ -16,7 +16,7 @@ Contents
 * [Size of data](#size-of-data)
 * [Getting SharedPreferences object](#getting-sharedpreferences-object)
 * [Subscribing for data updates](#subscribing-for-data-updates)
-* [Example](#example)
+* [Examples](#examples)
 * [Download](#download)
 * [Tests](#tests)
 * [Caveats](#caveats)
@@ -282,12 +282,14 @@ protected void onPause() {
 }
 ```
 
-Example
--------
+Examples
+--------
 
 Examplary app using `Prefser` is available in the `app` directory.
 
 If you want to use `Prefser` with [Dagger](https://github.com/square/dagger/), check out examplary app in `app-dagger` directory.
+
+If you want to use `Prefser` with [PreferenceActivity](http://developer.android.com/reference/android/preference/PreferenceActivity.html), check out examplary in `app-preference-activity` directory.
 
 Download
 --------
