@@ -14,6 +14,7 @@ Contents
 * [Contains method](#contains-method)
 * [Removing data](#removing-data)
 * [Size of data](#size-of-data)
+* [Getting SharedPreferences object](#getting-sharedpreferences-object)
 * [Subscribing for data updates](#subscribing-for-data-updates)
 * [Example](#example)
 * [Download](#download)
@@ -221,8 +222,19 @@ Size of data
 You can read number of all items stored in the SharedPreferences in the following way:
 
 ```java
-prefser.size()
+prefser.size();
 ```
+
+Getting SharedPreferences object
+--------------------------------
+
+You can get `SharedPreferences` object in the following way:
+
+```java
+prefser.getPreferences();
+```
+
+You can use it for performing operations on `SharedPreferences` without Prefser library. E.g. for reading and writing Set of Strings, what is currently not supported by Prefser. See sections about [saving data](#saving-data) and [reading data](#reading-data) where you can find examples.
 
 Subscribing for data updates
 ----------------------------
@@ -315,7 +327,7 @@ Caveats
 
 * When you are going to store many numeric values under single key, you should use arrays instead of Lists. Gson converts all numeric values on the Lists into double, so you will have to deal with type conversion in case of using List data structure.
 * When you are going to store many custom objects under single key, you should use arrays instead of Lists, because Lists are not deserialized correctly for custom data types.
-* Set of Strings should be saved and read in a "classical way" with getPreferences() method.
+* Set of Strings should be saved and read in a "classical way" with `getPreferences()` method.
 
 References
 ----------
