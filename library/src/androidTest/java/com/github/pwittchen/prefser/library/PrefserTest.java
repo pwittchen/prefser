@@ -1014,4 +1014,22 @@ public final class PrefserTest {
         // then
         // throw an exception
     }
+
+    @Test
+    public void testObserveBoolean() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        boolean givenValue = true;
+        boolean defaultValue = false;
+
+        // when
+        RecordingObserver<Boolean> observer = new RecordingObserver<>();
+        prefser.observe(givenKey, Boolean.class, defaultValue).subscribe(observer);
+        prefser.put(givenKey, givenValue);
+
+        // then
+        assertThat(observer.takeNext()).isTrue();
+        observer.assertNoMoreEvents();
+    }
 }
