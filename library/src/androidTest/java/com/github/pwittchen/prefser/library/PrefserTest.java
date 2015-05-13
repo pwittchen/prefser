@@ -1021,6 +1021,24 @@ public final class PrefserTest {
         prefser.clear();
         String givenKey = "someKey";
         boolean givenValue = true;
+        Boolean defaultValue = false;
+
+        // when
+        RecordingObserver<Boolean> observer = new RecordingObserver<>();
+        prefser.observe(givenKey, Boolean.class, defaultValue).subscribe(observer);
+        prefser.put(givenKey, givenValue);
+
+        // then
+        assertThat(observer.takeNext()).isTrue();
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObserveBooleanPrimitive() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        boolean givenValue = true;
         boolean defaultValue = false;
 
         // when
@@ -1030,6 +1048,168 @@ public final class PrefserTest {
 
         // then
         assertThat(observer.takeNext()).isTrue();
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObserveFloat() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        Float givenValue = 3.0f;
+        Float defaultValue = 1.0f;
+
+        // when
+        RecordingObserver<Float> observer = new RecordingObserver<>();
+        prefser.observe(givenKey, Float.class, defaultValue).subscribe(observer);
+        prefser.put(givenKey, givenValue);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(givenValue);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObserveFloatPrimitive() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        float givenValue = 3.0f;
+        float defaultValue = 1.0f;
+
+        // when
+        RecordingObserver<Float> observer = new RecordingObserver<>();
+        prefser.observe(givenKey, Float.class, defaultValue).subscribe(observer);
+        prefser.put(givenKey, givenValue);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(givenValue);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObserveInteger() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        Integer givenValue = 5;
+        Integer defaultValue = 8;
+
+        // when
+        RecordingObserver<Integer> observer = new RecordingObserver<>();
+        prefser.observe(givenKey, Integer.class, defaultValue).subscribe(observer);
+        prefser.put(givenKey, givenValue);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(givenValue);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObserveIntegerPrimitive() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        int givenValue = 5;
+        int defaultValue = 8;
+
+        // when
+        RecordingObserver<Integer> observer = new RecordingObserver<>();
+        prefser.observe(givenKey, Integer.class, defaultValue).subscribe(observer);
+        prefser.put(givenKey, givenValue);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(givenValue);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObserveLong() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        Long givenValue = 12l;
+        Long defaultValue = 16l;
+
+        // when
+        RecordingObserver<Long> observer = new RecordingObserver<>();
+        prefser.observe(givenKey, Long.class, defaultValue).subscribe(observer);
+        prefser.put(givenKey, givenValue);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(givenValue);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObserveLongPrimitive() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        long givenValue = 12l;
+        long defaultValue = 16l;
+
+        // when
+        RecordingObserver<Long> observer = new RecordingObserver<>();
+        prefser.observe(givenKey, Long.class, defaultValue).subscribe(observer);
+        prefser.put(givenKey, givenValue);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(givenValue);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObserveDouble() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        Double givenValue = 12.4;
+        Double defaultValue = 19.9;
+
+        // when
+        RecordingObserver<Double> observer = new RecordingObserver<>();
+        prefser.observe(givenKey, Double.class, defaultValue).subscribe(observer);
+        prefser.put(givenKey, givenValue);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(givenValue);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObserveDoublePrimitive() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        double givenValue = 12.4;
+        double defaultValue = 19.9;
+
+        // when
+        RecordingObserver<Double> observer = new RecordingObserver<>();
+        prefser.observe(givenKey, Double.class, defaultValue).subscribe(observer);
+        prefser.put(givenKey, givenValue);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(givenValue);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObserveString() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        String givenValue = "hi, I'm sample string";
+        String defaultValue = "";
+
+        // when
+        RecordingObserver<String> observer = new RecordingObserver<>();
+        prefser.observe(givenKey, String.class, defaultValue).subscribe(observer);
+        prefser.put(givenKey, givenValue);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(givenValue);
         observer.assertNoMoreEvents();
     }
 }
