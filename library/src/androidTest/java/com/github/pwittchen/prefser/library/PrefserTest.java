@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -57,6 +58,12 @@ public final class PrefserTest {
             }
 
             return isEqual;
+        }
+
+        @Override
+        @TargetApi(value = 19)
+        public int hashCode() {
+            return Objects.hash(valueOne, valueTwo);
         }
     }
 
@@ -546,27 +553,6 @@ public final class PrefserTest {
     }
 
     @Test
-    @TargetApi(value = 11)
-    @SuppressWarnings("deprecation of assertThat for Java Collections")
-    public void testPutSetOfStrings() {
-        // given
-        prefser.clear();
-        Set<String> strings = new HashSet<>(Arrays.asList("one", "two", "three"));
-        Set<String> defaultStrings = new HashSet<>(Arrays.asList("this", "is", "default"));
-        String givenKey = "sampleKey";
-
-        // when
-        // we put set of string in a "classical way"
-        prefser.getPreferences().edit().putStringSet(givenKey, strings).apply();
-
-        // then
-        // we read set of string in a "classical way"
-        Set<String> readObject = prefser.getPreferences().getStringSet(givenKey, defaultStrings);
-        assertThat(readObject).isEqualTo(strings);
-        prefser.remove(givenKey);
-    }
-
-    @Test
     public void testPutArrayOfCustomObjects() {
         // given
         prefser.clear();
@@ -593,6 +579,27 @@ public final class PrefserTest {
         assertThat(readObject[1]).isEqualTo(customClassesArray[1]);
         assertThat(readObject[2]).isEqualTo(customClassesArray[2]);
 
+        prefser.remove(givenKey);
+    }
+
+    @Test
+    @TargetApi(value = 11)
+    @SuppressWarnings("deprecation of assertThat for Java Collections")
+    public void testPutSetOfStrings() {
+        // given
+        prefser.clear();
+        Set<String> strings = new HashSet<>(Arrays.asList("one", "two", "three"));
+        Set<String> defaultStrings = new HashSet<>(Arrays.asList("this", "is", "default"));
+        String givenKey = "sampleKey";
+
+        // when
+        // we put set of string in a "classical way"
+        prefser.getPreferences().edit().putStringSet(givenKey, strings).apply();
+
+        // then
+        // we read set of string in a "classical way"
+        Set<String> readObject = prefser.getPreferences().getStringSet(givenKey, defaultStrings);
+        assertThat(readObject).isEqualTo(strings);
         prefser.remove(givenKey);
     }
 
@@ -1210,6 +1217,313 @@ public final class PrefserTest {
 
         // then
         assertThat(observer.takeNext()).isEqualTo(givenValue);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObserveCustomObject() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        CustomClass customClass = new CustomClass(56, "someValue");
+        CustomClass defaultClass = new CustomClass(1, "");
+
+        // when
+        RecordingObserver<CustomClass> observer = new RecordingObserver<>();
+        prefser.observe(givenKey, CustomClass.class, defaultClass).subscribe(observer);
+        prefser.put(givenKey, customClass);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(customClass);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObserveListOfBooleans() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        List<Boolean> booleans = Arrays.asList(true, false, true);
+        List<Boolean> defaultBooleans = Arrays.asList(false, false, false);
+
+        // when
+        RecordingObserver<List<Boolean>> observer = new RecordingObserver<>();
+        prefser.observe(givenKey, List.class, defaultBooleans).subscribe(observer);
+        prefser.put(givenKey, booleans);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(booleans);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObserveListOfDoubles() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        List<Double> doubles = Arrays.asList(1.2, 34.65, 3.6);
+        List<Double> defaultDoubles = Arrays.asList(1.0, 1.0, 1.0);
+
+        // when
+        RecordingObserver<List<Double>> observer = new RecordingObserver<>();
+        prefser.observe(givenKey, List.class, defaultDoubles).subscribe(observer);
+        prefser.put(givenKey, doubles);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(doubles);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObserveListOfStrings() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        List<String> strings = Arrays.asList("one", "two", "three");
+        List<String> defaultStrings = Arrays.asList("some", "default", "strings");
+
+        // when
+        RecordingObserver<List<String>> observer = new RecordingObserver<>();
+        prefser.observe(givenKey, List.class, defaultStrings).subscribe(observer);
+        prefser.put(givenKey, strings);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(strings);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObserveArrayOfBooleans() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        Boolean[] booleans = {true, false, true};
+        Boolean[] defaultBooleans = {false, false, false};
+
+        // when
+        RecordingObserver<Boolean[]> observer = new RecordingObserver<>();
+        prefser.observe(givenKey, Boolean[].class, defaultBooleans).subscribe(observer);
+        prefser.put(givenKey, booleans);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(booleans);
+        observer.assertNoMoreEvents();
+    }
+
+
+    @Test
+    public void testObserveArrayOfBooleansPrimitive() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        boolean[] booleans = {true, false, true};
+        boolean[] defaultBooleans = {false, false, false};
+
+        // when
+        RecordingObserver<boolean[]> observer = new RecordingObserver<>();
+        prefser.observe(givenKey, boolean[].class, defaultBooleans).subscribe(observer);
+        prefser.put(givenKey, booleans);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(booleans);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObserveArrayOfFloats() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        Float[] floats = {1.1f, 4.5f, 6.8f};
+        Float[] defaultFloats = {1.0f, 1.0f, 1.0f};
+
+        // when
+        RecordingObserver<Float[]> observer = new RecordingObserver<>();
+        prefser.observe(givenKey, Float[].class, defaultFloats).subscribe(observer);
+        prefser.put(givenKey, floats);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(floats);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObserveArrayOfFloatsPrimitive() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        float[] floats = {1.1f, 4.5f, 6.8f};
+        float[] defaultFloats = {1.0f, 1.0f, 1.0f};
+
+        // when
+        RecordingObserver<float[]> observer = new RecordingObserver<>();
+        prefser.observe(givenKey, float[].class, defaultFloats).subscribe(observer);
+        prefser.put(givenKey, floats);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(floats, 0.1f);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObserveArrayOfInts() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        Integer[] ints = {4, 5, 6};
+        Integer[] defaultInts = {1, 1, 1};
+
+        // when
+        RecordingObserver<Integer[]> observer = new RecordingObserver<>();
+        prefser.observe(givenKey, Integer[].class, defaultInts).subscribe(observer);
+        prefser.put(givenKey, ints);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(ints);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObserveArrayOfIntsPrimitive() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        int[] ints = {4, 5, 6};
+        int[] defaultInts = {1, 1, 1};
+
+        // when
+        RecordingObserver<int[]> observer = new RecordingObserver<>();
+        prefser.observe(givenKey, int[].class, defaultInts).subscribe(observer);
+        prefser.put(givenKey, ints);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(ints);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObserveArrayOfDoubles() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        Double[] doubles = {4.5, 5.6, 6.2};
+        Double[] defaultDoubles = {1.1, 1.1, 1.1};
+
+        // when
+        RecordingObserver<Double[]> observer = new RecordingObserver<>();
+        prefser.observe(givenKey, Double[].class, defaultDoubles).subscribe(observer);
+        prefser.put(givenKey, doubles);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(doubles);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObserveArrayOfDoublesPrimitive() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        double[] doubles = {4.5, 5.6, 6.2};
+        double[] defaultDoubles = {1.1, 1.1, 1.1};
+
+        // when
+        RecordingObserver<double[]> observer = new RecordingObserver<>();
+        prefser.observe(givenKey, double[].class, defaultDoubles).subscribe(observer);
+        prefser.put(givenKey, doubles);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(doubles, 0.1);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObserveArrayOfStrings() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        String[] strings = {"one", "given", "array"};
+        String[] defaultStrings = {"another", "default", "strings"};
+
+        // when
+        RecordingObserver<String[]> observer = new RecordingObserver<>();
+        prefser.observe(givenKey, String[].class, defaultStrings).subscribe(observer);
+        prefser.put(givenKey, strings);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(strings);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObserveArrayOfCustomObjects() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        CustomClass[] customClasses = {new CustomClass(1, "one"), new CustomClass(2, "two"), new CustomClass(3, "three")};
+        CustomClass[] defaultCustomClasses = {new CustomClass(0, "zero"), new CustomClass(0, "zero"), new CustomClass(0, "zero")};
+
+        // when
+        RecordingObserver<CustomClass[]> observer = new RecordingObserver<>();
+        prefser.observe(givenKey, CustomClass[].class, defaultCustomClasses).subscribe(observer);
+        prefser.put(givenKey, customClasses);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(customClasses);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObservePreferencesOnPut() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        String givenValue = "someValue";
+
+        // when
+        RecordingObserver<String> observer = new RecordingObserver<>();
+        prefser.observeDefaultPreferences().subscribe(observer);
+        prefser.put(givenKey, givenValue);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(givenKey);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObservePreferencesOnUpdate() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        String givenValue = "someValue";
+        String anotherGivenValue = "anotherGivenValue";
+        prefser.put(givenKey, givenValue);
+
+        // when
+        RecordingObserver<String> observer = new RecordingObserver<>();
+        prefser.observeDefaultPreferences().subscribe(observer);
+        prefser.put(givenKey, anotherGivenValue);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(givenKey);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObservePreferencesOnRemove() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        String givenValue = "someValue";
+        prefser.put(givenKey, givenValue);
+
+        // when
+        RecordingObserver<String> observer = new RecordingObserver<>();
+        prefser.observeDefaultPreferences().subscribe(observer);
+        prefser.remove(givenKey);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(givenKey);
         observer.assertNoMoreEvents();
     }
 }
