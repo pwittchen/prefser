@@ -394,14 +394,10 @@ public final class PrefserTest {
 
         // when
         prefser.put(givenKey, doubles);
-
-        // then
         List<Double> readObject = prefser.get(givenKey, List.class, defaultDoubles);
 
-        assertThat(readObject.get(0)).isEqualTo(doubles.get(0));
-        assertThat(readObject.get(1)).isEqualTo(doubles.get(1));
-        assertThat(readObject.get(2)).isEqualTo(doubles.get(2));
-
+        // then
+        assertThat(readObject).isEqualTo(doubles);
         prefser.remove(givenKey);
     }
 
@@ -415,14 +411,10 @@ public final class PrefserTest {
 
         // when
         prefser.put(givenKey, strings);
-
-        // then
         List<String> readObject = prefser.get(givenKey, List.class, defaultStrings);
 
-        assertThat(readObject.get(0)).isEqualTo(strings.get(0));
-        assertThat(readObject.get(1)).isEqualTo(strings.get(1));
-        assertThat(readObject.get(2)).isEqualTo(strings.get(2));
-
+        // then
+        assertThat(readObject).isEqualTo(strings);
         prefser.remove(givenKey);
     }
 
@@ -431,19 +423,15 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "sampleKey";
-        Boolean[] array = new Boolean[]{true, false, true};
+        Boolean[] booleans = new Boolean[]{true, false, true};
         Boolean[] defaultArray = new Boolean[]{false, false, false};
 
         // when
-        prefser.put(givenKey, array);
-
-        // then
+        prefser.put(givenKey, booleans);
         Boolean[] readObject = prefser.get(givenKey, Boolean[].class, defaultArray);
 
-        assertThat(readObject[0]).isEqualTo(array[0]);
-        assertThat(readObject[1]).isEqualTo(array[1]);
-        assertThat(readObject[2]).isEqualTo(array[2]);
-
+        // then
+        assertThat(readObject).isEqualTo(booleans);
         prefser.remove(givenKey);
     }
 
@@ -452,19 +440,15 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "sampleKey";
-        Float[] array = new Float[]{1f, 2f, 3f};
+        Float[] floats = new Float[]{1f, 2f, 3f};
         Float[] defaultArray = new Float[]{1f, 1f, 1f};
 
         // when
-        prefser.put(givenKey, array);
-
-        // then
+        prefser.put(givenKey, floats);
         Float[] readObject = prefser.get(givenKey, Float[].class, defaultArray);
 
-        assertThat(readObject[0]).isEqualTo(array[0]);
-        assertThat(readObject[1]).isEqualTo(array[1]);
-        assertThat(readObject[2]).isEqualTo(array[2]);
-
+        // then
+        assertThat(readObject).isEqualTo(floats);
         prefser.remove(givenKey);
     }
 
@@ -473,19 +457,15 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "sampleKey";
-        Integer[] array = new Integer[]{1, 2, 3};
+        Integer[] integers = new Integer[]{1, 2, 3};
         Integer[] defaultArray = new Integer[]{0, 0, 0};
 
         // when
-        prefser.put(givenKey, array);
-
-        // then
+        prefser.put(givenKey, integers);
         Integer[] readObject = prefser.get(givenKey, Integer[].class, defaultArray);
 
-        assertThat(readObject[0]).isEqualTo(array[0]);
-        assertThat(readObject[1]).isEqualTo(array[1]);
-        assertThat(readObject[2]).isEqualTo(array[2]);
-
+        // then
+        assertThat(readObject).isEqualTo(integers);
         prefser.remove(givenKey);
     }
 
@@ -494,19 +474,15 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "sampleKey";
-        Long[] array = new Long[]{1l, 2l, 3l};
+        Long[] longs = new Long[]{1l, 2l, 3l};
         Long[] defaultArray = new Long[]{1l, 1l, 1l};
 
         // when
-        prefser.put(givenKey, array);
-
-        // then
+        prefser.put(givenKey, longs);
         Long[] readObject = prefser.get(givenKey, Long[].class, defaultArray);
 
-        assertThat(readObject[0]).isEqualTo(array[0]);
-        assertThat(readObject[1]).isEqualTo(array[1]);
-        assertThat(readObject[2]).isEqualTo(array[2]);
-
+        // then
+        assertThat(readObject).isEqualTo(longs);
         prefser.remove(givenKey);
     }
 
@@ -515,19 +491,15 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "sampleKey";
-        Double[] array = new Double[]{1.0, 2.3, 4.5};
+        Double[] doubles = new Double[]{1.0, 2.3, 4.5};
         Double[] defaultArray = new Double[]{1.0, 1.0, 1.0};
 
         // when
-        prefser.put(givenKey, array);
-
-        // then
+        prefser.put(givenKey, doubles);
         Double[] readObject = prefser.get(givenKey, Double[].class, defaultArray);
 
-        assertThat(readObject[0]).isEqualTo(array[0]);
-        assertThat(readObject[1]).isEqualTo(array[1]);
-        assertThat(readObject[2]).isEqualTo(array[2]);
-
+        // then
+        assertThat(readObject).isEqualTo(doubles);
         prefser.remove(givenKey);
     }
 
@@ -536,19 +508,15 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "sampleKey";
-        String[] array = new String[]{"one", "two", "three"};
+        String[] strings = new String[]{"one", "two", "three"};
         String[] defaultArray = new String[]{"", "", ""};
 
         // when
-        prefser.put(givenKey, array);
-
-        // then
+        prefser.put(givenKey, strings);
         String[] readObject = prefser.get(givenKey, String[].class, defaultArray);
 
-        assertThat(readObject[0]).isEqualTo(array[0]);
-        assertThat(readObject[1]).isEqualTo(array[1]);
-        assertThat(readObject[2]).isEqualTo(array[2]);
-
+        // then
+        assertThat(readObject).isEqualTo(strings);
         prefser.remove(givenKey);
     }
 
@@ -571,14 +539,10 @@ public final class PrefserTest {
 
         // when
         prefser.put(givenKey, customClassesArray);
-
-        // then
         CustomClass[] readObject = prefser.get(givenKey, CustomClass[].class, defaultCustomClassesArray);
 
-        assertThat(readObject[0]).isEqualTo(customClassesArray[0]);
-        assertThat(readObject[1]).isEqualTo(customClassesArray[1]);
-        assertThat(readObject[2]).isEqualTo(customClassesArray[2]);
-
+        // then
+        assertThat(readObject).isEqualTo(customClassesArray);
         prefser.remove(givenKey);
     }
 
@@ -1460,8 +1424,17 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "someKey";
-        CustomClass[] customClasses = {new CustomClass(1, "one"), new CustomClass(2, "two"), new CustomClass(3, "three")};
-        CustomClass[] defaultCustomClasses = {new CustomClass(0, "zero"), new CustomClass(0, "zero"), new CustomClass(0, "zero")};
+        CustomClass[] customClasses = {
+                new CustomClass(1, "one"),
+                new CustomClass(2, "two"),
+                new CustomClass(3, "three")
+        };
+
+        CustomClass[] defaultCustomClasses = {
+                new CustomClass(0, "zero"),
+                new CustomClass(0, "zero"),
+                new CustomClass(0, "zero")
+        };
 
         // when
         RecordingObserver<CustomClass[]> observer = new RecordingObserver<>();
