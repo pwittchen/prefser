@@ -222,7 +222,6 @@ public final class Prefser {
         for (Map.Entry<Class, Accessor> entry : accessors.entrySet()) {
             if (classOfValue.equals(entry.getKey())) {
                 (entry.getValue()).put(key, value);
-                break;
             }
         }
     }

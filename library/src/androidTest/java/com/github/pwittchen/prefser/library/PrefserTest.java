@@ -148,6 +148,29 @@ public final class PrefserTest {
     }
 
     @Test
+    public void testRemoveShouldNotCauseErrorWhileRemovingKeyWhichDoesNotExist() {
+        // given
+        prefser.clear();
+        String keyWhichDoesNotExist = "keyWhichDoesNotExist";
+
+        // when
+        prefser.remove(keyWhichDoesNotExist);
+
+        // then
+        assertThat(prefser.contains(keyWhichDoesNotExist)).isFalse();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testShouldThrowAnExceptionWhileRemovingNullKey() {
+        // given: nothing
+
+        // when
+        prefser.remove(null);
+
+        // then should throw an exception
+    }
+
+    @Test
     public void testClear() throws Exception {
         // given
         prefser.clear();
@@ -965,6 +988,19 @@ public final class PrefserTest {
     public void testPutShouldThrowAnExceptionWhenValueIsNullForPut() {
         // given
         String key = "someKey";
+        String value = null;
+
+        // when
+        prefser.put(key, value);
+
+        // then
+        // throw an exception
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testPutShouldThrowAnExceptionWhenKeyAndValueAreNullForPut() {
+        // given
+        String key = null;
         String value = null;
 
         // when
