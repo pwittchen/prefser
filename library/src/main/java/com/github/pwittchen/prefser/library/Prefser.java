@@ -54,7 +54,7 @@ import rx.functions.Func1;
  *      .subscribe(...);
  * </pre>
  */
-public final class Prefser {
+public class Prefser {
     private final SharedPreferences preferences;
     private final SharedPreferences.Editor editor;
     private final Map<Class, Accessor> accessors = new HashMap<>();
