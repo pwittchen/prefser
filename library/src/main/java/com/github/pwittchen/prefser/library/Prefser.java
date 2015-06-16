@@ -19,11 +19,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.google.gson.Gson;
-
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -58,7 +55,7 @@ public class Prefser {
     private final SharedPreferences preferences;
     private final SharedPreferences.Editor editor;
     private final Map<Class, Accessor> accessors = new HashMap<>();
-    private final Gson gson = new Gson();
+    private JsonConverter jsonConverter;
     private SharedPreferences.OnSharedPreferenceChangeListener onChangeListener;
 
     private interface Accessor {
@@ -72,7 +69,18 @@ public class Prefser {
      * @param context Android Context
      */
     public Prefser(Context context) {
-        this(PreferenceManager.getDefaultSharedPreferences(context));
+        this(context, new GsonConverter());
+    }
+
+    /**
+     * Creates Prefser object with default SharedPreferences from PreferenceManager
+     * with JsonConverter implementation
+     *
+     * @param context       Android Context
+     * @param jsonConverter Json Converter
+     */
+    public Prefser(Context context, JsonConverter jsonConverter) {
+        this(PreferenceManager.getDefaultSharedPreferences(context), jsonConverter);
     }
 
     /**
@@ -82,15 +90,29 @@ public class Prefser {
      * @param sharedPreferences instance of SharedPreferences
      */
     public Prefser(SharedPreferences sharedPreferences) {
+        this(sharedPreferences, new GsonConverter());
+    }
+
+    /**
+     * Creates Prefser object with provided object of SharedPreferences,
+     * which will be wrapped with JsonConverter implementation
+     *
+     * @param sharedPreferences instance of SharedPreferences
+     * @param jsonConverter     Json Converter
+     */
+    public Prefser(SharedPreferences sharedPreferences, JsonConverter jsonConverter) {
         checkNotNull(sharedPreferences, "sharedPreferences == null");
+        checkNotNull(jsonConverter, "jsonConverter == null");
         this.preferences = sharedPreferences;
         this.editor = preferences.edit();
+        this.jsonConverter = jsonConverter;
         initAccessors();
     }
 
     /**
      * Returns SharedPreferences in case, we want to manipulate them without Prefser
-     * @return SharedPreferences
+     *
+     * @return SharedPreferences instance of SharedPreferences
      */
     public SharedPreferences getPreferences() {
         return preferences;
@@ -153,7 +175,7 @@ public class Prefser {
         }
 
         if (contains(key)) {
-            return (T) gson.fromJson(preferences.getString(key, null), classOfT);
+            return (T) jsonConverter.fromJson(preferences.getString(key, null), classOfT);
         } else {
             return defaultValue;
         }
@@ -212,7 +234,7 @@ public class Prefser {
         checkNotNull(value, "value == null");
 
         if (!accessors.containsKey(value.getClass())) {
-            value = gson.toJson(value);
+            value = jsonConverter.toJson(value);
             editor.putString(key, String.valueOf(value)).apply();
             return;
         }
