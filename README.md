@@ -67,6 +67,13 @@ Prefser prefser = new Prefser(sharedPreferences);
  
 When you create `Prefser` object with Android Context, it will use default `SharedPreferences` from `PreferenceManager`.
 
+You can set `JsonConverter` implementation for `Prefser`. When it's not set, `Prefser` will use `GsonConverter` by default.
+
+```java
+Prefser prefser = new Prefser(context, jsonConverter);
+Prefser prefser = new Prefser(sharedPreferences, jsonConverter);
+```
+
 Saving data
 -----------
 
