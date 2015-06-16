@@ -66,7 +66,7 @@ public class Prefser {
     /**
      * Creates Prefser object with default SharedPreferences from PreferenceManager
      *
-     * @param context
+     * @param context Android Context
      */
     public Prefser(Context context) {
         this(context, new GsonConverter());
@@ -87,7 +87,7 @@ public class Prefser {
      * Creates Prefser object with provided object of SharedPreferences,
      * which will be wrapped
      *
-     * @param sharedPreferences
+     * @param sharedPreferences instance of SharedPreferences
      */
     public Prefser(SharedPreferences sharedPreferences) {
         this(sharedPreferences, new GsonConverter());
@@ -112,7 +112,7 @@ public class Prefser {
     /**
      * Returns SharedPreferences in case, we want to manipulate them without Prefser
      *
-     * @return SharedPreferences
+     * @return SharedPreferences instance of SharedPreferences
      */
     public SharedPreferences getPreferences() {
         return preferences;
