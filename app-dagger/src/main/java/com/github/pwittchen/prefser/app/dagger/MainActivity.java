@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2015 Piotr Wittchen
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.github.pwittchen.prefser.app.dagger;
 
 import android.os.Bundle;
@@ -41,10 +56,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        String text = prefser.get(MY_KEY, String.class, EMPTY_STRING);
-        value.setText(text);
-
         createSubscriptionForSinglePreference();
     }
 
@@ -54,19 +65,10 @@ public class MainActivity extends BaseActivity {
         // but we can also use simple Action1 interface with call(String key) method
         // as in createSubscriptionForAllPreferences() method
 
-        subscriptionForSinglePreference = prefser.observe(MY_KEY, String.class, EMPTY_STRING)
+        subscriptionForSinglePreference = prefser.getAndObserve(MY_KEY, String.class, EMPTY_STRING)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<Object>() {
-                    @Override
-                    public void onCompleted() {
-                        // this will never be called until we call it explicitly
-                        // subscriber.onCompleted() is not called
-                        // in Observable<String> observe(final SharedPreferences sharedPreferences)
-                        // method inside Prefser class, because we want to observe preference constantly
-                        // and we do not want to terminate subscriber
-                    }
-
                     @Override
                     public void onError(Throwable e) {
                         Toast.makeText(
@@ -82,6 +84,15 @@ public class MainActivity extends BaseActivity {
                                 MainActivity.this,
                                 String.format("Value in %s changed, really!", MY_KEY),
                                 Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        // this will never be called until we call it explicitly
+                        // subscriber.onCompleted() is not called
+                        // in Observable<String> observe(final SharedPreferences sharedPreferences)
+                        // method inside Prefser class, because we want to observe preference constantly
+                        // and we do not want to terminate subscriber
                     }
                 });
     }
