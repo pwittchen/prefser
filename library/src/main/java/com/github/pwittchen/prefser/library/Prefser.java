@@ -141,7 +141,6 @@ public class Prefser {
      * @param <T>          return type of the preference (e.g. String)
      * @return Observable value from SharedPreferences associated with given key or default value
      */
-    //TODO: write tests for this method
     public <T> Observable<T> getAndObserve(final String key, final Class classOfT, final T defaultValue) {
         return observe(key, classOfT, defaultValue)
                 .startWith(get(key, classOfT, defaultValue));
