@@ -1103,6 +1103,22 @@ public final class PrefserTest {
     }
 
     @Test
+    public void testGetAndObserveBoolean() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        boolean givenValue = true;
+        Boolean defaultValue = false;
+
+        // when
+        prefser.put(givenKey, givenValue);
+        Boolean first = prefser.getAndObserve(givenKey, Boolean.class, defaultValue).toBlocking().first();
+
+        // then
+        assertThat(first).isTrue();
+    }
+
+    @Test
     public void testObserveBooleanPrimitive() {
         // given
         prefser.clear();
@@ -1118,6 +1134,22 @@ public final class PrefserTest {
         // then
         assertThat(observer.takeNext()).isTrue();
         observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testGetAndObserveBooleanPrimitive() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        boolean givenValue = true;
+        boolean defaultValue = false;
+
+        // when
+        prefser.put(givenKey, givenValue);
+        boolean first = prefser.getAndObserve(givenKey, Boolean.class, defaultValue).toBlocking().first();
+
+        // then
+        assertThat(first).isTrue();
     }
 
     @Test
@@ -1139,6 +1171,22 @@ public final class PrefserTest {
     }
 
     @Test
+    public void testGetAndObserveFloat() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        Float givenValue = 3.0f;
+        Float defaultValue = 1.0f;
+
+        // when
+        prefser.put(givenKey, givenValue);
+        Float first = prefser.getAndObserve(givenKey, Float.class, defaultValue).toBlocking().first();
+
+        // then
+        assertThat(first).isEqualTo(givenValue);
+    }
+
+    @Test
     public void testObserveFloatPrimitive() {
         // given
         prefser.clear();
@@ -1154,6 +1202,22 @@ public final class PrefserTest {
         // then
         assertThat(observer.takeNext()).isEqualTo(givenValue);
         observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testGetAndObserveFloatPrimitive() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        float givenValue = 3.0f;
+        float defaultValue = 1.0f;
+
+        // when
+        prefser.put(givenKey, givenValue);
+        float first = prefser.getAndObserve(givenKey, Float.class, defaultValue).toBlocking().first();
+
+        // then
+        assertThat(first).isEqualTo(givenValue);
     }
 
     @Test
@@ -1175,6 +1239,22 @@ public final class PrefserTest {
     }
 
     @Test
+    public void testGetAndObserveInteger() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        Integer givenValue = 5;
+        Integer defaultValue = 8;
+
+        // when
+        prefser.put(givenKey, givenValue);
+        Integer first = prefser.getAndObserve(givenKey, Integer.class, defaultValue).toBlocking().first();
+
+        // then
+        assertThat(first).isEqualTo(givenValue);
+    }
+
+    @Test
     public void testObserveIntegerPrimitive() {
         // given
         prefser.clear();
@@ -1190,6 +1270,22 @@ public final class PrefserTest {
         // then
         assertThat(observer.takeNext()).isEqualTo(givenValue);
         observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testGetAndObserveIntegerPrimitive() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        int givenValue = 5;
+        int defaultValue = 8;
+
+        // when
+        prefser.put(givenKey, givenValue);
+        int first = prefser.getAndObserve(givenKey, Integer.class, defaultValue).toBlocking().first();
+
+        // then
+        assertThat(first).isEqualTo(givenValue);
     }
 
     @Test
@@ -1211,6 +1307,22 @@ public final class PrefserTest {
     }
 
     @Test
+    public void testGetAndObserveLong() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        Long givenValue = 12l;
+        Long defaultValue = 16l;
+
+        // when
+        prefser.put(givenKey, givenValue);
+        Long first = prefser.getAndObserve(givenKey, Long.class, defaultValue).toBlocking().first();
+
+        // then
+        assertThat(first).isEqualTo(givenValue);
+    }
+
+    @Test
     public void testObserveLongPrimitive() {
         // given
         prefser.clear();
@@ -1226,6 +1338,22 @@ public final class PrefserTest {
         // then
         assertThat(observer.takeNext()).isEqualTo(givenValue);
         observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testGetAndObserveLongPrimitive() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        long givenValue = 12l;
+        long defaultValue = 16l;
+
+        // when
+        prefser.put(givenKey, givenValue);
+        long first = prefser.getAndObserve(givenKey, Long.class, defaultValue).toBlocking().first();
+
+        // then
+        assertThat(first).isEqualTo(givenValue);
     }
 
     @Test
@@ -1247,6 +1375,22 @@ public final class PrefserTest {
     }
 
     @Test
+    public void testGetAndObserveDouble() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        Double givenValue = 12.4;
+        Double defaultValue = 19.9;
+
+        // when
+        prefser.put(givenKey, givenValue);
+        Double first = prefser.getAndObserve(givenKey, Double.class, defaultValue).toBlocking().first();
+
+        // then
+        assertThat(first).isEqualTo(givenValue);
+    }
+
+    @Test
     public void testObserveDoublePrimitive() {
         // given
         prefser.clear();
@@ -1262,6 +1406,22 @@ public final class PrefserTest {
         // then
         assertThat(observer.takeNext()).isEqualTo(givenValue);
         observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testGetAndObserveDoublePrimitive() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        double givenValue = 12.4;
+        double defaultValue = 19.9;
+
+        // when
+        prefser.put(givenKey, givenValue);
+        double first = prefser.getAndObserve(givenKey, Double.class, defaultValue).toBlocking().first();
+
+        // then
+        assertThat(first).isEqualTo(givenValue);
     }
 
     @Test
@@ -1283,6 +1443,22 @@ public final class PrefserTest {
     }
 
     @Test
+    public void testGetAndObserveString() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        String givenValue = "hi, I'm sample string";
+        String defaultValue = "";
+
+        // when
+        prefser.put(givenKey, givenValue);
+        String first = prefser.getAndObserve(givenKey, String.class, defaultValue).toBlocking().first();
+
+        // then
+        assertThat(first).isEqualTo(givenValue);
+    }
+
+    @Test
     public void testObserveCustomObject() {
         // given
         prefser.clear();
@@ -1298,6 +1474,22 @@ public final class PrefserTest {
         // then
         assertThat(observer.takeNext()).isEqualTo(customClass);
         observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testGetAndObserveCustomObject() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        CustomClass customClass = new CustomClass(56, "someValue");
+        CustomClass defaultClass = new CustomClass(1, "");
+
+        // when
+        prefser.put(givenKey, customClass);
+        CustomClass first = prefser.getAndObserve(givenKey, CustomClass.class, defaultClass).toBlocking().first();
+
+        // then
+        assertThat(first).isEqualTo(customClass);
     }
 
     @Test
@@ -1319,6 +1511,22 @@ public final class PrefserTest {
     }
 
     @Test
+    public void testGetAndObserveListOfBooleans() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        List<Boolean> booleans = Arrays.asList(true, false, true);
+        List<Boolean> defaultBooleans = Arrays.asList(false, false, false);
+
+        // when
+        prefser.put(givenKey, booleans);
+        List<Boolean> first = prefser.getAndObserve(givenKey, List.class, defaultBooleans).toBlocking().first();
+
+        // then
+        assertThat(first).isEqualTo(booleans);
+    }
+
+    @Test
     public void testObserveListOfDoubles() {
         // given
         prefser.clear();
@@ -1334,6 +1542,22 @@ public final class PrefserTest {
         // then
         assertThat(observer.takeNext()).isEqualTo(doubles);
         observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testGetAndObserveListOfDoubles() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        List<Double> doubles = Arrays.asList(1.2, 34.65, 3.6);
+        List<Double> defaultDoubles = Arrays.asList(1.0, 1.0, 1.0);
+
+        // when
+        prefser.put(givenKey, doubles);
+        List<Double> first = prefser.getAndObserve(givenKey, List.class, defaultDoubles).toBlocking().first();
+
+        // then
+        assertThat(first).isEqualTo(doubles);
     }
 
     @Test
@@ -1355,6 +1579,22 @@ public final class PrefserTest {
     }
 
     @Test
+    public void testGetAndObserveListOfStrings() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        List<String> strings = Arrays.asList("one", "two", "three");
+        List<String> defaultStrings = Arrays.asList("some", "default", "strings");
+
+        // when
+        prefser.put(givenKey, strings);
+        List<String> first = prefser.getAndObserve(givenKey, List.class, defaultStrings).toBlocking().first();
+
+        // then
+        assertThat(first).isEqualTo(strings);
+    }
+
+    @Test
     public void testObserveArrayOfBooleans() {
         // given
         prefser.clear();
@@ -1372,6 +1612,21 @@ public final class PrefserTest {
         observer.assertNoMoreEvents();
     }
 
+    @Test
+    public void testGetAndObserveArrayOfBooleans() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        Boolean[] booleans = { true, false, true };
+        Boolean[] defaultBooleans = { false, false, false };
+
+        // when
+        prefser.put(givenKey, booleans);
+        Boolean[] first = prefser.getAndObserve(givenKey, Boolean[].class, defaultBooleans).toBlocking().first();
+
+        // then
+        assertThat(first).isEqualTo(booleans);
+    }
 
     @Test
     public void testObserveArrayOfBooleansPrimitive() {
@@ -1389,6 +1644,22 @@ public final class PrefserTest {
         // then
         assertThat(observer.takeNext()).isEqualTo(booleans);
         observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testGetAndObserveArrayOfBooleansPrimitive() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        boolean[] booleans = { true, false, true };
+        boolean[] defaultBooleans = { false, false, false };
+
+        // when
+        prefser.put(givenKey, booleans);
+        boolean[] first = prefser.getAndObserve(givenKey, boolean[].class, defaultBooleans).toBlocking().first();
+
+        // then
+        assertThat(first).isEqualTo(booleans);
     }
 
     @Test
@@ -1410,6 +1681,22 @@ public final class PrefserTest {
     }
 
     @Test
+    public void testGetAndObserveArrayOfFloats() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        Float[] floats = { 1.1f, 4.5f, 6.8f };
+        Float[] defaultFloats = { 1.0f, 1.0f, 1.0f };
+
+        // when
+        prefser.put(givenKey, floats);
+        Float[] first = prefser.getAndObserve(givenKey, Float[].class, defaultFloats).toBlocking().first();
+
+        // then
+        assertThat(first).isEqualTo(floats);
+    }
+
+    @Test
     public void testObserveArrayOfFloatsPrimitive() {
         // given
         prefser.clear();
@@ -1425,6 +1712,22 @@ public final class PrefserTest {
         // then
         assertThat(observer.takeNext()).isEqualTo(floats, 0.1f);
         observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testGetAndObserveArrayOfFloatsPrimitive() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        float[] floats = { 1.1f, 4.5f, 6.8f };
+        float[] defaultFloats = { 1.0f, 1.0f, 1.0f };
+
+        // when
+        prefser.put(givenKey, floats);
+        float[] first = prefser.getAndObserve(givenKey, float[].class, defaultFloats).toBlocking().first();
+
+        // then
+        assertThat(first).isEqualTo(floats, 0.1f);
     }
 
     @Test
@@ -1446,6 +1749,22 @@ public final class PrefserTest {
     }
 
     @Test
+    public void testGetAndObserveArrayOfInts() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        Integer[] ints = { 4, 5, 6 };
+        Integer[] defaultInts = { 1, 1, 1 };
+
+        // when
+        prefser.put(givenKey, ints);
+        Integer[] first = prefser.getAndObserve(givenKey, Integer[].class, defaultInts).toBlocking().first();
+
+        // then
+        assertThat(first).isEqualTo(ints);
+    }
+
+    @Test
     public void testObserveArrayOfIntsPrimitive() {
         // given
         prefser.clear();
@@ -1461,6 +1780,22 @@ public final class PrefserTest {
         // then
         assertThat(observer.takeNext()).isEqualTo(ints);
         observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testGetAndObserveArrayOfIntsPrimitive() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        int[] ints = { 4, 5, 6 };
+        int[] defaultInts = { 1, 1, 1 };
+
+        // when
+        prefser.put(givenKey, ints);
+        int[] first = prefser.getAndObserve(givenKey, int[].class, defaultInts).toBlocking().first();
+
+        // then
+        assertThat(first).isEqualTo(ints);
     }
 
     @Test
@@ -1482,6 +1817,22 @@ public final class PrefserTest {
     }
 
     @Test
+    public void testGetAndObserveArrayOfDoubles() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        Double[] doubles = { 4.5, 5.6, 6.2 };
+        Double[] defaultDoubles = { 1.1, 1.1, 1.1 };
+
+        // when
+        prefser.put(givenKey, doubles);
+        Double[] first = prefser.getAndObserve(givenKey, Double[].class, defaultDoubles).toBlocking().first();
+
+        // then
+        assertThat(first).isEqualTo(doubles);
+    }
+
+    @Test
     public void testObserveArrayOfDoublesPrimitive() {
         // given
         prefser.clear();
@@ -1500,6 +1851,22 @@ public final class PrefserTest {
     }
 
     @Test
+    public void testGetAndObserveArrayOfDoublesPrimitive() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        double[] doubles = { 4.5, 5.6, 6.2 };
+        double[] defaultDoubles = { 1.1, 1.1, 1.1 };
+
+        // when
+        prefser.put(givenKey, doubles);
+        double[] first = prefser.getAndObserve(givenKey, double[].class, defaultDoubles).toBlocking().first();
+
+        // then
+        assertThat(first).isEqualTo(doubles, 0.1);
+    }
+
+    @Test
     public void testObserveArrayOfStrings() {
         // given
         prefser.clear();
@@ -1515,6 +1882,22 @@ public final class PrefserTest {
         // then
         assertThat(observer.takeNext()).isEqualTo(strings);
         observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testGetAndObserveArrayOfStrings() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        String[] strings = { "one", "given", "array" };
+        String[] defaultStrings = { "another", "default", "strings" };
+
+        // when
+        prefser.put(givenKey, strings);
+        String[] first = prefser.getAndObserve(givenKey, String[].class, defaultStrings).toBlocking().first();
+
+        // then
+        assertThat(first).isEqualTo(strings);
     }
 
     @Test
@@ -1542,6 +1925,31 @@ public final class PrefserTest {
         // then
         assertThat(observer.takeNext()).isEqualTo(customClasses);
         observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testGetAndObserveArrayOfCustomObjects() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        CustomClass[] customClasses = {
+                new CustomClass(1, "one"),
+                new CustomClass(2, "two"),
+                new CustomClass(3, "three")
+        };
+
+        CustomClass[] defaultCustomClasses = {
+                new CustomClass(0, "zero"),
+                new CustomClass(0, "zero"),
+                new CustomClass(0, "zero")
+        };
+
+        // when
+        prefser.put(givenKey, customClasses);
+        CustomClass[] first = prefser.getAndObserve(givenKey, CustomClass[].class, defaultCustomClasses).toBlocking().first();
+
+        // then
+        assertThat(first).isEqualTo(customClasses);
     }
 
     @Test

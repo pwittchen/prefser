@@ -35,7 +35,6 @@ import rx.schedulers.Schedulers;
 
 /**
  * This is simple exemplary app, which shows basic usage of Prefser
- * TODO: add sample with CheckBoxPreference
  */
 public class MainActivity extends ActionBarActivity {
 
@@ -59,13 +58,8 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        String text = prefser.get(MY_KEY, String.class, EMPTY_STRING);
-        value.setText(text);
-
         // in this project two subscriptions were created just for an example
         // in real life, one subscription should be enough for case like that
-
         createSubscriptionForAllPreferences();
         createSubscriptionForSinglePreference();
     }
@@ -97,19 +91,10 @@ public class MainActivity extends ActionBarActivity {
         // but we can also use simple Action1 interface with call(String key) method
         // as in createSubscriptionForAllPreferences() method
 
-        subscriptionForSinglePreference = prefser.observe(MY_KEY, String.class, EMPTY_STRING)
+        subscriptionForSinglePreference = prefser.getAndObserve(MY_KEY, String.class, EMPTY_STRING)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<Object>() {
-                    @Override
-                    public void onCompleted() {
-                        // this will never be called until we call it explicitly
-                        // subscriber.onCompleted() is not called
-                        // in Observable<String> observe(final SharedPreferences sharedPreferences)
-                        // method inside Prefser class, because we want to observe preference constantly
-                        // and we do not want to terminate subscriber
-                    }
-
                     @Override
                     public void onError(Throwable e) {
                         Toast.makeText(
@@ -125,6 +110,15 @@ public class MainActivity extends ActionBarActivity {
                                 MainActivity.this,
                                 String.format("Value in %s changed, really!", MY_KEY),
                                 Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        // this will never be called until we call it explicitly
+                        // subscriber.onCompleted() is not called
+                        // in Observable<String> observe(final SharedPreferences sharedPreferences)
+                        // method inside Prefser class, because we want to observe preference constantly
+                        // and we do not want to terminate subscriber
                     }
                 });
     }
