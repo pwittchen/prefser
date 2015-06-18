@@ -10,7 +10,9 @@ Contents
 * [Creating Prefser object](#creating-prefser-object)
 * [Saving data](#saving-data)
 * [Reading data](#reading-data)
-* [Reading data from Observables](#reading-data-from-observables)
+ * [get method](#get-method)
+ * [observe mehtod](#observe-method)
+ * [getAndObserve method](#getandobserve-method)
 * [Contains method](#contains-method)
 * [Removing data](#removing-data)
 * [Size of data](#size-of-data)
@@ -125,6 +127,8 @@ prefser.put("key", setOfDoubles); // put set of doubles
 Reading data
 ------------
 
+### get method
+
 You can read data with the following method:
 
 ```java
@@ -168,8 +172,8 @@ CustomObject[] value = prefser.get("key", CustomObject[].class, new CustomObject
 Set<String> value = prefser.getPreferences().getStringSet("key", new HashSet<>()); // accessing set of strings in a "classical way"
 Set<Double> value = prefser.get("key", Set.class, new HashSet<>());
 ```
-Reading data from Observables
------------------------------
+
+### observe method
 
 You can observe changes of data with the following RxJava Observable:
 
@@ -198,6 +202,16 @@ Subscription subscription = prefser.observe(key, String.class, "default value")
             }
         });
 ```
+
+### getAndObserve method
+
+You can combine functionality of `get(...)` and `observe(...)` methods with `getAndObserve(...)`, which is defined as follows:
+
+```java
+<T> Observable<T> getAndObserve(final String key, final Class classOfT, final T defaultValue)
+```
+
+You can subscribe this method in exactly the same way as `observe(...)` method. The only difference is the fact that this method will emit value from SharedPreferences as first element of the stream with `get(...)` method even if SharedPreferences were not changed. When SharedPreferences changes, subscriber will be notified about the change in the same way as in regular `observe(...)` method.
 
 Contains method
 -------------
