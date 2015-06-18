@@ -24,7 +24,6 @@ import java.util.Map;
 
 import rx.Observable;
 import rx.Subscriber;
-import rx.functions.Action0;
 import rx.functions.Func1;
 
 /**
