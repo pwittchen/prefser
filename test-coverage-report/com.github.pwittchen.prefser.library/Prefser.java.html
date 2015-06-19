@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Prefser.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debug</a> &gt; <a href="index.source.html" class="el_package">com.github.pwittchen.prefser.library</a> &gt; <span class="el_source">Prefser.java</span></div><h1>Prefser.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2015 Piotr Wittchen
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.github.pwittchen.prefser.library;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import rx.Observable;
+import rx.Subscriber;
+import rx.functions.Action0;
+import rx.functions.Func1;
+
+/**
+ * Prefser is a wrapper for Android SharedPreferences
+ * with object serialization and RxJava Observables.
+ * &lt;p/&gt;
+ * It uses mechanism of SharedPreferences to store primitives
+ * and Gson library to store arrays, lists and custom objects.
+ * Thanks to RxJava, Prefser is able to listen changes
+ * in SharedPreferences and provides Observable data,
+ * which can be subscribed and returns key of the changed value.
+ * &lt;p/&gt;
+ * Basic Usage:
+ * &lt;pre&gt;
+ *  Prefser prefser = new Prefser(context);
+ *  prefser.put(&quot;key&quot;, value);
+ *  String getValue = prefser.get(&quot;key&quot;, String.class, defaultValue);
+ * &lt;/pre&gt;
+ * Subscribing Observable of SharedPreferences:
+ * &lt;pre&gt;
+ *  prefser.observeDefaultPreferences()
+ *      .observeOn(AndroidSchedulers.mainThread())
+ *      .subscribeOn(Schedulers.io())
+ *      ...
+ *      .subscribe(...);
+ * &lt;/pre&gt;
+ */
+public class Prefser {
+    private final SharedPreferences preferences;
+    private final SharedPreferences.Editor editor;
+<span class="fc" id="L58">    private final Map&lt;Class, Accessor&gt; accessors = new HashMap&lt;&gt;();</span>
+    private JsonConverter jsonConverter;
+    private SharedPreferences.OnSharedPreferenceChangeListener onChangeListener;
+
+    private interface Accessor {
+        &lt;T&gt; T get(String key, Class classOfT, T defaultValue);
+        void put(String key, Object value);
+    }
+
+    /**
+     * Creates Prefser object with default SharedPreferences from PreferenceManager.
+     *
+     * @param context Android Context
+     */
+    public Prefser(Context context) {
+<span class="fc" id="L73">        this(context, new GsonConverter());</span>
+<span class="fc" id="L74">    }</span>
+
+    /**
+     * Creates Prefser object with default SharedPreferences from PreferenceManager.
+     * with JsonConverter implementation
+     *
+     * @param context       Android Context
+     * @param jsonConverter Json Converter
+     */
+    public Prefser(Context context, JsonConverter jsonConverter) {
+<span class="fc" id="L84">        this(PreferenceManager.getDefaultSharedPreferences(context), jsonConverter);</span>
+<span class="fc" id="L85">    }</span>
+
+    /**
+     * Creates Prefser object with provided object of SharedPreferences,
+     * which will be wrapped.
+     *
+     * @param sharedPreferences instance of SharedPreferences
+     */
+    public Prefser(SharedPreferences sharedPreferences) {
+<span class="fc" id="L94">        this(sharedPreferences, new GsonConverter());</span>
+<span class="fc" id="L95">    }</span>
+
+    /**
+     * Creates Prefser object with provided object of SharedPreferences,
+     * which will be wrapped with JsonConverter implementation.
+     *
+     * @param sharedPreferences instance of SharedPreferences
+     * @param jsonConverter     Json Converter
+     */
+<span class="fc" id="L104">    public Prefser(SharedPreferences sharedPreferences, JsonConverter jsonConverter) {</span>
+<span class="fc" id="L105">        checkNotNull(sharedPreferences, &quot;sharedPreferences == null&quot;);</span>
+<span class="fc" id="L106">        checkNotNull(jsonConverter, &quot;jsonConverter == null&quot;);</span>
+<span class="fc" id="L107">        this.preferences = sharedPreferences;</span>
+<span class="fc" id="L108">        this.editor = preferences.edit();</span>
+<span class="fc" id="L109">        this.jsonConverter = jsonConverter;</span>
+<span class="fc" id="L110">        initAccessors();</span>
+<span class="fc" id="L111">    }</span>
+
+    /**
+     * Returns SharedPreferences in case, we want to manipulate them without Prefser.
+     *
+     * @return SharedPreferences instance of SharedPreferences
+     */
+    public SharedPreferences getPreferences() {
+<span class="fc" id="L119">        return preferences;</span>
+    }
+
+    /**
+     * Checks if preferences contains value with a given key
+     *
+     * @param key provided key
+     * @return true if preferences contains key and false if not
+     */
+    public boolean contains(String key) {
+<span class="fc" id="L129">        return preferences.contains(key);</span>
+    }
+
+    /**
+     * Gets value from SharedPreferences with a given key and type
+     * as a RxJava Observable, which can be subscribed
+     * if value is not found, we can return defaultValue.
+     * Emit preference as first element of the stream even if preferences wasn't changed.
+     *
+     * @param key          key of the preference
+     * @param classOfT     class of T (e.g. String.class)
+     * @param defaultValue default value of the preference (e.g. &quot;&quot; or &quot;undefined&quot;)
+     * @param &lt;T&gt;          return type of the preference (e.g. String)
+     * @return Observable value from SharedPreferences associated with given key or default value
+     */
+    //TODO: write tests for this method
+    public &lt;T&gt; Observable&lt;T&gt; getAndObserve(final String key, final Class classOfT, final T defaultValue) {
+<span class="fc" id="L146">        return observe(key, classOfT, defaultValue)</span>
+                .startWith(get(key, classOfT, defaultValue));
+    }
+
+    /**
+     * Gets value from SharedPreferences with a given key and type
+     * as a RxJava Observable, which can be subscribed
+     * if value is not found, we can return defaultValue.
+     *
+     * @param key          key of the preference
+     * @param classOfT     class of T (e.g. String.class)
+     * @param defaultValue default value of the preference (e.g. &quot;&quot; or &quot;undefined&quot;)
+     * @param &lt;T&gt;          return type of the preference (e.g. String)
+     * @return Observable value from SharedPreferences associated with given key or default value
+     */
+    public &lt;T&gt; Observable&lt;T&gt; observe(final String key, final Class classOfT, final T defaultValue) {
+<span class="fc" id="L162">        return observe(preferences)</span>
+<span class="fc" id="L163">                .filter(new Func1&lt;String, Boolean&gt;() {</span>
+                    @Override
+                    public Boolean call(String filteredKey) {
+<span class="fc" id="L166">                        return key.equals(filteredKey);</span>
+                    }
+<span class="fc" id="L168">                }).map(new Func1&lt;String, T&gt;() {</span>
+                    @Override
+                    public T call(String s) {
+<span class="fc" id="L171">                        return get(key, classOfT, defaultValue);</span>
+                    }
+                });
+    }
+
+    /**
+     * Gets value from SharedPreferences with a given key and type
+     * if value is not found, we can return defaultValue.
+     *
+     * @param key          key of the preference
+     * @param classOfT     class of T (e.g. String.class)
+     * @param defaultValue default value of the preference (e.g. &quot;&quot; or &quot;undefined&quot;)
+     * @param &lt;T&gt;          return type of the preference (e.g. String)
+     * @return value from SharedPreferences associated with given key or default value
+     */
+    public &lt;T&gt; T get(String key, Class classOfT, T defaultValue) {
+<span class="fc" id="L187">        checkNotNull(key, &quot;key == null&quot;);</span>
+<span class="fc" id="L188">        checkNotNull(classOfT, &quot;classOfT == null&quot;);</span>
+
+<span class="fc bfc" id="L190" title="All 2 branches covered.">        for (Map.Entry&lt;Class, Accessor&gt; entry : accessors.entrySet()) {</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">            if (classOfT.equals(entry.getKey())) {</span>
+<span class="fc" id="L192">                return (entry.getValue()).get(key, classOfT, defaultValue);</span>
+            }
+<span class="fc" id="L194">        }</span>
+
+<span class="fc bfc" id="L196" title="All 2 branches covered.">        if (contains(key)) {</span>
+<span class="fc" id="L197">            return (T) jsonConverter.fromJson(preferences.getString(key, null), classOfT);</span>
+        } else {
+<span class="fc" id="L199">            return defaultValue;</span>
+        }
+    }
+
+    /**
+     * returns RxJava Observable from default SharedPreferences
+     * used inside Prefser object.
+     * You can subscribe this Observable and every time,
+     * when SharedPreferences will change, subscriber will be notified
+     * about that (e.g. in call() method) and you will be able to read
+     * key of the value, which has been changed.
+     *
+     * @return Observable with String containing key of the value in default SharedPreferences
+     */
+    public Observable&lt;String&gt; observeDefaultPreferences() {
+<span class="fc" id="L214">        return observe(preferences);</span>
+    }
+
+    /**
+     * returns RxJava Observable from SharedPreferences.
+     * You can subscribe this Observable and every time,
+     * when SharedPreferences will change, subscriber will be notified
+     * about that (e.g. in call() method) and you will be able to read
+     * key of the value, which has been changed.
+     *
+     * @param sharedPreferences instance of SharedPreferences to be observed
+     * @return Observable with String containing key of the value in SharedPreferences
+     */
+    public Observable&lt;String&gt; observe(final SharedPreferences sharedPreferences) {
+<span class="fc" id="L228">        checkNotNull(sharedPreferences, &quot;sharedPreferences == null&quot;);</span>
+
+<span class="fc" id="L230">        return Observable.create(new Observable.OnSubscribe&lt;String&gt;() {</span>
+            @Override
+            public void call(final Subscriber&lt;? super String&gt; subscriber) {
+<span class="fc" id="L233">                onChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {</span>
+                    @Override
+                    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+<span class="fc" id="L236">                        subscriber.onNext(key);</span>
+<span class="fc" id="L237">                    }</span>
+                };
+
+<span class="fc" id="L240">                sharedPreferences.registerOnSharedPreferenceChangeListener(onChangeListener);</span>
+<span class="fc" id="L241">            }</span>
+        });
+    }
+
+    /**
+     * Puts value to the SharedPreferences.
+     *
+     * @param key   key under which value will be stored
+     * @param value value to be stored
+     */
+    public void put(String key, Object value) {
+<span class="fc" id="L252">        checkNotNull(key, &quot;key == null&quot;);</span>
+<span class="fc" id="L253">        checkNotNull(value, &quot;value == null&quot;);</span>
+
+<span class="fc bfc" id="L255" title="All 2 branches covered.">        if (!accessors.containsKey(value.getClass())) {</span>
+<span class="fc" id="L256">            value = jsonConverter.toJson(value);</span>
+<span class="fc" id="L257">            editor.putString(key, String.valueOf(value)).apply();</span>
+<span class="fc" id="L258">            return;</span>
+        }
+
+<span class="fc" id="L261">        Class classOfValue = value.getClass();</span>
+
+<span class="fc bfc" id="L263" title="All 2 branches covered.">        for (Map.Entry&lt;Class, Accessor&gt; entry : accessors.entrySet()) {</span>
+<span class="fc bfc" id="L264" title="All 2 branches covered.">            if (classOfValue.equals(entry.getKey())) {</span>
+<span class="fc" id="L265">                (entry.getValue()).put(key, value);</span>
+            }
+<span class="fc" id="L267">        }</span>
+<span class="fc" id="L268">    }</span>
+
+    /**
+     * Removes value defined by a given key.
+     *
+     * @param key key of the preference to be removed
+     */
+    public void remove(String key) {
+<span class="fc" id="L276">        checkNotNull(key, &quot;key == null&quot;);</span>
+<span class="fc bfc" id="L277" title="All 2 branches covered.">        if (!contains(key)) {</span>
+<span class="fc" id="L278">            return;</span>
+        }
+
+<span class="fc" id="L281">        editor.remove(key).apply();</span>
+<span class="fc" id="L282">    }</span>
+
+    /**
+     * Clears all SharedPreferences.
+     */
+    public void clear() {
+<span class="fc bfc" id="L288" title="All 2 branches covered.">        if (size() == 0) {</span>
+<span class="fc" id="L289">            return;</span>
+        }
+
+<span class="fc" id="L292">        editor.clear().apply();</span>
+<span class="fc" id="L293">    }</span>
+
+    /**
+     * Returns number of all items stored in SharedPreferences.
+     *
+     * @return number of all stored items
+     */
+    public int size() {
+<span class="fc" id="L301">        return preferences.getAll().size();</span>
+    }
+
+    private void initAccessors() {
+<span class="fc" id="L305">        accessors.put(Boolean.class, new Accessor() {</span>
+            @Override
+            public &lt;T&gt; T get(String key, Class classOfT, T defaultValue) {
+<span class="fc" id="L308">                return (T) Boolean.valueOf(preferences.getBoolean(key, (Boolean) defaultValue));</span>
+            }
+
+            @Override
+            public void put(String key, Object value) {
+<span class="fc" id="L313">                editor.putBoolean(key, (Boolean) value)</span>
+                        .apply();
+<span class="fc" id="L315">            }</span>
+        });
+
+<span class="fc" id="L318">        accessors.put(Float.class, new Accessor() {</span>
+            @Override
+            public &lt;T&gt; T get(String key, Class classOfT, T defaultValue) {
+<span class="fc" id="L321">                return (T) Float.valueOf(preferences.getFloat(key, (Float) defaultValue));</span>
+            }
+
+            @Override
+            public void put(String key, Object value) {
+<span class="fc" id="L326">                editor.putFloat(key, (Float) value)</span>
+                        .apply();
+<span class="fc" id="L328">            }</span>
+        });
+
+<span class="fc" id="L331">        accessors.put(Integer.class, new Accessor() {</span>
+            @Override
+            public &lt;T&gt; T get(String key, Class classOfT, T defaultValue) {
+<span class="fc" id="L334">                return (T) Integer.valueOf(preferences.getInt(key, (Integer) defaultValue));</span>
+            }
+
+            @Override
+            public void put(String key, Object value) {
+<span class="fc" id="L339">                editor.putInt(key, (Integer) value)</span>
+                        .apply();
+<span class="fc" id="L341">            }</span>
+        });
+
+<span class="fc" id="L344">        accessors.put(Long.class, new Accessor() {</span>
+            @Override
+            public &lt;T&gt; T get(String key, Class classOfT, T defaultValue) {
+<span class="fc" id="L347">                return (T) Long.valueOf(preferences.getLong(key, (Long) defaultValue));</span>
+            }
+
+            @Override
+            public void put(String key, Object value) {
+<span class="fc" id="L352">                editor.putLong(key, (Long) value)</span>
+                        .apply();
+<span class="fc" id="L354">            }</span>
+        });
+
+<span class="fc" id="L357">        accessors.put(Double.class, new Accessor() {</span>
+            @Override
+            public &lt;T&gt; T get(String key, Class classOfT, T defaultValue) {
+<span class="fc" id="L360">                return (T) Double.valueOf(preferences.getString(key, String.valueOf(defaultValue)));</span>
+            }
+
+            @Override
+            public void put(String key, Object value) {
+<span class="fc" id="L365">                editor.putString(key, String.valueOf(value))</span>
+                        .apply();
+<span class="fc" id="L367">            }</span>
+        });
+
+<span class="fc" id="L370">        accessors.put(String.class, new Accessor() {</span>
+            @Override
+            public &lt;T&gt; T get(String key, Class classOfT, T defaultValue) {
+<span class="fc" id="L373">                return (T) preferences.getString(key, String.valueOf(defaultValue));</span>
+            }
+
+            @Override
+            public void put(String key, Object value) {
+<span class="fc" id="L378">                editor.putString(key, String.valueOf(value))</span>
+                        .apply();
+<span class="fc" id="L380">            }</span>
+        });
+<span class="fc" id="L382">    }</span>
+
+    private void checkNotNull(Object object, String message) {
+<span class="fc bfc" id="L385" title="All 2 branches covered.">        if (object == null) {</span>
+<span class="fc" id="L386">            throw new IllegalArgumentException(message);</span>
+        }
+<span class="fc" id="L388">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>
