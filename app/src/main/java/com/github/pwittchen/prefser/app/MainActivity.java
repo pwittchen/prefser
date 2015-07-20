@@ -15,8 +15,8 @@
  */
 package com.github.pwittchen.prefser.app;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -33,10 +33,7 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-/**
- * This is simple exemplary app, which shows basic usage of Prefser
- */
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 
     private Prefser prefser;
     private final static String EMPTY_STRING = "";

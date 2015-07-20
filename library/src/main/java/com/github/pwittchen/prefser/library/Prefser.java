@@ -56,7 +56,6 @@ public class Prefser {
     private final SharedPreferences.Editor editor;
     private final Map<Class, Accessor> accessors = new HashMap<>();
     private JsonConverter jsonConverter;
-    private SharedPreferences.OnSharedPreferenceChangeListener onChangeListener;
 
     private interface Accessor {
         <T> T get(String key, Class classOfT, T defaultValue);
@@ -226,6 +225,8 @@ public class Prefser {
         checkNotNull(sharedPreferences, "sharedPreferences == null");
 
         return Observable.create(new Observable.OnSubscribe<String>() {
+            SharedPreferences.OnSharedPreferenceChangeListener onChangeListener;
+
             @Override
             public void call(final Subscriber<? super String> subscriber) {
                 onChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
