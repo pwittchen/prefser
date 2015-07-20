@@ -1,1 +1,1 @@
-include ':app', ':library', ':app-dagger', ':app-preference-activity'
+include ':app', ':library', ':app-dagger', ':app-preference-activity', ':app-many-observables'

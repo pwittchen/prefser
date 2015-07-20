@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.myapplication;
+package com.github.pwittchen.prefser.app.preference;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.widget.Toast;
 
+import com.github.myapplication.R;
 import com.github.pwittchen.prefser.library.Prefser;
 
 import rx.android.schedulers.AndroidSchedulers;
