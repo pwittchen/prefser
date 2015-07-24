@@ -210,6 +210,20 @@ public final class PrefserTest {
     }
 
     @Test
+    public void testRemoveByPuttingNull() throws Exception {
+        // given
+        String givenKey = "key1";
+        prefser.put(givenKey, 1);
+
+        // when
+        assertThat(prefser.contains(givenKey)).isTrue();
+        prefser.put(givenKey, null);
+
+        // then
+        assertThat(prefser.contains(givenKey)).isFalse();
+    }
+
+    @Test
     public void testRemoveShouldNotCauseErrorWhileRemovingKeyWhichDoesNotExist() {
         // given
         prefser.clear();
@@ -1038,19 +1052,6 @@ public final class PrefserTest {
         // given
         String key = null;
         String value = "someValue";
-
-        // when
-        prefser.put(key, value);
-
-        // then
-        // throw an exception
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testPutShouldThrowAnExceptionWhenValueIsNullForPut() {
-        // given
-        String key = "someKey";
-        String value = null;
 
         // when
         prefser.put(key, value);

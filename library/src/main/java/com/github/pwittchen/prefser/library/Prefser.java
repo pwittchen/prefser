@@ -245,11 +245,14 @@ public class Prefser {
      * Puts value to the SharedPreferences.
      *
      * @param key   key under which value will be stored
-     * @param value value to be stored
+     * @param value value to be stored, or null to remove the key
      */
     public void put(String key, Object value) {
         checkNotNull(key, "key == null");
-        checkNotNull(value, "value == null");
+        if (value == null) {
+            remove(key);
+            return;
+        }
 
         if (!accessors.containsKey(value.getClass())) {
             value = jsonConverter.toJson(value);
