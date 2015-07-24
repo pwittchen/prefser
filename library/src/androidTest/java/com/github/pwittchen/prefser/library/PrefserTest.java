@@ -210,6 +210,20 @@ public final class PrefserTest {
     }
 
     @Test
+    public void testRemoveByPuttingNull() throws Exception {
+        // given
+        String givenKey = "key1";
+        prefser.put(givenKey, 1);
+
+        // when
+        assertThat(prefser.contains(givenKey)).isTrue();
+        prefser.put(givenKey, null);
+
+        // then
+        assertThat(prefser.contains(givenKey)).isFalse();
+    }
+
+    @Test
     public void testRemoveShouldNotCauseErrorWhileRemovingKeyWhichDoesNotExist() {
         // given
         prefser.clear();
@@ -685,6 +699,19 @@ public final class PrefserTest {
     }
 
     @Test
+    public void testGetDefaultBooleanOfNull() {
+        // given
+        prefser.clear();
+        String keyWhichDoesNotExist = "keyWhichDoesNotExist";
+
+        // when
+        Boolean readValue = prefser.get(keyWhichDoesNotExist, Boolean.class, null);
+
+        // then
+        assertThat(readValue).isNull();
+    }
+
+    @Test
     public void testGetDefaultFloat() {
         // given
         prefser.clear();
@@ -1047,19 +1074,6 @@ public final class PrefserTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testPutShouldThrowAnExceptionWhenValueIsNullForPut() {
-        // given
-        String key = "someKey";
-        String value = null;
-
-        // when
-        prefser.put(key, value);
-
-        // then
-        // throw an exception
-    }
-
-    @Test(expected = IllegalArgumentException.class)
     public void testPutShouldThrowAnExceptionWhenKeyAndValueAreNullForPut() {
         // given
         String key = null;
@@ -1095,6 +1109,48 @@ public final class PrefserTest {
         // when
         RecordingObserver<Boolean> observer = new RecordingObserver<>();
         prefser.observe(givenKey, Boolean.class, defaultValue).subscribe(observer);
+        prefser.put(givenKey, givenValue);
+
+        // then
+        assertThat(observer.takeNext()).isTrue();
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObserveBooleanBeingRemovedWithDefaultOfNull() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        Boolean defaultValue = null;
+        prefser.put(givenKey, true);
+
+        // when
+        RecordingObserver<Boolean> observer = new RecordingObserver<>();
+        prefser.observe(givenKey, Boolean.class, defaultValue).subscribe(observer);
+        prefser.remove(givenKey);
+
+        // then
+        assertThat(observer.takeNext()).isNull();
+    }
+
+    @Test
+    public void testObserveBooleanBeingRemovedAndReput() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        boolean givenValue = true;
+        Boolean defaultValue = false;
+        prefser.put(givenKey, true);
+
+        // when
+        RecordingObserver<Boolean> observer = new RecordingObserver<>();
+        prefser.observe(givenKey, Boolean.class, defaultValue).subscribe(observer);
+        prefser.remove(givenKey);
+
+        // then
+        assertThat(observer.takeNext()).isFalse();
+
+        // and when
         prefser.put(givenKey, givenValue);
 
         // then
