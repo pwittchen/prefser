@@ -184,17 +184,17 @@ public class Prefser {
         checkNotNull(key, "key == null");
         checkNotNull(classOfT, "classOfT == null");
 
+        if (!contains(key)) {
+            return defaultValue;
+        }
+
         for (Map.Entry<Class, Accessor> entry : accessors.entrySet()) {
             if (classOfT.equals(entry.getKey())) {
                 return (entry.getValue()).get(key, classOfT, defaultValue);
             }
         }
 
-        if (contains(key)) {
-            return (T) jsonConverter.fromJson(preferences.getString(key, null), classOfT);
-        } else {
-            return defaultValue;
-        }
+        return (T) jsonConverter.fromJson(preferences.getString(key, null), classOfT);
     }
 
     /**
