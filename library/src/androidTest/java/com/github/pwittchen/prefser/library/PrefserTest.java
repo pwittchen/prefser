@@ -33,6 +33,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import rx.Observable;
+import rx.Subscription;
+
 import static com.google.common.truth.Truth.assertThat;
 
 @RunWith(AndroidJUnit4.class)
@@ -2004,5 +2007,37 @@ public final class PrefserTest {
         // then
         assertThat(observer.takeNext()).isEqualTo(givenKey);
         observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testObservePreferencesTwice() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        String givenValue = "someValue";
+        String anotherGivenValue = "anotherGivenValue";
+        String yetAnotherGivenValue = "yetAnotherGivenValue";
+        prefser.put(givenKey, givenValue);
+
+        // when 1
+        RecordingObserver<String> observer1 = new RecordingObserver<>();
+        RecordingObserver<String> observer2 = new RecordingObserver<>();
+        Observable<String> preferencesObservable = prefser.observePreferences();
+        Subscription subscription1 = preferencesObservable.subscribe(observer1);
+        preferencesObservable.subscribe(observer2);
+        prefser.put(givenKey, anotherGivenValue);
+
+        // then 1
+        assertThat(observer1.takeNext()).isEqualTo(givenKey);
+        assertThat(observer2.takeNext()).isEqualTo(givenKey);
+
+        // when 2
+        subscription1.unsubscribe();
+        prefser.put(givenKey, yetAnotherGivenValue);
+
+        // then 2
+        observer1.assertNoMoreEvents();
+        assertThat(observer2.takeNext()).isEqualTo(givenKey);
+        observer2.assertNoMoreEvents();
     }
 }

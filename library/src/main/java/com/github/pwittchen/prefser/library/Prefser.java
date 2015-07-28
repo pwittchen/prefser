@@ -19,12 +19,17 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import rx.Observable;
 import rx.Subscriber;
+import rx.functions.Action0;
 import rx.functions.Func1;
+import rx.subscriptions.Subscriptions;
 
 /**
  * Prefser is a wrapper for Android SharedPreferences
@@ -225,20 +230,38 @@ public class Prefser {
         checkNotNull(sharedPreferences, "sharedPreferences == null");
 
         return Observable.create(new Observable.OnSubscribe<String>() {
-            SharedPreferences.OnSharedPreferenceChangeListener onChangeListener;
+            // NOTE: Without this OnChangeListener will be GCed.
+            Collection<OnChangeListener> listenerReferences = Collections.synchronizedList(new ArrayList<OnChangeListener>());
 
             @Override
             public void call(final Subscriber<? super String> subscriber) {
-                onChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-                    @Override
-                    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                        subscriber.onNext(key);
-                    }
-                };
-
+                final OnChangeListener onChangeListener = new OnChangeListener(subscriber);
                 sharedPreferences.registerOnSharedPreferenceChangeListener(onChangeListener);
+                listenerReferences.add(onChangeListener);
+                subscriber.add(Subscriptions.create(new Action0() {
+                    @Override
+                    public void call() {
+                        sharedPreferences.unregisterOnSharedPreferenceChangeListener(onChangeListener);
+                        listenerReferences.remove(onChangeListener);
+                    }
+                }));
             }
         });
+    }
+
+    private static class OnChangeListener implements SharedPreferences.OnSharedPreferenceChangeListener {
+        private final Subscriber<? super String> subscriber;
+
+        public OnChangeListener(Subscriber<? super String> subscriber) {
+            this.subscriber = subscriber;
+        }
+
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if (!subscriber.isUnsubscribed()) {
+                subscriber.onNext(key);
+            }
+        }
     }
 
     /**
