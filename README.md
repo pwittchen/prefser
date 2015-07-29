@@ -268,7 +268,7 @@ Observable<String> observePreferences();
 **Note**
 
 Use it, when you want to observe many shared preferences.
-If you want to observe single preference under as specified key, use [observe()](#reading-data-from-observables) method.
+If you want to observe single preference under as specified key, use [observe()](#observe-method) method.
 
 **Example**
 ```java
