@@ -198,6 +198,19 @@ public class Prefser {
     }
 
     /**
+     * returns RxJava Observable from SharedPreferences used inside Prefser object.
+     * You can subscribe this Observable and every time,
+     * when SharedPreferences will change, subscriber will be notified
+     * about that (e.g. in call() method) and you will be able to read
+     * key of the value, which has been changed.
+     *
+     * @return Observable with String containing key of the value in default SharedPreferences
+     */
+    public Observable<String> observePreferences() {
+        return observe(preferences);
+    }
+
+    /**
      * returns RxJava Observable from default SharedPreferences
      * used inside Prefser object.
      * You can subscribe this Observable and every time,
@@ -206,7 +219,10 @@ public class Prefser {
      * key of the value, which has been changed.
      *
      * @return Observable with String containing key of the value in default SharedPreferences
+     *
+     * @deprecated Use {@link #observePreferences()}.
      */
+    @Deprecated
     public Observable<String> observeDefaultPreferences() {
         return observe(preferences);
     }
@@ -220,7 +236,10 @@ public class Prefser {
      *
      * @param sharedPreferences instance of SharedPreferences to be observed
      * @return Observable with String containing key of the value in SharedPreferences
+     *
+     * @deprecated Create Prefser instance per SharedPreferences and use {@link #observeChangedKey()}.
      */
+    @Deprecated
     public Observable<String> observe(final SharedPreferences sharedPreferences) {
         checkNotNull(sharedPreferences, "sharedPreferences == null");
 
