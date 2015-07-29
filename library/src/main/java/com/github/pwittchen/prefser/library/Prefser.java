@@ -161,7 +161,7 @@ public class Prefser {
      * @return Observable value from SharedPreferences associated with given key or default value
      */
     public <T> Observable<T> observe(final String key, final Class classOfT, final T defaultValue) {
-        return observe(preferences)
+        return observePreferences()
                 .filter(new Func1<String, Boolean>() {
                     @Override
                     public Boolean call(String filteredKey) {
@@ -212,42 +212,6 @@ public class Prefser {
      * @return Observable with String containing key of the value in default SharedPreferences
      */
     public Observable<String> observePreferences() {
-        return observe(preferences);
-    }
-
-    /**
-     * returns RxJava Observable from default SharedPreferences
-     * used inside Prefser object.
-     * You can subscribe this Observable and every time,
-     * when SharedPreferences will change, subscriber will be notified
-     * about that (e.g. in call() method) and you will be able to read
-     * key of the value, which has been changed.
-     *
-     * @return Observable with String containing key of the value in default SharedPreferences
-     *
-     * @deprecated Use {@link #observePreferences()}.
-     */
-    @Deprecated
-    public Observable<String> observeDefaultPreferences() {
-        return observe(preferences);
-    }
-
-    /**
-     * returns RxJava Observable from SharedPreferences.
-     * You can subscribe this Observable and every time,
-     * when SharedPreferences will change, subscriber will be notified
-     * about that (e.g. in call() method) and you will be able to read
-     * key of the value, which has been changed.
-     *
-     * @param sharedPreferences instance of SharedPreferences to be observed
-     * @return Observable with String containing key of the value in SharedPreferences
-     *
-     * @deprecated Create Prefser instance per SharedPreferences and use {@link #observeChangedKey()}.
-     */
-    @Deprecated
-    public Observable<String> observe(final SharedPreferences sharedPreferences) {
-        checkNotNull(sharedPreferences, "sharedPreferences == null");
-
         return Observable.create(new Observable.OnSubscribe<String>() {
             // NOTE: Without this OnChangeListener will be GCed.
             Collection<OnChangeListener> listenerReferences = Collections.synchronizedList(new ArrayList<OnChangeListener>());
@@ -255,12 +219,12 @@ public class Prefser {
             @Override
             public void call(final Subscriber<? super String> subscriber) {
                 final OnChangeListener onChangeListener = new OnChangeListener(subscriber);
-                sharedPreferences.registerOnSharedPreferenceChangeListener(onChangeListener);
+                preferences.registerOnSharedPreferenceChangeListener(onChangeListener);
                 listenerReferences.add(onChangeListener);
                 subscriber.add(Subscriptions.create(new Action0() {
                     @Override
                     public void call() {
-                        sharedPreferences.unregisterOnSharedPreferenceChangeListener(onChangeListener);
+                        preferences.unregisterOnSharedPreferenceChangeListener(onChangeListener);
                         listenerReferences.remove(onChangeListener);
                     }
                 }));
