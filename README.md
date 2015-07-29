@@ -49,13 +49,12 @@ Thanks to Gson serialization, Prefser allows you to store:
 * Arrays
 * Sets
 
-In addition, Prefser transforms [OnSharedPreferenceChangeListener](http://developer.android.com/reference/android/content/SharedPreferences.OnSharedPreferenceChangeListener.html) into Observables from RxJava:
+In addition, Prefser transforms [OnSharedPreferenceChangeListener](http://developer.android.com/reference/android/content/SharedPreferences.OnSharedPreferenceChangeListener.html) into Observable from RxJava:
 ```java
-Observable<String> observe(final SharedPreferences sharedPreferences);
-Observable<String> observeDefaultPreferences();
+Observable<String> observePreferences();
 ```
 
-You can subscribe one of these Observables and [monitor updates of SharedPreferences](#subscribing-for-data-updates) with powerful RxJava.
+You can subscribe one of this Observable and [monitor updates of SharedPreferences](#subscribing-for-data-updates) with powerful RxJava.
 You can also [read data from RxJava Observables](#reading-data-from-observables) in order to monitor single shared preference with a specified key.
 
 Creating Prefser object
@@ -260,11 +259,10 @@ You can use it for performing operations on `SharedPreferences` without Prefser 
 Subscribing for data updates
 ----------------------------
 
-You can subscribe the following RxJava Observables from `Prefser` object:
+You can subscribe the following RxJava Observable from `Prefser` object:
 
 ```java
-Observable<String> observe(final SharedPreferences sharedPreferences);
-Observable<String> observeDefaultPreferences();
+Observable<String> observePreferences();
 ```
 
 **Note**
@@ -274,7 +272,7 @@ If you want to observe single preference under as specified key, use [observe()]
 
 **Example**
 ```java
-Subscription subscription = prefser.observeDefaultPreferences()
+Subscription subscription = prefser.observePreferences()
         .observeOn(AndroidSchedulers.mainThread())
         .subscribeOn(Schedulers.io())
         .filter(...) // you can filter your updates by key
