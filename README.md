@@ -183,7 +183,7 @@ You can observe changes of data with the following RxJava Observable:
 **Note**
 
 Use it, when you want to observe single preference under a specified key.
-When you want to observe many preferences, use [observe(SharedPreferences) or observeDefaultPreferences()](#subscribing-for-data-updates) method.
+When you want to observe many preferences, use [observePreferences()](#subscribing-for-data-updates) method.
 
 **Example**
 
