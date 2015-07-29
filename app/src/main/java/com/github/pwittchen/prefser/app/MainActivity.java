@@ -62,7 +62,7 @@ public class MainActivity extends Activity {
     }
 
     private void createSubscriptionForAllPreferences() {
-        subscriptionForAllPreferences = prefser.observeDefaultPreferences()
+        subscriptionForAllPreferences = prefser.observePreferences()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .filter(new Func1<String, Boolean>() {

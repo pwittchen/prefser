@@ -53,7 +53,7 @@ public class SettingsActivity extends PreferenceActivity {
     }
 
     private void showToastOnPreferenceUpdate() {
-        prefser.observeDefaultPreferences()
+        prefser.observePreferences()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Action1<String>() {
