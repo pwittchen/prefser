@@ -1025,18 +1025,6 @@ public final class PrefserTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testFromSharedPreferencesShouldThrowAnExceptionWhenPreferencesAreNull() {
-        // given
-        SharedPreferences sharedPreferences = null;
-
-        // when
-        prefser.observe(sharedPreferences);
-
-        // then
-        // throw an exception
-    }
-
-    @Test(expected = IllegalArgumentException.class)
     public void testPutShouldThrowAnExceptionWhenKeyIsNullForPut() {
         // given
         String key = null;
@@ -1964,7 +1952,7 @@ public final class PrefserTest {
 
         // when
         RecordingObserver<String> observer = new RecordingObserver<>();
-        prefser.observeDefaultPreferences().subscribe(observer);
+        prefser.observePreferences().subscribe(observer);
         prefser.put(givenKey, givenValue);
 
         // then
@@ -1983,7 +1971,7 @@ public final class PrefserTest {
 
         // when
         RecordingObserver<String> observer = new RecordingObserver<>();
-        prefser.observeDefaultPreferences().subscribe(observer);
+        prefser.observePreferences().subscribe(observer);
         prefser.put(givenKey, anotherGivenValue);
 
         // then
@@ -2001,7 +1989,7 @@ public final class PrefserTest {
 
         // when
         RecordingObserver<String> observer = new RecordingObserver<>();
-        prefser.observeDefaultPreferences().subscribe(observer);
+        prefser.observePreferences().subscribe(observer);
         prefser.remove(givenKey);
 
         // then
