@@ -28,6 +28,7 @@ import java.util.Map;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Action0;
+import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.subscriptions.Subscriptions;
 
@@ -145,8 +146,13 @@ public class Prefser {
      * @return Observable value from SharedPreferences associated with given key or default value
      */
     public <T> Observable<T> getAndObserve(final String key, final Class classOfT, final T defaultValue) {
-        return observe(key, classOfT, defaultValue)
-                .startWith(get(key, classOfT, defaultValue));
+        return observe(key, classOfT, defaultValue) // start observing
+                .mergeWith(Observable.defer(new Func0<Observable<T>>() { // then start getting
+                    @Override
+                    public Observable<T> call() {
+                        return Observable.just(get(key, classOfT, defaultValue));
+                    }
+                }));
     }
 
     /**
