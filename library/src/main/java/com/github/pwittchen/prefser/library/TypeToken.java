@@ -19,7 +19,7 @@ public abstract class TypeToken<T> {
 
     private TypeToken(Class<?> classOfT) {
         if (classOfT == null) {
-            throw new IllegalArgumentException("classOfT == null");
+            throw new NullPointerException("classOfT == null");
         }
         this.type = classOfT;
     }

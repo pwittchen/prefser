@@ -116,7 +116,7 @@ public final class PrefserTest {
         assertThat(customPrefser).isNotNull();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testPrefserWithJsonConverterShouldThrowAnExceptionWhenConverterIsNull() {
         // given
         JsonConverter jsonConverter = null;
@@ -140,7 +140,7 @@ public final class PrefserTest {
         assertThat(customPrefser).isNotNull();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testPrefserWithSharedPreferencesAndJsonConverterShouldThrowAnExceptionWhenConverterIsNull() {
         // given
         JsonConverter jsonConverter = null;
@@ -225,7 +225,7 @@ public final class PrefserTest {
         assertThat(prefser.contains(keyWhichDoesNotExist)).isFalse();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testShouldThrowAnExceptionWhileRemovingNullKey() {
         // given: nothing
 
@@ -977,7 +977,7 @@ public final class PrefserTest {
         assertThat(readValue).isEqualTo(defaultValue);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testShouldThrownAnExceptionWhenPreferencesAreNull() {
         // given
         SharedPreferences sharedPreferences = null;
@@ -989,7 +989,7 @@ public final class PrefserTest {
         // throw an exception
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testShouldThrowAnExceptionWhenKeyForGetIsNull() {
         // given
         String key = null;
@@ -1002,7 +1002,7 @@ public final class PrefserTest {
         // throw an exception
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testShouldThrowAnExceptionWhenClassOfTForGetIsNull() {
         // given
         String key = "someKey";
@@ -1016,7 +1016,7 @@ public final class PrefserTest {
         // throw an exception
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testShouldThrowAnExceptionWhenKeyForGetWithDefaultValueIsNull() {
         // given
         String key = null;
@@ -1030,7 +1030,7 @@ public final class PrefserTest {
         // throw an exception
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testShouldThrowAnExceptionWhenClassOfTForGetWithDefaultValueIsNull() {
         // given
         String key = "someKey";
@@ -1044,7 +1044,7 @@ public final class PrefserTest {
         // throw an exception
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testPutShouldThrowAnExceptionWhenKeyIsNullForPut() {
         // given
         String key = null;
@@ -1057,7 +1057,7 @@ public final class PrefserTest {
         // throw an exception
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testPutShouldThrowAnExceptionWhenValueIsNullForPut() {
         // given
         String key = "someKey";
@@ -1070,7 +1070,7 @@ public final class PrefserTest {
         // throw an exception
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testPutShouldThrowAnExceptionWhenKeyAndValueAreNullForPut() {
         // given
         String key = null;
@@ -1083,7 +1083,7 @@ public final class PrefserTest {
         // throw an exception
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testPutShouldThrowAnExceptionWhenKeyIsNullForRemove() {
         // given
         String key = null;

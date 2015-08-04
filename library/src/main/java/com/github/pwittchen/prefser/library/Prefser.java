@@ -318,7 +318,6 @@ public class Prefser {
      * @param value value to be stored
      */
     public <T> void put(String key, T value) {
-        checkNotNull(value, "value == null");
         put(key, value, TypeToken.fromValue(value));
     }
 
@@ -461,7 +460,7 @@ public class Prefser {
 
     private void checkNotNull(Object object, String message) {
         if (object == null) {
-            throw new IllegalArgumentException(message);
+            throw new NullPointerException(message);
         }
     }
 }
