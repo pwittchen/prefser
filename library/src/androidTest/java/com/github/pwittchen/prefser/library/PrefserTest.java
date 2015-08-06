@@ -867,7 +867,7 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String keyWhichDoesNotExist = "keyWhichDoesNotExist";
-        List<Boolean> defaultValue = new ArrayList<>(Arrays.asList(true, false, true));
+        List<Boolean> defaultValue = Arrays.asList(true, false, true);
 
         // when
         TypeToken<List<Boolean>> typeToken = new TypeToken<List<Boolean>>() {
@@ -883,7 +883,7 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String keyWhichDoesNotExist = "keyWhichDoesNotExist";
-        List<Float> defaultValue = new ArrayList<>(Arrays.asList(1f, 2f, 3f));
+        List<Float> defaultValue = Arrays.asList(1f, 2f, 3f);
 
         // when
         TypeToken<List<Float>> typeToken = new TypeToken<List<Float>>() {
@@ -956,6 +956,26 @@ public final class PrefserTest {
 
         // then
         assertThat(readValue).isEqualTo(defaultValue);
+    }
+
+    @Test
+    public void testGetDefaultListOfCustomObjects() {
+        // given
+        prefser.clear();
+        String keyWhichDoesNotExist = "keyWhichDoesNotExist";
+        CustomClass defaultCustomObject = new CustomClass(0, "zero");
+        List<CustomClass> defaultObjects = Arrays.asList(
+                defaultCustomObject,
+                defaultCustomObject, 
+                defaultCustomObject);
+
+        // when
+        TypeToken<List<CustomClass>> typeToken = new TypeToken<List<CustomClass>>() {
+        };
+        List<CustomClass> readValue = prefser.get(keyWhichDoesNotExist, typeToken, defaultObjects);
+
+        // then
+        assertThat(readValue).isEqualTo(defaultObjects);
     }
 
     @Test
