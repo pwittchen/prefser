@@ -966,7 +966,7 @@ public final class PrefserTest {
         CustomClass defaultCustomObject = new CustomClass(0, "zero");
         List<CustomClass> defaultObjects = Arrays.asList(
                 defaultCustomObject,
-                defaultCustomObject, 
+                defaultCustomObject,
                 defaultCustomObject);
 
         // when
@@ -1645,6 +1645,120 @@ public final class PrefserTest {
     }
 
     @Test
+    public void testObserveListOfFloats() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        List<Float> floats = Arrays.asList(1.1f, 2.2f, 3.3f);
+        List<Float> defaultFloats = Arrays.asList(0f, 0f, 0f);
+
+        // when
+        RecordingObserver<List<Float>> observer = new RecordingObserver<>();
+        TypeToken<List<Float>> typeToken = new TypeToken<List<Float>>() {
+        };
+        prefser.observe(givenKey, typeToken, defaultFloats).subscribe(observer);
+        prefser.put(givenKey, floats);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(floats);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testGetAndObserveListOfFloats() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        List<Float> floats = Arrays.asList(1.1f, 2.2f, 3.3f);
+        List<Float> defaultFloats = Arrays.asList(0f, 0f, 0f);
+
+        // when
+        prefser.put(givenKey, floats);
+        TypeToken<List<Float>> typeToken = new TypeToken<List<Float>>() {
+        };
+        List<Float> first = prefser.getAndObserve(givenKey, typeToken, defaultFloats).toBlocking().first();
+
+        // then
+        assertThat(first).isEqualTo(floats);
+    }
+
+    @Test
+    public void testObserveListOfIntegers() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        List<Integer> integers = Arrays.asList(1, 2, 3);
+        List<Integer> defaultIntegers = Arrays.asList(0, 0, 0);
+
+        // when
+        RecordingObserver<List<Integer>> observer = new RecordingObserver<>();
+        TypeToken<List<Integer>> typeToken = new TypeToken<List<Integer>>() {
+        };
+        prefser.observe(givenKey, typeToken, defaultIntegers).subscribe(observer);
+        prefser.put(givenKey, integers);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(integers);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testGetAndObserveListOfIntegers() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        List<Integer> integers = Arrays.asList(1, 2, 3);
+        List<Integer> defaultIntegers = Arrays.asList(0, 0, 0);
+
+        // when
+        prefser.put(givenKey, integers);
+        TypeToken<List<Integer>> typeToken = new TypeToken<List<Integer>>() {
+        };
+        List<Integer> first = prefser.getAndObserve(givenKey, typeToken, defaultIntegers).toBlocking().first();
+
+        // then
+        assertThat(first).isEqualTo(integers);
+    }
+
+    @Test
+    public void testObserveListOfLongs() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        List<Long> longs = Arrays.asList(1l, 2l, 3l);
+        List<Long> defaultLongs = Arrays.asList(0l, 0l, 0l);
+
+        // when
+        RecordingObserver<List<Long>> observer = new RecordingObserver<>();
+        TypeToken<List<Long>> typeToken = new TypeToken<List<Long>>() {
+        };
+        prefser.observe(givenKey, typeToken, defaultLongs).subscribe(observer);
+        prefser.put(givenKey, longs);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(longs);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testGetAndObserveListOfLongs() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        List<Long> longs = Arrays.asList(1l, 2l, 3l);
+        List<Long> defaultLongs = Arrays.asList(0l, 0l, 0l);
+
+        // when
+        prefser.put(givenKey, longs);
+        TypeToken<List<Long>> typeToken = new TypeToken<List<Long>>() {
+        };
+        List<Long> first = prefser.getAndObserve(givenKey, typeToken, defaultLongs).toBlocking().first();
+
+        // then
+        assertThat(first).isEqualTo(longs);
+    }
+
+    @Test
     public void testObserveListOfDoubles() {
         // given
         prefser.clear();
@@ -1718,6 +1832,63 @@ public final class PrefserTest {
 
         // then
         assertThat(first).isEqualTo(strings);
+    }
+
+    @Test
+    public void testObserveListOfCustomObjects() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+        CustomClass defaultCustomObject = new CustomClass(0, "zero");
+
+        List<CustomClass> customObjects = Arrays.asList(
+                new CustomClass(1, "one"),
+                new CustomClass(2, "two"),
+                new CustomClass(3, "three"));
+
+        List<CustomClass> defaultCustomObjects = Arrays.asList(
+                defaultCustomObject,
+                defaultCustomObject,
+                defaultCustomObject);
+
+        // when
+        RecordingObserver<List<CustomClass>> observer = new RecordingObserver<>();
+        TypeToken<List<CustomClass>> typeToken = new TypeToken<List<CustomClass>>() {
+        };
+        prefser.observe(givenKey, typeToken, defaultCustomObjects).subscribe(observer);
+        prefser.put(givenKey, customObjects);
+
+        // then
+        assertThat(observer.takeNext()).isEqualTo(customObjects);
+        observer.assertNoMoreEvents();
+    }
+
+    @Test
+    public void testGetAndObserveListOfCustomObjects() {
+        // given
+        prefser.clear();
+        String givenKey = "someKey";
+
+        CustomClass defaultCustomObject = new CustomClass(0, "zero");
+
+        List<CustomClass> customObjects = Arrays.asList(
+                new CustomClass(1, "one"),
+                new CustomClass(2, "two"),
+                new CustomClass(3, "three"));
+
+        List<CustomClass> defaultCustomObjects = Arrays.asList(
+                defaultCustomObject,
+                defaultCustomObject,
+                defaultCustomObject);
+
+        // when
+        prefser.put(givenKey, customObjects);
+        TypeToken<List<CustomClass>> typeToken = new TypeToken<List<CustomClass>>() {
+        };
+        List<CustomClass> first = prefser.getAndObserve(givenKey, typeToken, defaultCustomObjects).toBlocking().first();
+
+        // then
+        assertThat(first).isEqualTo(customObjects);
     }
 
     @Test
