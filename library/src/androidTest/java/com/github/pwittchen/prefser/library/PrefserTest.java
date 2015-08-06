@@ -460,8 +460,8 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "sampleKey";
-        List<Boolean> booleans = new ArrayList<>(Arrays.asList(true, false, true));
-        List<Boolean> defaultBooleans = new ArrayList<>(Arrays.asList(false, false, false));
+        List<Boolean> booleans = Arrays.asList(true, false, true);
+        List<Boolean> defaultBooleans = Arrays.asList(false, false, false);
 
         // when
         prefser.put(givenKey, booleans);
@@ -475,12 +475,69 @@ public final class PrefserTest {
     }
 
     @Test
+    public void testPutListOfFloats() throws Exception {
+        // given
+        prefser.clear();
+        String givenKey = "sampleKey";
+        List<Float> floats = Arrays.asList(1.0f, 2.1f, 3.4f);
+        List<Float> defaultFloats = Arrays.asList(0f, 0f, 0f);
+
+        // when
+        prefser.put(givenKey, floats);
+
+        // then
+        TypeToken<List<Float>> typeToken = new TypeToken<List<Float>>() {
+        };
+        List<Float> readObject = prefser.get(givenKey, typeToken, defaultFloats);
+        assertThat(floats).isEqualTo(readObject);
+        prefser.remove(givenKey);
+    }
+
+    @Test
+    public void testPutListOfIntegers() throws Exception {
+        // given
+        prefser.clear();
+        String givenKey = "sampleKey";
+        List<Integer> integers = Arrays.asList(1, 2, 3);
+        List<Integer> defaultIntegers = Arrays.asList(0, 0, 0);
+
+        // when
+        prefser.put(givenKey, integers);
+
+        // then
+        TypeToken<List<Integer>> typeToken = new TypeToken<List<Integer>>() {
+        };
+        List<Integer> readObject = prefser.get(givenKey, typeToken, defaultIntegers);
+        assertThat(integers).isEqualTo(readObject);
+        prefser.remove(givenKey);
+    }
+
+    @Test
+    public void testPutListOfLongs() throws Exception {
+        // given
+        prefser.clear();
+        String givenKey = "sampleKey";
+        List<Long> longs = Arrays.asList(1l, 2l, 3l);
+        List<Long> defaultLongs = Arrays.asList(0l, 0l, 0l);
+
+        // when
+        prefser.put(givenKey, longs);
+
+        // then
+        TypeToken<List<Long>> typeToken = new TypeToken<List<Long>>() {
+        };
+        List<Long> readObject = prefser.get(givenKey, typeToken, defaultLongs);
+        assertThat(longs).isEqualTo(readObject);
+        prefser.remove(givenKey);
+    }
+
+    @Test
     public void testPutListOfDoubles() throws Exception {
         // given
         prefser.clear();
         String givenKey = "sampleKey";
-        List<Double> doubles = new ArrayList<>(Arrays.asList(4.0, 5.1, 6.2));
-        List<Double> defaultDoubles = new ArrayList<>(Arrays.asList(4.0, 5.1, 6.2));
+        List<Double> doubles = Arrays.asList(4.0, 5.1, 6.2);
+        List<Double> defaultDoubles = Arrays.asList(4.0, 5.1, 6.2);
 
         // when
         prefser.put(givenKey, doubles);
@@ -498,8 +555,8 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "sampleKey";
-        List<String> strings = new ArrayList<>(Arrays.asList("one", "two", "three"));
-        List<String> defaultStrings = new ArrayList<>(Arrays.asList("default", "string", "values"));
+        List<String> strings = Arrays.asList("one", "two", "three");
+        List<String> defaultStrings = Arrays.asList("default", "string", "values");
 
         // when
         prefser.put(givenKey, strings);
@@ -513,12 +570,38 @@ public final class PrefserTest {
     }
 
     @Test
+    public void testPutListOfCustomObjects() throws Exception {
+        // given
+        prefser.clear();
+        String givenKey = "sampleKey";
+        CustomClass defaultCustomObject = new CustomClass(0, "zero");
+        List<CustomClass> customObjects = Arrays.asList(
+                new CustomClass(1, "one"),
+                new CustomClass(2, "two"),
+                new CustomClass(3, "three"));
+        List<CustomClass> defaultCustomObjects = Arrays.asList(
+                defaultCustomObject,
+                defaultCustomObject,
+                defaultCustomObject);
+
+        // when
+        prefser.put(givenKey, customObjects);
+        TypeToken<List<CustomClass>> typeToken = new TypeToken<List<CustomClass>>() {
+        };
+        List<CustomClass> readObject = prefser.get(givenKey, typeToken, defaultCustomObjects);
+
+        // then
+        assertThat(readObject).isEqualTo(customObjects);
+        prefser.remove(givenKey);
+    }
+
+    @Test
     public void testPutArrayOfBooleans() {
         // given
         prefser.clear();
         String givenKey = "sampleKey";
-        Boolean[] booleans = new Boolean[]{ true, false, true };
-        Boolean[] defaultArray = new Boolean[]{ false, false, false };
+        Boolean[] booleans = new Boolean[]{true, false, true};
+        Boolean[] defaultArray = new Boolean[]{false, false, false};
 
         // when
         prefser.put(givenKey, booleans);
@@ -534,8 +617,8 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "sampleKey";
-        Float[] floats = new Float[]{ 1f, 2f, 3f };
-        Float[] defaultArray = new Float[]{ 1f, 1f, 1f };
+        Float[] floats = new Float[]{1f, 2f, 3f};
+        Float[] defaultArray = new Float[]{1f, 1f, 1f};
 
         // when
         prefser.put(givenKey, floats);
@@ -551,8 +634,8 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "sampleKey";
-        Integer[] integers = new Integer[]{ 1, 2, 3 };
-        Integer[] defaultArray = new Integer[]{ 0, 0, 0 };
+        Integer[] integers = new Integer[]{1, 2, 3};
+        Integer[] defaultArray = new Integer[]{0, 0, 0};
 
         // when
         prefser.put(givenKey, integers);
@@ -568,8 +651,8 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "sampleKey";
-        Long[] longs = new Long[]{ 1l, 2l, 3l };
-        Long[] defaultArray = new Long[]{ 1l, 1l, 1l };
+        Long[] longs = new Long[]{1l, 2l, 3l};
+        Long[] defaultArray = new Long[]{1l, 1l, 1l};
 
         // when
         prefser.put(givenKey, longs);
@@ -585,8 +668,8 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "sampleKey";
-        Double[] doubles = new Double[]{ 1.0, 2.3, 4.5 };
-        Double[] defaultArray = new Double[]{ 1.0, 1.0, 1.0 };
+        Double[] doubles = new Double[]{1.0, 2.3, 4.5};
+        Double[] defaultArray = new Double[]{1.0, 1.0, 1.0};
 
         // when
         prefser.put(givenKey, doubles);
@@ -602,8 +685,8 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "sampleKey";
-        String[] strings = new String[]{ "one", "two", "three" };
-        String[] defaultArray = new String[]{ "", "", "" };
+        String[] strings = new String[]{"one", "two", "three"};
+        String[] defaultArray = new String[]{"", "", ""};
 
         // when
         prefser.put(givenKey, strings);
@@ -880,7 +963,7 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String keyWhichDoesNotExist = "keyWhichDoesNotExist";
-        Boolean[] defaultValue = new Boolean[]{ true, false, true };
+        Boolean[] defaultValue = new Boolean[]{true, false, true};
 
         // when
         Boolean[] readValue = prefser.get(keyWhichDoesNotExist, Boolean[].class, defaultValue);
@@ -894,7 +977,7 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String keyWhichDoesNotExist = "keyWhichDoesNotExist";
-        Float[] defaultValue = new Float[]{ 1f, 2f, 3f };
+        Float[] defaultValue = new Float[]{1f, 2f, 3f};
 
         // when
         Float[] readValue = prefser.get(keyWhichDoesNotExist, Float[].class, defaultValue);
@@ -908,7 +991,7 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String keyWhichDoesNotExist = "keyWhichDoesNotExist";
-        Integer[] defaultValue = new Integer[]{ 2, 3, 4 };
+        Integer[] defaultValue = new Integer[]{2, 3, 4};
 
         // when
         Integer[] readValue = prefser.get(keyWhichDoesNotExist, Integer[].class, defaultValue);
@@ -922,7 +1005,7 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String keyWhichDoesNotExist = "keyWhichDoesNotExist";
-        Long[] defaultValue = new Long[]{ 3l, 4l, 5l };
+        Long[] defaultValue = new Long[]{3l, 4l, 5l};
 
         // when
         Long[] readValue = prefser.get(keyWhichDoesNotExist, Long[].class, defaultValue);
@@ -936,7 +1019,7 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String keyWhichDoesNotExist = "keyWhichDoesNotExist";
-        Double[] defaultValue = new Double[]{ 1.2, 3.0, 4.5 };
+        Double[] defaultValue = new Double[]{1.2, 3.0, 4.5};
 
         // when
         Double[] readValue = prefser.get(keyWhichDoesNotExist, Double[].class, defaultValue);
@@ -950,7 +1033,7 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String keyWhichDoesNotExist = "keyWhichDoesNotExist";
-        String[] defaultValue = new String[]{ "first", "next", "another one" };
+        String[] defaultValue = new String[]{"first", "next", "another one"};
 
         // when
         String[] readValue = prefser.get(keyWhichDoesNotExist, String[].class, defaultValue);
@@ -1622,8 +1705,8 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "someKey";
-        Boolean[] booleans = { true, false, true };
-        Boolean[] defaultBooleans = { false, false, false };
+        Boolean[] booleans = {true, false, true};
+        Boolean[] defaultBooleans = {false, false, false};
 
         // when
         RecordingObserver<Boolean[]> observer = new RecordingObserver<>();
@@ -1640,8 +1723,8 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "someKey";
-        Boolean[] booleans = { true, false, true };
-        Boolean[] defaultBooleans = { false, false, false };
+        Boolean[] booleans = {true, false, true};
+        Boolean[] defaultBooleans = {false, false, false};
 
         // when
         prefser.put(givenKey, booleans);
@@ -1656,8 +1739,8 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "someKey";
-        boolean[] booleans = { true, false, true };
-        boolean[] defaultBooleans = { false, false, false };
+        boolean[] booleans = {true, false, true};
+        boolean[] defaultBooleans = {false, false, false};
 
         // when
         RecordingObserver<boolean[]> observer = new RecordingObserver<>();
@@ -1674,8 +1757,8 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "someKey";
-        boolean[] booleans = { true, false, true };
-        boolean[] defaultBooleans = { false, false, false };
+        boolean[] booleans = {true, false, true};
+        boolean[] defaultBooleans = {false, false, false};
 
         // when
         prefser.put(givenKey, booleans);
@@ -1690,8 +1773,8 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "someKey";
-        Float[] floats = { 1.1f, 4.5f, 6.8f };
-        Float[] defaultFloats = { 1.0f, 1.0f, 1.0f };
+        Float[] floats = {1.1f, 4.5f, 6.8f};
+        Float[] defaultFloats = {1.0f, 1.0f, 1.0f};
 
         // when
         RecordingObserver<Float[]> observer = new RecordingObserver<>();
@@ -1708,8 +1791,8 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "someKey";
-        Float[] floats = { 1.1f, 4.5f, 6.8f };
-        Float[] defaultFloats = { 1.0f, 1.0f, 1.0f };
+        Float[] floats = {1.1f, 4.5f, 6.8f};
+        Float[] defaultFloats = {1.0f, 1.0f, 1.0f};
 
         // when
         prefser.put(givenKey, floats);
@@ -1724,8 +1807,8 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "someKey";
-        float[] floats = { 1.1f, 4.5f, 6.8f };
-        float[] defaultFloats = { 1.0f, 1.0f, 1.0f };
+        float[] floats = {1.1f, 4.5f, 6.8f};
+        float[] defaultFloats = {1.0f, 1.0f, 1.0f};
 
         // when
         RecordingObserver<float[]> observer = new RecordingObserver<>();
@@ -1742,8 +1825,8 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "someKey";
-        float[] floats = { 1.1f, 4.5f, 6.8f };
-        float[] defaultFloats = { 1.0f, 1.0f, 1.0f };
+        float[] floats = {1.1f, 4.5f, 6.8f};
+        float[] defaultFloats = {1.0f, 1.0f, 1.0f};
 
         // when
         prefser.put(givenKey, floats);
@@ -1758,8 +1841,8 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "someKey";
-        Integer[] ints = { 4, 5, 6 };
-        Integer[] defaultInts = { 1, 1, 1 };
+        Integer[] ints = {4, 5, 6};
+        Integer[] defaultInts = {1, 1, 1};
 
         // when
         RecordingObserver<Integer[]> observer = new RecordingObserver<>();
@@ -1776,8 +1859,8 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "someKey";
-        Integer[] ints = { 4, 5, 6 };
-        Integer[] defaultInts = { 1, 1, 1 };
+        Integer[] ints = {4, 5, 6};
+        Integer[] defaultInts = {1, 1, 1};
 
         // when
         prefser.put(givenKey, ints);
@@ -1792,8 +1875,8 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "someKey";
-        int[] ints = { 4, 5, 6 };
-        int[] defaultInts = { 1, 1, 1 };
+        int[] ints = {4, 5, 6};
+        int[] defaultInts = {1, 1, 1};
 
         // when
         RecordingObserver<int[]> observer = new RecordingObserver<>();
@@ -1810,8 +1893,8 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "someKey";
-        int[] ints = { 4, 5, 6 };
-        int[] defaultInts = { 1, 1, 1 };
+        int[] ints = {4, 5, 6};
+        int[] defaultInts = {1, 1, 1};
 
         // when
         prefser.put(givenKey, ints);
@@ -1826,8 +1909,8 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "someKey";
-        Double[] doubles = { 4.5, 5.6, 6.2 };
-        Double[] defaultDoubles = { 1.1, 1.1, 1.1 };
+        Double[] doubles = {4.5, 5.6, 6.2};
+        Double[] defaultDoubles = {1.1, 1.1, 1.1};
 
         // when
         RecordingObserver<Double[]> observer = new RecordingObserver<>();
@@ -1844,8 +1927,8 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "someKey";
-        Double[] doubles = { 4.5, 5.6, 6.2 };
-        Double[] defaultDoubles = { 1.1, 1.1, 1.1 };
+        Double[] doubles = {4.5, 5.6, 6.2};
+        Double[] defaultDoubles = {1.1, 1.1, 1.1};
 
         // when
         prefser.put(givenKey, doubles);
@@ -1860,8 +1943,8 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "someKey";
-        double[] doubles = { 4.5, 5.6, 6.2 };
-        double[] defaultDoubles = { 1.1, 1.1, 1.1 };
+        double[] doubles = {4.5, 5.6, 6.2};
+        double[] defaultDoubles = {1.1, 1.1, 1.1};
 
         // when
         RecordingObserver<double[]> observer = new RecordingObserver<>();
@@ -1878,8 +1961,8 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "someKey";
-        double[] doubles = { 4.5, 5.6, 6.2 };
-        double[] defaultDoubles = { 1.1, 1.1, 1.1 };
+        double[] doubles = {4.5, 5.6, 6.2};
+        double[] defaultDoubles = {1.1, 1.1, 1.1};
 
         // when
         prefser.put(givenKey, doubles);
@@ -1894,8 +1977,8 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "someKey";
-        String[] strings = { "one", "given", "array" };
-        String[] defaultStrings = { "another", "default", "strings" };
+        String[] strings = {"one", "given", "array"};
+        String[] defaultStrings = {"another", "default", "strings"};
 
         // when
         RecordingObserver<String[]> observer = new RecordingObserver<>();
@@ -1912,8 +1995,8 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "someKey";
-        String[] strings = { "one", "given", "array" };
-        String[] defaultStrings = { "another", "default", "strings" };
+        String[] strings = {"one", "given", "array"};
+        String[] defaultStrings = {"another", "default", "strings"};
 
         // when
         prefser.put(givenKey, strings);
