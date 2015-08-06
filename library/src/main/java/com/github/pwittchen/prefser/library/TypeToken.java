@@ -3,7 +3,7 @@ package com.github.pwittchen.prefser.library;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-// Inspired by gson's TypeToken
+// Inspired by Gson's TypeToken
 public abstract class TypeToken<T> {
     private final Type type;
 
@@ -24,16 +24,15 @@ public abstract class TypeToken<T> {
         this.type = classOfT;
     }
 
-    /* package */ static <T> TypeToken<T> fromClass(Class<T> classForT) {
+    static <T> TypeToken<T> fromClass(Class<T> classForT) {
         return new TypeToken<T>(classForT) {
         };
     }
 
-    /* package */ static <T> TypeToken<T> fromValue(T value) {
+    static <T> TypeToken<T> fromValue(T value) {
         return new TypeToken<T>(value.getClass()) {
         };
     }
-
 
     public Type getType() {
         return type;
