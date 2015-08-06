@@ -702,16 +702,19 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "sampleKey";
+        CustomClass defaultCustomObject = new CustomClass(1, "");
+
         CustomClass[] customClassesArray = new CustomClass[]{
                 new CustomClass(1, "one"),
                 new CustomClass(2, "two"),
                 new CustomClass(3, "three")
         };
 
+
         CustomClass[] defaultCustomClassesArray = new CustomClass[]{
-                new CustomClass(1, ""),
-                new CustomClass(1, ""),
-                new CustomClass(1, "")
+                defaultCustomObject,
+                defaultCustomObject,
+                defaultCustomObject
         };
 
         // when
@@ -2202,16 +2205,19 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "someKey";
+        CustomClass defaultCustomObject = new CustomClass(0, "zero");
+
         CustomClass[] customClasses = {
                 new CustomClass(1, "one"),
                 new CustomClass(2, "two"),
                 new CustomClass(3, "three")
         };
 
+
         CustomClass[] defaultCustomClasses = {
-                new CustomClass(0, "zero"),
-                new CustomClass(0, "zero"),
-                new CustomClass(0, "zero")
+                defaultCustomObject,
+                defaultCustomObject,
+                defaultCustomObject
         };
 
         // when
@@ -2229,16 +2235,19 @@ public final class PrefserTest {
         // given
         prefser.clear();
         String givenKey = "someKey";
+        CustomClass defaultCustomObject = new CustomClass(0, "zero");
+
         CustomClass[] customClasses = {
                 new CustomClass(1, "one"),
                 new CustomClass(2, "two"),
                 new CustomClass(3, "three")
         };
 
+
         CustomClass[] defaultCustomClasses = {
-                new CustomClass(0, "zero"),
-                new CustomClass(0, "zero"),
-                new CustomClass(0, "zero")
+                defaultCustomObject,
+                defaultCustomObject,
+                defaultCustomObject
         };
 
         // when
