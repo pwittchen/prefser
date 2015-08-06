@@ -81,7 +81,7 @@ Saving data
 You can save data with the following method:
 
 ```java
-void put(String key, Object value);
+<T> void put(String key, T value)
 ```
 
 **Examples**
@@ -101,6 +101,13 @@ prefser.put("key", Arrays.asList(1, 2, 3));               // put list of integer
 prefser.put("key", Arrays.asList(1l, 2l, 3l));            // put list of longs
 prefser.put("key", Arrays.asList(1.2, 2.3, 3.4));         // put list of doubles
 prefser.put("key", Arrays.asList("one", "two", "three")); // put list of Strings
+
+List<CustomClass> objects = Arrays.asList(
+   new CustomObject(),
+   new CustomObject(),
+   new CustomObject());
+
+prefser.put(givenKey, objects); // put list of CustomObjects
 
 prefser.put("key", new Boolean[]{true, false, true});     // put array of booleans
 prefser.put("key", new Float[]{1f, 2f, 3f});              // put array of floats
@@ -131,7 +138,7 @@ Reading data
 You can read data with the following method:
 
 ```java
-<T> T get(String key, Class classOfT, T defaultValue);
+<T> T get(String key, Class<T> classOfT, T defaultValue)
 ```
 
 **Examples**
@@ -153,8 +160,17 @@ CustomObject value = prefser.get("key", CustomObject.class, new CustomObject());
 
 // reading lists
 
-List<Double> value = prefser.get("key", List.class, new ArrayList<>());
-List<String> value = prefser.get("key", List.class, new ArrayList<>());
+// example with List of Booleans
+
+List<Boolean> defaultBooleans = Arrays.asList(false, false, false);
+
+TypeToken<List<Boolean>> typeToken = new TypeToken<List<Boolean>>() {
+};
+
+List<Boolean> readObject = prefser.get(givenKey, typeToken, defaultBooleans);
+
+// in the same way we can read list of objects of any type including custom objects
+// the only thing we need to do is replacing Boolean type with our desired type
 
 // reading arrays
 
@@ -177,7 +193,7 @@ Set<Double> value = prefser.get("key", Set.class, new HashSet<>());
 You can observe changes of data with the following RxJava Observable:
 
 ```java
-<T> Observable<T> observe(final String key, final Class classOfT, final T defaultValue)
+<T> Observable<T> observe(String key, Class<T> classOfT, T defaultValue)
 ```
 
 **Note**
@@ -207,7 +223,7 @@ Subscription subscription = prefser.observe(key, String.class, "default value")
 You can combine functionality of `get(...)` and `observe(...)` methods with `getAndObserve(...)`, which is defined as follows:
 
 ```java
-<T> Observable<T> getAndObserve(final String key, final Class classOfT, final T defaultValue)
+<T> Observable<T> getAndObserve(String key, Class<T> classOfT, T defaultValue)
 ```
 
 You can subscribe this method in exactly the same way as `observe(...)` method. The only difference is the fact that this method will emit value from SharedPreferences as first element of the stream with `get(...)` method even if SharedPreferences were not changed. When SharedPreferences changes, subscriber will be notified about the change in the same way as in regular `observe(...)` method.
@@ -359,8 +375,6 @@ Report will be generated in the `library/build/outputs/reports/coverage/debug/` 
 Caveats
 -------
 
-* When you are going to store many numeric values under single key, you should use arrays instead of Lists. Gson converts all numeric values on the Lists into double, so you will have to deal with type conversion in case of using List data structure.
-* When you are going to store many custom objects under single key, you should use arrays instead of Lists, because Lists are not deserialized correctly for custom data types.
 * Set of Strings should be saved and read in a "classical way" with `getPreferences()` method.
 
 References
