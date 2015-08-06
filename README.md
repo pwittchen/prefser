@@ -30,8 +30,8 @@ Overview
 
 Prefser wraps SharedPreferences and thanks to Java Generics provides you simpler API than classic SharedPreferences with only two methods:
 ```java
-void put(String key, Object value);
-<T> T get(String key, Class classOfT, T defaultValue);
+<T> void put(String key, T value)
+<T> T get(String key, Class<T> classOfT, T defaultValue)
 ```
 
 Classic SharedPreferences allows you to store only primitive data types, Strings and Set of Strings.
