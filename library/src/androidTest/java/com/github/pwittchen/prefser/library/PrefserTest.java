@@ -116,7 +116,7 @@ public final class PrefserTest {
         assertThat(customPrefser).isNotNull();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testPrefserWithJsonConverterShouldThrowAnExceptionWhenConverterIsNull() {
         // given
         JsonConverter jsonConverter = null;
@@ -140,7 +140,7 @@ public final class PrefserTest {
         assertThat(customPrefser).isNotNull();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testPrefserWithSharedPreferencesAndJsonConverterShouldThrowAnExceptionWhenConverterIsNull() {
         // given
         JsonConverter jsonConverter = null;
@@ -225,7 +225,7 @@ public final class PrefserTest {
         assertThat(prefser.contains(keyWhichDoesNotExist)).isFalse();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testShouldThrowAnExceptionWhileRemovingNullKey() {
         // given: nothing
 
@@ -467,7 +467,9 @@ public final class PrefserTest {
         prefser.put(givenKey, booleans);
 
         // then
-        List<Boolean> readObject = prefser.get(givenKey, List.class, defaultBooleans);
+        TypeToken<List<Boolean>> typeToken = new TypeToken<List<Boolean>>() {
+        };
+        List<Boolean> readObject = prefser.get(givenKey, typeToken, defaultBooleans);
         assertThat(booleans).isEqualTo(readObject);
         prefser.remove(givenKey);
     }
@@ -482,7 +484,9 @@ public final class PrefserTest {
 
         // when
         prefser.put(givenKey, doubles);
-        List<Double> readObject = prefser.get(givenKey, List.class, defaultDoubles);
+        TypeToken<List<Double>> typeToken = new TypeToken<List<Double>>() {
+        };
+        List<Double> readObject = prefser.get(givenKey, typeToken, defaultDoubles);
 
         // then
         assertThat(readObject).isEqualTo(doubles);
@@ -499,7 +503,9 @@ public final class PrefserTest {
 
         // when
         prefser.put(givenKey, strings);
-        List<String> readObject = prefser.get(givenKey, List.class, defaultStrings);
+        TypeToken<List<String>> typeToken = new TypeToken<List<String>>() {
+        };
+        List<String> readObject = prefser.get(givenKey, typeToken, defaultStrings);
 
         // then
         assertThat(readObject).isEqualTo(strings);
@@ -656,7 +662,6 @@ public final class PrefserTest {
     }
 
     @Test
-    @SuppressWarnings("deprecation of assertThat for Java Collections")
     public void testPutSetOfDoubles() {
         // given
         prefser.clear();
@@ -668,8 +673,11 @@ public final class PrefserTest {
         prefser.put(givenKey, doubles);
 
         // then
-        Set<Double> readObject = prefser.get(givenKey, Set.class, defaultDoubles);
+        TypeToken<Set<Double>> typeToken = new TypeToken<Set<Double>>() {
+        };
+        Set<Double> readObject = prefser.get(givenKey, typeToken, defaultDoubles);
         assertThat(readObject).isEqualTo(doubles);
+        assertThat(readObject).isInstanceOf(Set.class);
         prefser.remove(givenKey);
     }
 
@@ -779,7 +787,9 @@ public final class PrefserTest {
         List<Boolean> defaultValue = new ArrayList<>(Arrays.asList(true, false, true));
 
         // when
-        List<Boolean> readValue = prefser.get(keyWhichDoesNotExist, List.class, defaultValue);
+        TypeToken<List<Boolean>> typeToken = new TypeToken<List<Boolean>>() {
+        };
+        List<Boolean> readValue = prefser.get(keyWhichDoesNotExist, typeToken, defaultValue);
 
         // then
         assertThat(readValue).isEqualTo(defaultValue);
@@ -793,7 +803,9 @@ public final class PrefserTest {
         List<Float> defaultValue = new ArrayList<>(Arrays.asList(1f, 2f, 3f));
 
         // when
-        List<Float> readValue = prefser.get(keyWhichDoesNotExist, List.class, defaultValue);
+        TypeToken<List<Float>> typeToken = new TypeToken<List<Float>>() {
+        };
+        List<Float> readValue = prefser.get(keyWhichDoesNotExist, typeToken, defaultValue);
 
         // then
         assertThat(readValue).isEqualTo(defaultValue);
@@ -807,7 +819,9 @@ public final class PrefserTest {
         List<Integer> defaultValue = new ArrayList<>(Arrays.asList(1, 2, 3));
 
         // when
-        List<Integer> readValue = prefser.get(keyWhichDoesNotExist, List.class, defaultValue);
+        TypeToken<List<Integer>> typeToken = new TypeToken<List<Integer>>() {
+        };
+        List<Integer> readValue = prefser.get(keyWhichDoesNotExist, typeToken, defaultValue);
 
         // then
         assertThat(readValue).isEqualTo(defaultValue);
@@ -821,7 +835,9 @@ public final class PrefserTest {
         List<Long> defaultValue = new ArrayList<>(Arrays.asList(1l, 2l, 3l));
 
         // when
-        List<Long> readValue = prefser.get(keyWhichDoesNotExist, List.class, defaultValue);
+        TypeToken<List<Long>> typeToken = new TypeToken<List<Long>>() {
+        };
+        List<Long> readValue = prefser.get(keyWhichDoesNotExist, typeToken, defaultValue);
 
         // then
         assertThat(readValue).isEqualTo(defaultValue);
@@ -835,7 +851,9 @@ public final class PrefserTest {
         List<Double> defaultValue = new ArrayList<>(Arrays.asList(1.2, 2.3, 3.4));
 
         // when
-        List<Double> readValue = prefser.get(keyWhichDoesNotExist, List.class, defaultValue);
+        TypeToken<List<Double>> typeToken = new TypeToken<List<Double>>() {
+        };
+        List<Double> readValue = prefser.get(keyWhichDoesNotExist, typeToken, defaultValue);
 
         // then
         assertThat(readValue).isEqualTo(defaultValue);
@@ -849,7 +867,9 @@ public final class PrefserTest {
         List<String> defaultValue = new ArrayList<>(Arrays.asList("one", "two", "three"));
 
         // when
-        List<String> readValue = prefser.get(keyWhichDoesNotExist, List.class, defaultValue);
+        TypeToken<List<String>> typeToken = new TypeToken<List<String>>() {
+        };
+        List<String> readValue = prefser.get(keyWhichDoesNotExist, typeToken, defaultValue);
 
         // then
         assertThat(readValue).isEqualTo(defaultValue);
@@ -957,7 +977,7 @@ public final class PrefserTest {
         assertThat(readValue).isEqualTo(defaultValue);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testShouldThrownAnExceptionWhenPreferencesAreNull() {
         // given
         SharedPreferences sharedPreferences = null;
@@ -969,7 +989,7 @@ public final class PrefserTest {
         // throw an exception
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testShouldThrowAnExceptionWhenKeyForGetIsNull() {
         // given
         String key = null;
@@ -982,7 +1002,7 @@ public final class PrefserTest {
         // throw an exception
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testShouldThrowAnExceptionWhenClassOfTForGetIsNull() {
         // given
         String key = "someKey";
@@ -996,7 +1016,7 @@ public final class PrefserTest {
         // throw an exception
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testShouldThrowAnExceptionWhenKeyForGetWithDefaultValueIsNull() {
         // given
         String key = null;
@@ -1010,7 +1030,7 @@ public final class PrefserTest {
         // throw an exception
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testShouldThrowAnExceptionWhenClassOfTForGetWithDefaultValueIsNull() {
         // given
         String key = "someKey";
@@ -1024,7 +1044,7 @@ public final class PrefserTest {
         // throw an exception
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testPutShouldThrowAnExceptionWhenKeyIsNullForPut() {
         // given
         String key = null;
@@ -1037,7 +1057,7 @@ public final class PrefserTest {
         // throw an exception
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testPutShouldThrowAnExceptionWhenValueIsNullForPut() {
         // given
         String key = "someKey";
@@ -1050,7 +1070,7 @@ public final class PrefserTest {
         // throw an exception
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testPutShouldThrowAnExceptionWhenKeyAndValueAreNullForPut() {
         // given
         String key = null;
@@ -1063,7 +1083,7 @@ public final class PrefserTest {
         // throw an exception
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testPutShouldThrowAnExceptionWhenKeyIsNullForRemove() {
         // given
         String key = null;
@@ -1493,7 +1513,9 @@ public final class PrefserTest {
 
         // when
         RecordingObserver<List<Boolean>> observer = new RecordingObserver<>();
-        prefser.observe(givenKey, List.class, defaultBooleans).subscribe(observer);
+        TypeToken<List<Boolean>> typeToken = new TypeToken<List<Boolean>>() {
+        };
+        prefser.observe(givenKey, typeToken, defaultBooleans).subscribe(observer);
         prefser.put(givenKey, booleans);
 
         // then
@@ -1511,7 +1533,9 @@ public final class PrefserTest {
 
         // when
         prefser.put(givenKey, booleans);
-        List<Boolean> first = prefser.getAndObserve(givenKey, List.class, defaultBooleans).toBlocking().first();
+        TypeToken<List<Boolean>> typeToken = new TypeToken<List<Boolean>>() {
+        };
+        List<Boolean> first = prefser.getAndObserve(givenKey, typeToken, defaultBooleans).toBlocking().first();
 
         // then
         assertThat(first).isEqualTo(booleans);
@@ -1527,7 +1551,9 @@ public final class PrefserTest {
 
         // when
         RecordingObserver<List<Double>> observer = new RecordingObserver<>();
-        prefser.observe(givenKey, List.class, defaultDoubles).subscribe(observer);
+        TypeToken<List<Double>> typeToken = new TypeToken<List<Double>>() {
+        };
+        prefser.observe(givenKey, typeToken, defaultDoubles).subscribe(observer);
         prefser.put(givenKey, doubles);
 
         // then
@@ -1545,7 +1571,9 @@ public final class PrefserTest {
 
         // when
         prefser.put(givenKey, doubles);
-        List<Double> first = prefser.getAndObserve(givenKey, List.class, defaultDoubles).toBlocking().first();
+        TypeToken<List<Double>> typeToken = new TypeToken<List<Double>>() {
+        };
+        List<Double> first = prefser.getAndObserve(givenKey, typeToken, defaultDoubles).toBlocking().first();
 
         // then
         assertThat(first).isEqualTo(doubles);
@@ -1561,7 +1589,9 @@ public final class PrefserTest {
 
         // when
         RecordingObserver<List<String>> observer = new RecordingObserver<>();
-        prefser.observe(givenKey, List.class, defaultStrings).subscribe(observer);
+        TypeToken<List<String>> typeToken = new TypeToken<List<String>>() {
+        };
+        prefser.observe(givenKey, typeToken, defaultStrings).subscribe(observer);
         prefser.put(givenKey, strings);
 
         // then
@@ -1579,7 +1609,9 @@ public final class PrefserTest {
 
         // when
         prefser.put(givenKey, strings);
-        List<String> first = prefser.getAndObserve(givenKey, List.class, defaultStrings).toBlocking().first();
+        TypeToken<List<String>> typeToken = new TypeToken<List<String>>() {
+        };
+        List<String> first = prefser.getAndObserve(givenKey, typeToken, defaultStrings).toBlocking().first();
 
         // then
         assertThat(first).isEqualTo(strings);
