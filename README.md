@@ -30,11 +30,18 @@ Contents
 Overview
 --------
 
-Prefser wraps SharedPreferences and thanks to Java Generics provides you simpler API than classic SharedPreferences with only two methods:
+Prefser wraps SharedPreferences and thanks to Java Generics provides you simpler API than classic SharedPreferences with the following methods:
 ```java
 <T> void put(String key, T value)
 <T> T get(String key, Class<T> classOfT, T defaultValue)
 ```
+
+We can also use `TypeToken` (e.g. for reading serialized Lists):
+```java
+<T> T get(String key, TypeToken<T> typeTokenOfT, T defaultValue)
+```
+
+Prefser will serialize Lists correctly in `put(...)` method and will use `TypeToken` under the hood.
 
 Classic SharedPreferences allows you to store only primitive data types, Strings and Set of Strings.
 
@@ -143,6 +150,12 @@ You can read data with the following method:
 <T> T get(String key, Class<T> classOfT, T defaultValue)
 ```
 
+or with `TypeToken` (e.g. when reading Lists):
+
+```java
+<T> T get(String key, TypeToken<T> typeTokenOfT, T defaultValue)
+```
+
 **Examples**
 
 ```java
@@ -198,6 +211,12 @@ You can observe changes of data with the following RxJava Observable:
 <T> Observable<T> observe(String key, Class<T> classOfT, T defaultValue)
 ```
 
+or with `TypeToken` (e.g when observing Lists):
+
+```java
+<T> Observable<T> observe(String key, TypeToken<T> typeTokenOfT, T defaultValue)
+```
+
 **Note**
 
 Use it, when you want to observe single preference under a specified key.
@@ -226,6 +245,12 @@ You can combine functionality of `get(...)` and `observe(...)` methods with `get
 
 ```java
 <T> Observable<T> getAndObserve(String key, Class<T> classOfT, T defaultValue)
+```
+
+or with `TypeToken` (e.g. when observing Lists):
+
+```java
+<T> Observable<T> getAndObserve(String key, TypeToken<T> typeTokenOfT, T defaultValue)
 ```
 
 You can subscribe this method in exactly the same way as `observe(...)` method. The only difference is the fact that this method will emit value from SharedPreferences as first element of the stream with `get(...)` method even if SharedPreferences were not changed. When SharedPreferences changes, subscriber will be notified about the change in the same way as in regular `observe(...)` method.
