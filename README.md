@@ -402,6 +402,7 @@ Caveats
 -------
 
 * Set of Strings should be saved and read in a "classical way" with `getPreferences()` method.
+* TypeToken is required for proper Lists reading.
 
 References
 ----------
