@@ -231,10 +231,9 @@ Subscription subscription = prefser.observe(key, String.class, "default value")
         ... // you can do anything else, what is possible with RxJava
         .subscribe(new Action1<String>() {
             @Override
-            public void call(String key) {
+            public void call(String value) {
                 // Perform any action you want.
-                // E.g. get value stored under key
-                // and display in a TextView.
+                // E.g. display value in a TextView.
             }
         });
 ```
