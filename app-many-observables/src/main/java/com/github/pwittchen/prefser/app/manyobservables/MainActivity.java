@@ -60,8 +60,8 @@ public class MainActivity extends Activity {
 
     private void createSubscriptionOne() {
         subscriptionOne = prefser.getAndObserve(MY_KEY_ONE, String.class, EMPTY_STRING)
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<String>() {
                     @Override
                     public void call(String value) {
@@ -73,8 +73,8 @@ public class MainActivity extends Activity {
 
     private void createSubscriptionTwo() {
         subscriptionTwo = prefser.getAndObserve(MY_KEY_TWO, String.class, EMPTY_STRING)
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<String>() {
                     @Override
                     public void call(String value) {
@@ -86,8 +86,8 @@ public class MainActivity extends Activity {
 
     private void createSubscriptionThree() {
         subscriptionThree = prefser.getAndObserve(MY_KEY_THREE, String.class, EMPTY_STRING)
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<String>() {
                     @Override
                     public void call(String value) {
@@ -98,7 +98,7 @@ public class MainActivity extends Activity {
     }
 
     private void showToast(String message) {
-        if(message.equals(EMPTY_STRING)) {
+        if (message.equals(EMPTY_STRING)) {
             message = "empty";
         }
         String formattedMessage = String.format("value is %s", message);

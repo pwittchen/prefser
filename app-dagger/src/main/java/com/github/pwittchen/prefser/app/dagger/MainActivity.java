@@ -66,8 +66,8 @@ public class MainActivity extends BaseActivity {
         // as in createSubscriptionForAllPreferences() method
 
         subscriptionForSinglePreference = prefser.getAndObserve(MY_KEY, String.class, EMPTY_STRING)
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Object>() {
                     @Override
                     public void onError(Throwable e) {

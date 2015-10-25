@@ -226,9 +226,9 @@ When you want to observe many preferences, use [observePreferences()](#subscribi
 
 ```java
 Subscription subscription = prefser.observe(key, String.class, "default value")
-        .observeOn(AndroidSchedulers.mainThread())
         .subscribeOn(Schedulers.io())
         ... // you can do anything else, what is possible with RxJava
+        .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Action1<String>() {
             @Override
             public void call(String value) {
@@ -315,10 +315,10 @@ If you want to observe single preference under as specified key, use [observe()]
 **Example**
 ```java
 Subscription subscription = prefser.observePreferences()
-        .observeOn(AndroidSchedulers.mainThread())
         .subscribeOn(Schedulers.io())
         .filter(...) // you can filter your updates by key
         ...          // you can do anything else, what is possible with RxJava
+        .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Action1<String>() {
             @Override
             public void call(String key) {

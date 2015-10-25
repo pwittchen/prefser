@@ -63,7 +63,6 @@ public class MainActivity extends Activity {
 
     private void createSubscriptionForAllPreferences() {
         subscriptionForAllPreferences = prefser.observePreferences()
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .filter(new Func1<String, Boolean>() {
                     @Override
@@ -71,12 +70,11 @@ public class MainActivity extends Activity {
                         return key.equals(MY_KEY);
                     }
                 })
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<String>() {
                     @Override
                     public void call(String key) {
-                        Toast.makeText(
-                                MainActivity.this,
-                                String.format("Value in %s changed", MY_KEY),
+                        Toast.makeText(MainActivity.this, String.format("Value in %s changed", MY_KEY),
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -89,8 +87,8 @@ public class MainActivity extends Activity {
         // as in createSubscriptionForAllPreferences() method
 
         subscriptionForSinglePreference = prefser.getAndObserve(MY_KEY, String.class, EMPTY_STRING)
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Object>() {
                     @Override
                     public void onError(Throwable e) {
