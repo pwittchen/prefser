@@ -18,14 +18,12 @@ package com.github.pwittchen.prefser.library;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Action0;
@@ -59,6 +57,11 @@ import rx.subscriptions.Subscriptions;
  * </pre>
  */
 public class Prefser {
+  private static final String KEY_IS_NULL = "key == null";
+  private static final String CLASS_OF_T_IS_NULL = "classOfT == null";
+  private static final String TYPE_TOKEN_OF_T_IS_NULL = "typeTokenOfT == null";
+  private static final String VALUE_IS_NULL = "value == null";
+
   private final SharedPreferences preferences;
   private final SharedPreferences.Editor editor;
   private final Map<Class<?>, Accessor<?>> accessors = new HashMap<>();
@@ -185,8 +188,8 @@ public class Prefser {
    * @return Observable value from SharedPreferences associated with given key or default value
    */
   public <T> Observable<T> observe(String key, Class<T> classOfT, T defaultValue) {
-    checkNotNull(key, "key == null");
-    checkNotNull(classOfT, "classOfT == null");
+    checkNotNull(key, KEY_IS_NULL);
+    checkNotNull(classOfT, CLASS_OF_T_IS_NULL);
 
     return observe(key, TypeToken.fromClass(classOfT), defaultValue);
   }
@@ -204,8 +207,8 @@ public class Prefser {
    */
   public <T> Observable<T> observe(final String key, final TypeToken<T> typeTokenOfT,
       final T defaultValue) {
-    checkNotNull(key, "key == null");
-    checkNotNull(typeTokenOfT, "typeTokenOfT == null");
+    checkNotNull(key, KEY_IS_NULL);
+    checkNotNull(typeTokenOfT, TYPE_TOKEN_OF_T_IS_NULL);
 
     return observePreferences().filter(new Func1<String, Boolean>() {
       @Override public Boolean call(String filteredKey) {
@@ -229,8 +232,8 @@ public class Prefser {
    * @return value from SharedPreferences associated with given key or default value
    */
   public <T> T get(String key, Class<T> classOfT, T defaultValue) {
-    checkNotNull(key, "key == null");
-    checkNotNull(classOfT, "classOfT == null");
+    checkNotNull(key, KEY_IS_NULL);
+    checkNotNull(classOfT, CLASS_OF_T_IS_NULL);
 
     if (!contains(key) && defaultValue == null) {
       return null;
@@ -250,8 +253,8 @@ public class Prefser {
    * @return value from SharedPreferences associated with given key or default value
    */
   public <T> T get(String key, TypeToken<T> typeTokenOfT, T defaultValue) {
-    checkNotNull(key, "key == null");
-    checkNotNull(typeTokenOfT, "typeTokenOfT == null");
+    checkNotNull(key, KEY_IS_NULL);
+    checkNotNull(typeTokenOfT, TYPE_TOKEN_OF_T_IS_NULL);
 
     Type typeOfT = typeTokenOfT.getType();
 
@@ -332,9 +335,9 @@ public class Prefser {
    * @param typeTokenOfT type token of T (e.g. {@code new TypeToken<> {})
    */
   public <T> void put(String key, T value, TypeToken<T> typeTokenOfT) {
-    checkNotNull(key, "key == null");
-    checkNotNull(value, "value == null");
-    checkNotNull(typeTokenOfT, "typeTokenOfT == null");
+    checkNotNull(key, KEY_IS_NULL);
+    checkNotNull(value, VALUE_IS_NULL);
+    checkNotNull(typeTokenOfT, TYPE_TOKEN_OF_T_IS_NULL);
 
     if (!accessors.containsKey(value.getClass())) {
       String jsonValue = jsonConverter.toJson(value, typeTokenOfT.getType());
@@ -358,7 +361,7 @@ public class Prefser {
    * @param key key of the preference to be removed
    */
   public void remove(String key) {
-    checkNotNull(key, "key == null");
+    checkNotNull(key, KEY_IS_NULL);
     if (!contains(key)) {
       return;
     }
