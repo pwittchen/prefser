@@ -84,7 +84,7 @@ public class MainActivity extends Activity {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Subscriber<Object>() {
           @Override public void onError(Throwable e) {
-            Toast.makeText(MainActivity.this, String.format("Problem with accessing key %", MY_KEY),
+            Toast.makeText(MainActivity.this, String.format("Problem with accessing key %s", MY_KEY),
                 Toast.LENGTH_SHORT).show();
           }
 

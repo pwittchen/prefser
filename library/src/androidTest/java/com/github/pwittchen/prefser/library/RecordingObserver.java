@@ -28,7 +28,7 @@ import static com.google.common.truth.Truth.assertThat;
  * This class is taken from NotRxAndroid project by Jake Wharton
  * available at: https://github.com/JakeWharton/NotRxAndroid
  * Original source of this file can be found at:
- * https://github.com/JakeWharton/NotRxAndroid/blob/master/rxandroid/src/androidTest/java/rx/android/RecordingObserver.java
+ * https://github.com/JakeWharton/RxBinding (former: NotRxAndroid)
  */
 public final class RecordingObserver<T> implements Observer<T> {
   private static final String TAG = "RecordingObserver";
