@@ -66,6 +66,7 @@ public class Prefser {
 
     private interface Accessor<T> {
         T get(String key, T defaultValue);
+
         void put(String key, T value);
     }
 
@@ -171,6 +172,7 @@ public class Prefser {
                     }
                 }));
     }
+
     /**
      * Gets value from SharedPreferences with a given key and type
      * as a RxJava Observable, which can be subscribed.
@@ -231,6 +233,10 @@ public class Prefser {
     public <T> T get(String key, Class<T> classOfT, T defaultValue) {
         checkNotNull(key, "key == null");
         checkNotNull(classOfT, "classOfT == null");
+
+        if (!contains(key) && defaultValue == null) {
+            return null;
+        }
 
         return get(key, TypeToken.fromClass(classOfT), defaultValue);
     }
@@ -324,8 +330,8 @@ public class Prefser {
     /**
      * Puts value to the SharedPreferences.
      *
-     * @param key   key under which value will be stored
-     * @param value value to be stored
+     * @param key          key under which value will be stored
+     * @param value        value to be stored
      * @param typeTokenOfT type token of T (e.g. {@code new TypeToken<> {})
      */
     public <T> void put(String key, T value, TypeToken<T> typeTokenOfT) {

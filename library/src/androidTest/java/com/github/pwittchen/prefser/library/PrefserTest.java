@@ -2343,4 +2343,17 @@ public final class PrefserTest {
         assertThat(observer2.takeNext()).isEqualTo(givenKey);
         observer2.assertNoMoreEvents();
     }
+
+    @Test
+    public void testGetShouldReturnNullForStringType() {
+        // given
+        prefser.clear();
+        String keyWhichDoesNotExist = "keyWhichDoesNotExist";
+
+        // when
+        String value = prefser.get(keyWhichDoesNotExist, String.class, null);
+
+        // then
+        assertThat(value).isNull();
+    }
 }
