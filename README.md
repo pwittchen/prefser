@@ -23,6 +23,7 @@ Contents
 * [Examples](#examples)
 * [Download](#download)
 * [Tests](#tests)
+* [Code style](#code-style)
 * [Caveats](#caveats)
 * [References](#references)
 * [License](#license)
@@ -112,9 +113,9 @@ prefser.put("key", Arrays.asList(1.2, 2.3, 3.4));         // put list of doubles
 prefser.put("key", Arrays.asList("one", "two", "three")); // put list of Strings
 
 List<CustomClass> objects = Arrays.asList(
-   new CustomObject(),
-   new CustomObject(),
-   new CustomObject());
+  new CustomObject(),
+  new CustomObject(),
+  new CustomObject());
 
 prefser.put(givenKey, objects); // put list of CustomObjects
 
@@ -126,9 +127,9 @@ prefser.put("key", new Double[]{1.2, 2.3, 3.4});          // put array of double
 prefser.put("key", new String[]{"one", "two", "three"});  // put array of Strings
 
 CustomObject[] objects = new CustomObject[]{
-   new CustomObject(), 
-   new CustomObject(), 
-   new CustomObject()
+  new CustomObject(), 
+  new CustomObject(), 
+  new CustomObject()
 };
 
 prefser.put("key", objects); // put array of CustomObjects
@@ -226,16 +227,15 @@ When you want to observe many preferences, use [observePreferences()](#subscribi
 
 ```java
 Subscription subscription = prefser.observe(key, String.class, "default value")
-        .subscribeOn(Schedulers.io())
-        ... // you can do anything else, what is possible with RxJava
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<String>() {
-            @Override
-            public void call(String value) {
-                // Perform any action you want.
-                // E.g. display value in a TextView.
-            }
-        });
+  .subscribeOn(Schedulers.io())
+  ... // you can do anything else, what is possible with RxJava
+  .observeOn(AndroidSchedulers.mainThread())
+  .subscribe(new Action1<String>() {
+  @Override public void call(String value) {
+    // Perform any action you want.
+    // E.g. display value in a TextView.
+   }
+});
 ```
 
 ### getAndObserve method
@@ -315,18 +315,17 @@ If you want to observe single preference under as specified key, use [observe()]
 **Example**
 ```java
 Subscription subscription = prefser.observePreferences()
-        .subscribeOn(Schedulers.io())
-        .filter(...) // you can filter your updates by key
-        ...          // you can do anything else, what is possible with RxJava
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<String>() {
-            @Override
-            public void call(String key) {
-              // Perform any action you want.
-              // E.g. get value stored under key 
-              // and display in a TextView.
-            }
-        });
+  .subscribeOn(Schedulers.io())
+  .filter(...) // you can filter your updates by key
+  ...          // you can do anything else, what is possible with RxJava
+  .observeOn(AndroidSchedulers.mainThread())
+  .subscribe(new Action1<String>() {
+  @Override public void call(String key) {
+    // Perform any action you want.
+    // E.g. get value stored under key 
+    // and display in a TextView.
+  }
+});
 ```
 
 This subscription can be created e.g. in `onResume()` method, but it depends on your specific implementation and project requirements. Now, everytime when data in SharedPreferences changes, subscriber will be notified under which key value was updated and it can react on that change.
@@ -338,8 +337,8 @@ When you are subscribing for the updates in Activity, please remember to unsubsc
 ```java
 @Override
 protected void onPause() {
-    super.onPause();
-    subscription.unsubscribe();
+  super.onPause();
+  subscription.unsubscribe();
 }
 ```
 
@@ -396,6 +395,11 @@ Test coverage report can be generated with the following command:
 
 In order to generate report, emulator or Android device needs to be connected to the computer.
 Report will be generated in the `library/build/outputs/reports/coverage/debug/` directory.
+
+Code style
+----------
+
+Code style used in the project is called `SquareAndroid` from Java Code Styles repository by Square available at: https://github.com/square/java-code-styles.
 
 Caveats
 -------
