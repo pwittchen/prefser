@@ -1,6 +1,17 @@
 CHANGELOG
 =========
 
+v. 2.0.2
+--------
+*06 Nov 2015*
+
+- fixed bug reported in issue #70: get(...) method now returns a null value instead of "null" string when setting default value to null of String type
+- fixed RxJava usage in sample app
+- fixed RxJava usage in code snippets in `README.md`
+- changed code formatting to `SquareAndroid`
+- added static code analysis
+- improved code according to static code analysis suggestions
+
 v. 2.0.1
 --------
 *24 Sep 2015*
