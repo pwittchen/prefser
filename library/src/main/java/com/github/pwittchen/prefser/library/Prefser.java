@@ -81,7 +81,7 @@ public class Prefser {
    *
    * @param context Android Context
    */
-  public Prefser(Context context) {
+  public Prefser(@NonNull Context context) {
     this(context, new GsonConverter());
   }
 
@@ -92,7 +92,7 @@ public class Prefser {
    * @param context Android Context
    * @param jsonConverter Json Converter
    */
-  public Prefser(Context context, JsonConverter jsonConverter) {
+  public Prefser(@NonNull Context context, @NonNull JsonConverter jsonConverter) {
     this(PreferenceManager.getDefaultSharedPreferences(context), jsonConverter);
   }
 
@@ -102,7 +102,7 @@ public class Prefser {
    *
    * @param sharedPreferences instance of SharedPreferences
    */
-  public Prefser(SharedPreferences sharedPreferences) {
+  public Prefser(@NonNull SharedPreferences sharedPreferences) {
     this(sharedPreferences, new GsonConverter());
   }
 
