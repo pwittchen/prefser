@@ -50,9 +50,9 @@ import rx.subscriptions.Subscriptions;
  * </pre>
  * Subscribing Observable of SharedPreferences:
  * <pre>
- *  prefser.observeDefaultPreferences()
- *    .observeOn(AndroidSchedulers.mainThread())
+ *  prefser.observePreferences()
  *    .subscribeOn(Schedulers.io())
+ *    .observeOn(AndroidSchedulers.mainThread())
  *    ...
  *    .subscribe(...);
  * </pre>
@@ -111,7 +111,8 @@ public class Prefser {
    * @param sharedPreferences instance of SharedPreferences
    * @param jsonConverter Json Converter
    */
-  public Prefser(@NonNull SharedPreferences sharedPreferences, @NonNull JsonConverter jsonConverter) {
+  public Prefser(@NonNull SharedPreferences sharedPreferences,
+      @NonNull JsonConverter jsonConverter) {
     checkNotNull(sharedPreferences, "sharedPreferences == null");
     checkNotNull(jsonConverter, "jsonConverter == null");
     this.preferences = sharedPreferences;
@@ -188,7 +189,8 @@ public class Prefser {
    * @param <T> return type of the preference (e.g. String)
    * @return Observable value from SharedPreferences associated with given key or default value
    */
-  public <T> Observable<T> observe(@NonNull String key, @NonNull Class<T> classOfT, T defaultValue) {
+  public <T> Observable<T> observe(@NonNull String key, @NonNull Class<T> classOfT,
+      T defaultValue) {
     checkNotNull(key, KEY_IS_NULL);
     checkNotNull(classOfT, CLASS_OF_T_IS_NULL);
 
@@ -206,8 +208,8 @@ public class Prefser {
    * @param <T> return type of the preference (e.g. String)
    * @return Observable value from SharedPreferences associated with given key or default value
    */
-  public <T> Observable<T> observe(@NonNull final String key, @NonNull final TypeToken<T> typeTokenOfT,
-      final T defaultValue) {
+  public <T> Observable<T> observe(@NonNull final String key,
+      @NonNull final TypeToken<T> typeTokenOfT, final T defaultValue) {
     checkNotNull(key, KEY_IS_NULL);
     checkNotNull(typeTokenOfT, TYPE_TOKEN_OF_T_IS_NULL);
 
