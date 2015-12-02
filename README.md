@@ -347,7 +347,6 @@ Examples
 --------
 
 - Examplary app using `Prefser` is available in the `app` directory.
-- If you want to use `Prefser` with [Dagger](https://github.com/square/dagger/), check out examplary app in `app-dagger` directory.
 - If you want to use `Prefser` with [PreferenceActivity](http://developer.android.com/reference/android/preference/PreferenceActivity.html), check out examplary in `app-preference-activity` directory.
 - More usage examples can be found in unit tests in `PrefserTest` class.
 
