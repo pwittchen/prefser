@@ -34,7 +34,7 @@ android {
 }
 
 dependencies {
-  compile 'com.google.code.gson:gson:2.3.1'
+  compile 'com.google.code.gson:gson:2.4'
   compile 'io.reactivex:rxjava:1.0.14'
   compile 'com.android.support:support-annotations:22.2.1'
 
