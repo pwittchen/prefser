@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+v. 2.0.3
+--------
+*04 Dec 2015*
+
+- added `@NonNull` Android support annotations
+- updated Gson dependency to the newest version
+- updated Target Android SDK version to 23
+- removed Dagger 1 sample app, because it was outdated and too trivial
+
 v. 2.0.2
 --------
 *06 Nov 2015*
