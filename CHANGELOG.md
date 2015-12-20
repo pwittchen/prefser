@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+v. 2.0.4
+--------
+*13 Dec 2015*
+- bumped Gson dependency to v. 2.5
+- bumped RxJava dependency to v. 1.1.0
+- bumped Google Truth test dependency to v. 0.27
+
 v. 2.0.3
 --------
 *04 Dec 2015*
