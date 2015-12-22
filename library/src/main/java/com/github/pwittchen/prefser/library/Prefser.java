@@ -326,7 +326,8 @@ public class Prefser {
    * @param key key under which value will be stored
    * @param value value to be stored
    */
-  public <T> void put(String key, T value) {
+  public <T> void put(@NonNull String key, @NonNull T value) {
+    checkNotNull(value, VALUE_IS_NULL);
     put(key, value, TypeToken.fromValue(value));
   }
 
