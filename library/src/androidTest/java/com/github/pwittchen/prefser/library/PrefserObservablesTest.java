@@ -2,18 +2,21 @@ package com.github.pwittchen.prefser.library;
 
 import android.annotation.TargetApi;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
+import com.github.pwittchen.prefser.library.utils.RecordingObserver;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import rx.Observable;
 import rx.Subscription;
 
 import static com.google.common.truth.Truth.assertThat;
 
-public class PrefserObservablesTest {
+@RunWith(AndroidJUnit4.class) public final class PrefserObservablesTest {
 
   private static final String GIVEN_KEY = "givenKey";
   public static final String GIVEN_STRING_VALUE = "givenStringValue";
