@@ -25,8 +25,7 @@ import rx.Observer;
 import static com.google.common.truth.Truth.assertThat;
 
 /**
- * This class is taken from NotRxAndroid project by Jake Wharton
- * available at: https://github.com/JakeWharton/NotRxAndroid
+ * This class is taken from RxBinding (former NotRxAndroid) project by Jake Wharton
  * Original source of this file can be found at:
  * https://github.com/JakeWharton/RxBinding (former: NotRxAndroid)
  */
