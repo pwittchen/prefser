@@ -15,13 +15,11 @@
  */
 package com.github.pwittchen.prefser.library;
 
-import android.annotation.TargetApi;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import com.github.pwittchen.prefser.library.utils.RecordingObserver;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,19 +44,28 @@ import static com.google.common.truth.Truth.assertThat;
       this.valueTwo = valueTwo;
     }
 
-    @Override public boolean equals(Object other) {
-      boolean isEqual = false;
-
-      if (other instanceof CustomClass) {
-        isEqual = ((CustomClass) other).valueOne == valueOne;
-        isEqual |= ((CustomClass) other).valueTwo.equals(valueTwo);
+    @Override public boolean equals(Object o) {
+      if (this == o) {
+        return true;
       }
 
-      return isEqual;
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
+
+      CustomClass that = (CustomClass) o;
+
+      if (valueOne != that.valueOne) {
+        return false;
+      }
+
+      return valueTwo != null ? valueTwo.equals(that.valueTwo) : that.valueTwo == null;
     }
 
-    @Override @TargetApi(value = 19) public int hashCode() {
-      return Objects.hash(valueOne, valueTwo);
+    @Override public int hashCode() {
+      int result = valueOne;
+      result = 31 * result + (valueTwo != null ? valueTwo.hashCode() : 0);
+      return result;
     }
   }
 
@@ -742,9 +749,13 @@ import static com.google.common.truth.Truth.assertThat;
     RecordingObserver<Boolean[]> observer = new RecordingObserver<>();
     prefser.observe(givenKey, Boolean[].class, defaultBooleans).subscribe(observer);
     prefser.put(givenKey, booleans);
+    Boolean[] generated = observer.takeNext();
 
     // then
-    assertThat(observer.takeNext()).isEqualTo(booleans);
+    assertThat(generated[0]).isEqualTo(booleans[0]);
+    assertThat(generated[1]).isEqualTo(booleans[1]);
+    assertThat(generated[2]).isEqualTo(booleans[2]);
+
     observer.assertNoMoreEvents();
   }
 
@@ -757,11 +768,13 @@ import static com.google.common.truth.Truth.assertThat;
 
     // when
     prefser.put(givenKey, booleans);
-    Boolean[] first =
+    Boolean[] generated =
         prefser.getAndObserve(givenKey, Boolean[].class, defaultBooleans).toBlocking().first();
 
     // then
-    assertThat(first).isEqualTo(booleans);
+    assertThat(generated[0]).isEqualTo(booleans[0]);
+    assertThat(generated[1]).isEqualTo(booleans[1]);
+    assertThat(generated[2]).isEqualTo(booleans[2]);
   }
 
   @Test public void testObserveArrayOfBooleansPrimitive() {
@@ -775,9 +788,13 @@ import static com.google.common.truth.Truth.assertThat;
     RecordingObserver<boolean[]> observer = new RecordingObserver<>();
     prefser.observe(givenKey, boolean[].class, defaultBooleans).subscribe(observer);
     prefser.put(givenKey, booleans);
+    boolean[] generated = observer.takeNext();
 
     // then
-    assertThat(observer.takeNext()).isEqualTo(booleans);
+    assertThat(generated[0]).isEqualTo(booleans[0]);
+    assertThat(generated[1]).isEqualTo(booleans[1]);
+    assertThat(generated[2]).isEqualTo(booleans[2]);
+
     observer.assertNoMoreEvents();
   }
 
@@ -790,11 +807,13 @@ import static com.google.common.truth.Truth.assertThat;
 
     // when
     prefser.put(givenKey, booleans);
-    boolean[] first =
+    boolean[] generated =
         prefser.getAndObserve(givenKey, boolean[].class, defaultBooleans).toBlocking().first();
 
     // then
-    assertThat(first).isEqualTo(booleans);
+    assertThat(generated[0]).isEqualTo(booleans[0]);
+    assertThat(generated[1]).isEqualTo(booleans[1]);
+    assertThat(generated[2]).isEqualTo(booleans[2]);
   }
 
   @Test public void testObserveArrayOfFloats() {
@@ -808,9 +827,13 @@ import static com.google.common.truth.Truth.assertThat;
     RecordingObserver<Float[]> observer = new RecordingObserver<>();
     prefser.observe(givenKey, Float[].class, defaultFloats).subscribe(observer);
     prefser.put(givenKey, floats);
+    Float[] generated = observer.takeNext();
 
     // then
-    assertThat(observer.takeNext()).isEqualTo(floats);
+    assertThat(generated[0]).isEqualTo(floats[0]);
+    assertThat(generated[1]).isEqualTo(floats[1]);
+    assertThat(generated[2]).isEqualTo(floats[2]);
+
     observer.assertNoMoreEvents();
   }
 
@@ -823,11 +846,13 @@ import static com.google.common.truth.Truth.assertThat;
 
     // when
     prefser.put(givenKey, floats);
-    Float[] first =
+    Float[] generated =
         prefser.getAndObserve(givenKey, Float[].class, defaultFloats).toBlocking().first();
 
     // then
-    assertThat(first).isEqualTo(floats);
+    assertThat(generated[0]).isEqualTo(floats[0]);
+    assertThat(generated[1]).isEqualTo(floats[1]);
+    assertThat(generated[2]).isEqualTo(floats[2]);
   }
 
   @Test public void testObserveArrayOfFloatsPrimitive() {
@@ -841,9 +866,13 @@ import static com.google.common.truth.Truth.assertThat;
     RecordingObserver<float[]> observer = new RecordingObserver<>();
     prefser.observe(givenKey, float[].class, defaultFloats).subscribe(observer);
     prefser.put(givenKey, floats);
+    float[] generated = observer.takeNext();
 
     // then
-    assertThat(observer.takeNext()).isEqualTo(floats, 0.1f);
+    assertThat(generated[0]).isEqualTo(floats[0]);
+    assertThat(generated[1]).isEqualTo(floats[1]);
+    assertThat(generated[2]).isEqualTo(floats[2]);
+
     observer.assertNoMoreEvents();
   }
 
@@ -856,11 +885,13 @@ import static com.google.common.truth.Truth.assertThat;
 
     // when
     prefser.put(givenKey, floats);
-    float[] first =
+    float[] generated =
         prefser.getAndObserve(givenKey, float[].class, defaultFloats).toBlocking().first();
 
     // then
-    assertThat(first).isEqualTo(floats, 0.1f);
+    assertThat(generated[0]).isEqualTo(floats[0]);
+    assertThat(generated[1]).isEqualTo(floats[1]);
+    assertThat(generated[2]).isEqualTo(floats[2]);
   }
 
   @Test public void testObserveArrayOfInts() {
@@ -874,9 +905,13 @@ import static com.google.common.truth.Truth.assertThat;
     RecordingObserver<Integer[]> observer = new RecordingObserver<>();
     prefser.observe(givenKey, Integer[].class, defaultInts).subscribe(observer);
     prefser.put(givenKey, ints);
+    Integer[] generated = observer.takeNext();
 
     // then
-    assertThat(observer.takeNext()).isEqualTo(ints);
+    assertThat(generated[0]).isEqualTo(ints[0]);
+    assertThat(generated[1]).isEqualTo(ints[1]);
+    assertThat(generated[2]).isEqualTo(ints[2]);
+
     observer.assertNoMoreEvents();
   }
 
@@ -889,11 +924,13 @@ import static com.google.common.truth.Truth.assertThat;
 
     // when
     prefser.put(givenKey, ints);
-    Integer[] first =
+    Integer[] generated =
         prefser.getAndObserve(givenKey, Integer[].class, defaultInts).toBlocking().first();
 
     // then
-    assertThat(first).isEqualTo(ints);
+    assertThat(generated[0]).isEqualTo(ints[0]);
+    assertThat(generated[1]).isEqualTo(ints[1]);
+    assertThat(generated[2]).isEqualTo(ints[2]);
   }
 
   @Test public void testObserveArrayOfIntsPrimitive() {
@@ -907,9 +944,13 @@ import static com.google.common.truth.Truth.assertThat;
     RecordingObserver<int[]> observer = new RecordingObserver<>();
     prefser.observe(givenKey, int[].class, defaultInts).subscribe(observer);
     prefser.put(givenKey, ints);
+    int[] generated = observer.takeNext();
 
     // then
-    assertThat(observer.takeNext()).isEqualTo(ints);
+    assertThat(generated[0]).isEqualTo(ints[0]);
+    assertThat(generated[1]).isEqualTo(ints[1]);
+    assertThat(generated[2]).isEqualTo(ints[2]);
+
     observer.assertNoMoreEvents();
   }
 
@@ -922,10 +963,13 @@ import static com.google.common.truth.Truth.assertThat;
 
     // when
     prefser.put(givenKey, ints);
-    int[] first = prefser.getAndObserve(givenKey, int[].class, defaultInts).toBlocking().first();
+    int[] generated =
+        prefser.getAndObserve(givenKey, int[].class, defaultInts).toBlocking().first();
 
     // then
-    assertThat(first).isEqualTo(ints);
+    assertThat(generated[0]).isEqualTo(ints[0]);
+    assertThat(generated[1]).isEqualTo(ints[1]);
+    assertThat(generated[2]).isEqualTo(ints[2]);
   }
 
   @Test public void testObserveArrayOfDoubles() {
@@ -939,9 +983,13 @@ import static com.google.common.truth.Truth.assertThat;
     RecordingObserver<Double[]> observer = new RecordingObserver<>();
     prefser.observe(givenKey, Double[].class, defaultDoubles).subscribe(observer);
     prefser.put(givenKey, doubles);
+    Double[] generated = observer.takeNext();
 
     // then
-    assertThat(observer.takeNext()).isEqualTo(doubles);
+    assertThat(generated[0]).isEqualTo(doubles[0]);
+    assertThat(generated[1]).isEqualTo(doubles[1]);
+    assertThat(generated[2]).isEqualTo(doubles[2]);
+
     observer.assertNoMoreEvents();
   }
 
@@ -954,11 +1002,13 @@ import static com.google.common.truth.Truth.assertThat;
 
     // when
     prefser.put(givenKey, doubles);
-    Double[] first =
+    Double[] generated =
         prefser.getAndObserve(givenKey, Double[].class, defaultDoubles).toBlocking().first();
 
     // then
-    assertThat(first).isEqualTo(doubles);
+    assertThat(generated[0]).isEqualTo(doubles[0]);
+    assertThat(generated[1]).isEqualTo(doubles[1]);
+    assertThat(generated[2]).isEqualTo(doubles[2]);
   }
 
   @Test public void testObserveArrayOfDoublesPrimitive() {
@@ -972,9 +1022,13 @@ import static com.google.common.truth.Truth.assertThat;
     RecordingObserver<double[]> observer = new RecordingObserver<>();
     prefser.observe(givenKey, double[].class, defaultDoubles).subscribe(observer);
     prefser.put(givenKey, doubles);
+    double[] generated = observer.takeNext();
 
     // then
-    assertThat(observer.takeNext()).isEqualTo(doubles, 0.1);
+    assertThat(generated[0]).isEqualTo(doubles[0]);
+    assertThat(generated[1]).isEqualTo(doubles[1]);
+    assertThat(generated[2]).isEqualTo(doubles[2]);
+
     observer.assertNoMoreEvents();
   }
 
@@ -987,11 +1041,13 @@ import static com.google.common.truth.Truth.assertThat;
 
     // when
     prefser.put(givenKey, doubles);
-    double[] first =
+    double[] generated =
         prefser.getAndObserve(givenKey, double[].class, defaultDoubles).toBlocking().first();
 
     // then
-    assertThat(first).isEqualTo(doubles, 0.1);
+    assertThat(generated[0]).isEqualTo(doubles[0]);
+    assertThat(generated[1]).isEqualTo(doubles[1]);
+    assertThat(generated[2]).isEqualTo(doubles[2]);
   }
 
   @Test public void testObserveArrayOfStrings() {
@@ -1005,9 +1061,13 @@ import static com.google.common.truth.Truth.assertThat;
     RecordingObserver<String[]> observer = new RecordingObserver<>();
     prefser.observe(givenKey, String[].class, defaultStrings).subscribe(observer);
     prefser.put(givenKey, strings);
+    String[] generated = observer.takeNext();
 
     // then
-    assertThat(observer.takeNext()).isEqualTo(strings);
+    assertThat(generated[0]).isEqualTo(strings[0]);
+    assertThat(generated[1]).isEqualTo(strings[1]);
+    assertThat(generated[2]).isEqualTo(strings[2]);
+
     observer.assertNoMoreEvents();
   }
 
@@ -1020,11 +1080,13 @@ import static com.google.common.truth.Truth.assertThat;
 
     // when
     prefser.put(givenKey, strings);
-    String[] first =
+    String[] generated =
         prefser.getAndObserve(givenKey, String[].class, defaultStrings).toBlocking().first();
 
     // then
-    assertThat(first).isEqualTo(strings);
+    assertThat(generated[0]).isEqualTo(strings[0]);
+    assertThat(generated[1]).isEqualTo(strings[1]);
+    assertThat(generated[2]).isEqualTo(strings[2]);
   }
 
   @Test public void testObserveArrayOfCustomObjects() {
@@ -1045,9 +1107,13 @@ import static com.google.common.truth.Truth.assertThat;
     RecordingObserver<CustomClass[]> observer = new RecordingObserver<>();
     prefser.observe(givenKey, CustomClass[].class, defaultCustomClasses).subscribe(observer);
     prefser.put(givenKey, customClasses);
+    CustomClass[] generated = observer.takeNext();
 
     // then
-    assertThat(observer.takeNext()).isEqualTo(customClasses);
+    assertThat(generated[0]).isEqualTo(customClasses[0]);
+    assertThat(generated[1]).isEqualTo(customClasses[1]);
+    assertThat(generated[2]).isEqualTo(customClasses[2]);
+
     observer.assertNoMoreEvents();
   }
 
@@ -1067,12 +1133,15 @@ import static com.google.common.truth.Truth.assertThat;
 
     // when
     prefser.put(givenKey, customClasses);
-    CustomClass[] first = prefser.getAndObserve(givenKey, CustomClass[].class, defaultCustomClasses)
-        .toBlocking()
-        .first();
+    CustomClass[] generated =
+        prefser.getAndObserve(givenKey, CustomClass[].class, defaultCustomClasses)
+            .toBlocking()
+            .first();
 
     // then
-    assertThat(first).isEqualTo(customClasses);
+    assertThat(generated[0]).isEqualTo(customClasses[0]);
+    assertThat(generated[1]).isEqualTo(customClasses[1]);
+    assertThat(generated[2]).isEqualTo(customClasses[2]);
   }
 
   @Test public void testObservePreferencesOnPut() {

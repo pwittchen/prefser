@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import org.junit.After;
 import org.junit.Before;
@@ -49,19 +48,28 @@ import static com.google.common.truth.Truth.assertThat;
       this.valueTwo = valueTwo;
     }
 
-    @Override public boolean equals(Object other) {
-      boolean isEqual = false;
-
-      if (other instanceof CustomClass) {
-        isEqual = ((CustomClass) other).valueOne == valueOne;
-        isEqual |= ((CustomClass) other).valueTwo.equals(valueTwo);
+    @Override public boolean equals(Object o) {
+      if (this == o) {
+        return true;
       }
 
-      return isEqual;
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
+
+      CustomClass that = (CustomClass) o;
+
+      if (valueOne != that.valueOne) {
+        return false;
+      }
+
+      return valueTwo != null ? valueTwo.equals(that.valueTwo) : that.valueTwo == null;
     }
 
-    @Override @TargetApi(value = 19) public int hashCode() {
-      return Objects.hash(valueOne, valueTwo);
+    @Override public int hashCode() {
+      int result = valueOne;
+      result = 31 * result + (valueTwo != null ? valueTwo.hashCode() : 0);
+      return result;
     }
   }
 
@@ -568,7 +576,9 @@ import static com.google.common.truth.Truth.assertThat;
     Boolean[] readObject = prefser.get(givenKey, Boolean[].class, defaultArray);
 
     // then
-    assertThat(readObject).isEqualTo(booleans);
+    assertThat(readObject[0]).isEqualTo(booleans[0]);
+    assertThat(readObject[1]).isEqualTo(booleans[1]);
+    assertThat(readObject[2]).isEqualTo(booleans[2]);
     prefser.remove(givenKey);
   }
 
@@ -584,7 +594,9 @@ import static com.google.common.truth.Truth.assertThat;
     Float[] readObject = prefser.get(givenKey, Float[].class, defaultArray);
 
     // then
-    assertThat(readObject).isEqualTo(floats);
+    assertThat(readObject[0]).isEqualTo(floats[0]);
+    assertThat(readObject[1]).isEqualTo(floats[1]);
+    assertThat(readObject[2]).isEqualTo(floats[2]);
     prefser.remove(givenKey);
   }
 
@@ -600,7 +612,9 @@ import static com.google.common.truth.Truth.assertThat;
     Integer[] readObject = prefser.get(givenKey, Integer[].class, defaultArray);
 
     // then
-    assertThat(readObject).isEqualTo(integers);
+    assertThat(readObject[0]).isEqualTo(integers[0]);
+    assertThat(readObject[1]).isEqualTo(integers[1]);
+    assertThat(readObject[2]).isEqualTo(integers[2]);
     prefser.remove(givenKey);
   }
 
@@ -616,7 +630,9 @@ import static com.google.common.truth.Truth.assertThat;
     Long[] readObject = prefser.get(givenKey, Long[].class, defaultArray);
 
     // then
-    assertThat(readObject).isEqualTo(longs);
+    assertThat(readObject[0]).isEqualTo(longs[0]);
+    assertThat(readObject[1]).isEqualTo(longs[1]);
+    assertThat(readObject[2]).isEqualTo(longs[2]);
     prefser.remove(givenKey);
   }
 
@@ -632,7 +648,9 @@ import static com.google.common.truth.Truth.assertThat;
     Double[] readObject = prefser.get(givenKey, Double[].class, defaultArray);
 
     // then
-    assertThat(readObject).isEqualTo(doubles);
+    assertThat(readObject[0]).isEqualTo(doubles[0]);
+    assertThat(readObject[1]).isEqualTo(doubles[1]);
+    assertThat(readObject[2]).isEqualTo(doubles[2]);
     prefser.remove(givenKey);
   }
 
@@ -648,7 +666,9 @@ import static com.google.common.truth.Truth.assertThat;
     String[] readObject = prefser.get(givenKey, String[].class, defaultArray);
 
     // then
-    assertThat(readObject).isEqualTo(strings);
+    assertThat(readObject[0]).isEqualTo(strings[0]);
+    assertThat(readObject[1]).isEqualTo(strings[1]);
+    assertThat(readObject[2]).isEqualTo(strings[2]);
     prefser.remove(givenKey);
   }
 
@@ -672,7 +692,9 @@ import static com.google.common.truth.Truth.assertThat;
         prefser.get(givenKey, CustomClass[].class, defaultCustomClassesArray);
 
     // then
-    assertThat(readObject).isEqualTo(customClassesArray);
+    assertThat(readObject[0]).isEqualTo(customClassesArray[0]);
+    assertThat(readObject[1]).isEqualTo(customClassesArray[1]);
+    assertThat(readObject[2]).isEqualTo(customClassesArray[2]);
     prefser.remove(givenKey);
   }
 
