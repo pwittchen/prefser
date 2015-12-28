@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+v. 2.0.5
+--------
+*28 Dec 2015*
+- improved error checking in `put(...)` method
+- added missing annotations to some tests and reorganized tests
+- added missing license info to some classes
+- bumped RxAndroid version in `README.md` file
+
 v. 2.0.4
 --------
 *13 Dec 2015*
