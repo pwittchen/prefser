@@ -417,6 +417,7 @@ Caveats
 
 * Set of Strings should be saved and read in a "classical way" with `getPreferences()` method.
 * TypeToken is required for proper Lists reading.
+* This library is just a wrapper for SharedPreferences, so it's not recommended to use it for large data sets, complicated data operations or adding new data frequently - for such use cases SQLite database would be better choice
 
 References
 ----------
