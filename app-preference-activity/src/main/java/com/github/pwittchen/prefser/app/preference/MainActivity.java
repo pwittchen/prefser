@@ -19,8 +19,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import com.github.myapplication.R;
 import com.github.pwittchen.prefser.library.Prefser;
@@ -31,16 +31,16 @@ public class MainActivity extends Activity {
 
   private Prefser prefser;
 
-  @InjectView(R.id.user_name) protected TextView tvUserName;
-  @InjectView(R.id.app_updates) protected TextView tvApplicationUpdates;
-  @InjectView(R.id.screen_on) protected TextView screenOn;
-  @InjectView(R.id.download_type) protected TextView tvDownloadType;
-  @InjectView(R.id.notification_type) protected TextView tvNotificationType;
+  @BindView(R.id.user_name) protected TextView tvUserName;
+  @BindView(R.id.app_updates) protected TextView tvApplicationUpdates;
+  @BindView(R.id.screen_on) protected TextView screenOn;
+  @BindView(R.id.download_type) protected TextView tvDownloadType;
+  @BindView(R.id.notification_type) protected TextView tvNotificationType;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    ButterKnife.inject(this);
+    ButterKnife.bind(this);
     prefser = new Prefser(this);
   }
 

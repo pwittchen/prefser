@@ -19,8 +19,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Toast;
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import com.github.pwittchen.prefser.library.Prefser;
 import rx.Subscription;
@@ -40,14 +40,14 @@ public class MainActivity extends Activity {
   private Subscription subscriptionTwo;
   private Subscription subscriptionThree;
 
-  @InjectView(R.id.value_one) protected EditText valueOne;
-  @InjectView(R.id.value_two) protected EditText valueTwo;
-  @InjectView(R.id.value_three) protected EditText valueThree;
+  @BindView(R.id.value_one) protected EditText valueOne;
+  @BindView(R.id.value_two) protected EditText valueTwo;
+  @BindView(R.id.value_three) protected EditText valueThree;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    ButterKnife.inject(this);
+    ButterKnife.bind(this);
     prefser = new Prefser(this);
   }
 
