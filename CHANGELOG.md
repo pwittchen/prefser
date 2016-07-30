@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+v. 2.0.6
+--------
+*30 Jul 2016*
+
+- bumped RxJava to v. 1.1.8
+- bumped Gson to 2.7
+- bumped Truth to 0.28
+- updated dependencies in sample apps
+
 v. 2.0.5
 --------
 *28 Dec 2015*
