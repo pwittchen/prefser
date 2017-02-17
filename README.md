@@ -421,9 +421,14 @@ Caveats
 
 References
 ----------
+
+### General information
 * [SharedPreferences](http://developer.android.com/reference/android/content/SharedPreferences.html)
 * [RxJava](https://github.com/ReactiveX/RxJava)
 * [RxAndroid](https://github.com/ReactiveX/RxAndroid)
+
+### Similar projects
+* [SecureSharedPreferences](https://github.com/rtoshiro/SecureSharedPreferences)
 
 License
 -------
