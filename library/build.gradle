@@ -1,14 +1,15 @@
 apply plugin: 'com.android.library'
 apply plugin: 'jacoco-android'
 apply from: '../config/quality.gradle'
+apply from: '../maven_push.gradle'
 
 android {
-  compileSdkVersion 23
-  buildToolsVersion "23.0.1"
+  compileSdkVersion rootProject.ext.compileSdkVersion
+  buildToolsVersion rootProject.ext.buildToolsVersion
 
   defaultConfig {
-    minSdkVersion 9
-    targetSdkVersion 23
+    minSdkVersion rootProject.ext.minSdkVersion
+    targetSdkVersion rootProject.ext.compileSdkVersion
     versionCode 1
     versionName "1.0"
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -35,21 +36,15 @@ android {
 }
 
 dependencies {
-  compile 'com.google.code.gson:gson:2.7'
-  compile 'io.reactivex:rxjava:1.1.8'
-  compile 'com.android.support:support-annotations:23.1.1'
+  compile deps.gson
+  compile deps.rxjava
+  compile deps.supportannotations
 
-  androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
-  androidTestCompile('com.google.truth:truth:0.28') {
-    exclude group: 'junit' // Android has JUnit built in.
+  androidTestCompile deps.testingsupport
+  androidTestCompile(deps.truth) {
+    exclude group: 'junit'                // Android has JUnit built in - it fixes conflicts related to Mockito
   }
-  androidTestCompile 'com.google.dexmaker:dexmaker:1.2' // required by Mockito
-  androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.2' // required by Mockito
-  androidTestCompile 'org.mockito:mockito-core:1.10.19'
+  androidTestCompile deps.dexmaker        // required by Mockito
+  androidTestCompile deps.dexmakermockito // required by Mockito
+  androidTestCompile deps.mockitocore
 }
-
-task wrapper(type: Wrapper) {
-  gradleVersion = '2.2.1'
-}
-
-apply from: '../maven_push.gradle'
