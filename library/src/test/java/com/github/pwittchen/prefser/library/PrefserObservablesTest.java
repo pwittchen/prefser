@@ -15,8 +15,7 @@
  */
 package com.github.pwittchen.prefser.library;
 
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
+import android.content.Context;
 import com.github.pwittchen.prefser.library.utils.RecordingObserver;
 import java.util.Arrays;
 import java.util.List;
@@ -24,22 +23,26 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
 import rx.Observable;
 import rx.Subscription;
 
 import static com.google.common.truth.Truth.assertThat;
 
-@RunWith(AndroidJUnit4.class) public final class PrefserObservablesTest {
+@RunWith(RobolectricTestRunner.class) @Config(constants = BuildConfig.class)
+public final class PrefserObservablesTest {
 
   private static final String GIVEN_KEY = "givenKey";
-  public static final String GIVEN_STRING_VALUE = "givenStringValue";
+  private static final String GIVEN_STRING_VALUE = "givenStringValue";
   private Prefser prefser;
 
   private class CustomClass {
     private int valueOne;
     private String valueTwo;
 
-    public CustomClass(int valueOne, String valueTwo) {
+    private CustomClass(int valueOne, String valueTwo) {
       this.valueOne = valueOne;
       this.valueTwo = valueTwo;
     }
@@ -70,7 +73,8 @@ import static com.google.common.truth.Truth.assertThat;
   }
 
   @Before public void setUp() {
-    prefser = new Prefser(InstrumentationRegistry.getContext());
+    final Context context = RuntimeEnvironment.application.getApplicationContext();
+    prefser = new Prefser(context);
     prefser.clear();
   }
 

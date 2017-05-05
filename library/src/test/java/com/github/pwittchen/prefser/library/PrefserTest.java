@@ -16,9 +16,8 @@
 package com.github.pwittchen.prefser.library;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -29,10 +28,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
 
 import static com.google.common.truth.Truth.assertThat;
 
-@RunWith(AndroidJUnit4.class) public final class PrefserTest {
+@RunWith(RobolectricTestRunner.class) @Config(constants = BuildConfig.class)
+public final class PrefserTest {
 
   private static final String GIVEN_KEY = "givenKey";
   private static final String GIVEN_STRING_VALUE = "givenStringValue";
@@ -43,7 +46,7 @@ import static com.google.common.truth.Truth.assertThat;
     private int valueOne;
     private String valueTwo;
 
-    public CustomClass(int valueOne, String valueTwo) {
+    private CustomClass(int valueOne, String valueTwo) {
       this.valueOne = valueOne;
       this.valueTwo = valueTwo;
     }
@@ -74,7 +77,8 @@ import static com.google.common.truth.Truth.assertThat;
   }
 
   @Before public void setUp() {
-    prefser = new Prefser(InstrumentationRegistry.getContext());
+    final Context context = RuntimeEnvironment.application.getApplicationContext();
+    prefser = new Prefser(context);
     prefser.clear();
   }
 
@@ -105,9 +109,10 @@ import static com.google.common.truth.Truth.assertThat;
   @Test public void testPrefserWithJsonConverterShouldNotBeNull() {
     // given
     JsonConverter jsonConverter = Mockito.mock(JsonConverter.class);
+    Context context = RuntimeEnvironment.application.getApplicationContext();
 
     // when
-    Prefser customPrefser = new Prefser(InstrumentationRegistry.getContext(), jsonConverter);
+    Prefser customPrefser = new Prefser(context, jsonConverter);
 
     // then
     assertThat(customPrefser).isNotNull();
@@ -117,9 +122,10 @@ import static com.google.common.truth.Truth.assertThat;
   public void testPrefserWithJsonConverterShouldThrowAnExceptionWhenConverterIsNull() {
     // given
     JsonConverter jsonConverter = null;
+    Context context = RuntimeEnvironment.application.getApplicationContext();
 
     // when
-    new Prefser(InstrumentationRegistry.getContext(), jsonConverter);
+    new Prefser(context, jsonConverter);
 
     // then throw an exception
   }
