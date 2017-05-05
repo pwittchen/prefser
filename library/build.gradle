@@ -17,7 +17,8 @@ android {
 
   buildTypes {
     debug {
-      testCoverageEnabled = true
+      minifyEnabled false
+      testCoverageEnabled true
     }
 
     release {
@@ -26,13 +27,24 @@ android {
     }
   }
 
-  compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_7
-  }
-
   packagingOptions {
     exclude 'LICENSE.txt'
+    exclude 'META-INF/LICENSE.txt'
   }
+
+  testOptions {
+    unitTests.all {
+      jacoco {
+        includeNoLocationClasses = true
+      }
+    }
+  }
+}
+
+jacocoAndroidUnitTestReport {
+  csv.enabled false
+  html.enabled true
+  xml.enabled true
 }
 
 dependencies {
