@@ -24,8 +24,11 @@ install:
 
 sudo: required
 
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
 script:
-  - ./gradlew clean build test check
+  - ./gradlew clean build test jacocoTestReport check
 
 cache:
   directories:
