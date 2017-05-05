@@ -40,11 +40,8 @@ dependencies {
   compile deps.rxjava
   compile deps.supportannotations
 
-  androidTestCompile deps.testingsupport
-  androidTestCompile(deps.truth) {
-    exclude group: 'junit'                // Android has JUnit built in - it fixes conflicts related to Mockito
-  }
-  androidTestCompile deps.dexmaker        // required by Mockito
-  androidTestCompile deps.dexmakermockito // required by Mockito
-  androidTestCompile deps.mockitocore
+  testCompile deps.junit
+  testCompile deps.truth
+  testCompile deps.mockitocore
+  testCompile deps.robolectric
 }

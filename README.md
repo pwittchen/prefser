@@ -374,27 +374,18 @@ or through Gradle:
 ```groovy
 dependencies {
   compile 'com.github.pwittchen:prefser:2.0.6'
-  compile 'io.reactivex:rxandroid:1.1.0'
+  compile 'io.reactivex:rxandroid:1.2.1'
 }
 ```
 
 Tests
 -----
 
-Tests are available in `library/src/androidTest/java/` directory and can be executed on emulator or Android device from Android Studio or CLI with the following command:
+Tests are available in `library/src/test/java/` directory and can be executed via CLI with Robolectric with the following command:
 
 ```
-./gradlew connectedCheck
+./gradlew test
 ```
-
-Test coverage report can be generated with the following command:
-
-```
-./gradlew createDebugCoverageReport
-```
-
-In order to generate report, emulator or Android device needs to be connected to the computer.
-Report will be generated in the `library/build/outputs/reports/coverage/debug/` directory.
 
 Code style
 ----------

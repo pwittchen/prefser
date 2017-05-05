@@ -25,7 +25,7 @@ install:
 sudo: required
 
 script:
-  - ./gradlew clean build check
+  - ./gradlew clean build test check
 
 cache:
   directories:

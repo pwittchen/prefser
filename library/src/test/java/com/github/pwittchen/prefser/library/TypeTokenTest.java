@@ -15,18 +15,20 @@
  */
 package com.github.pwittchen.prefser.library;
 
-import android.support.test.runner.AndroidJUnit4;
 import java.lang.reflect.Type;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import static com.google.common.truth.Truth.assertThat;
 
-@RunWith(AndroidJUnit4.class) final public class TypeTokenTest {
+@RunWith(RobolectricTestRunner.class) @Config(constants = BuildConfig.class)
+final public class TypeTokenTest {
 
   @Test(expected = RuntimeException.class)
   public void testShouldThrowRuntimeExceptionWithMissingTypeParameter() {
-    TypeToken typeTokenWithMissingType = new TypeToken() {
+    new TypeToken() {
     };
   }
 
