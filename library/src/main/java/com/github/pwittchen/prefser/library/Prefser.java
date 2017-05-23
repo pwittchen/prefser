@@ -15,6 +15,7 @@
  */
 package com.github.pwittchen.prefser.library;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -23,7 +24,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import rx.Observable;
 import rx.Subscriber;
@@ -65,14 +65,8 @@ public class Prefser {
 
   private final SharedPreferences preferences;
   private final SharedPreferences.Editor editor;
-  private final Map<Class<?>, Accessor<?>> accessors = new HashMap<>();
-  private JsonConverter jsonConverter;
-
-  private interface Accessor<T> {
-    T get(String key, T defaultValue);
-
-    void put(String key, T value);
-  }
+  private final JsonConverter jsonConverter;
+  private final AccessorsProvider accessorProvider;
 
   /**
    * Creates Prefser object with default SharedPreferences from PreferenceManager.
@@ -111,14 +105,14 @@ public class Prefser {
    * @param sharedPreferences instance of SharedPreferences
    * @param jsonConverter Json Converter
    */
-  public Prefser(@NonNull SharedPreferences sharedPreferences,
+  @SuppressLint("CommitPrefEdits") public Prefser(@NonNull SharedPreferences sharedPreferences,
       @NonNull JsonConverter jsonConverter) {
-    checkNotNull(sharedPreferences, "sharedPreferences == null");
-    checkNotNull(jsonConverter, "jsonConverter == null");
+    Preconditions.checkNotNull(sharedPreferences, "sharedPreferences == null");
+    Preconditions.checkNotNull(jsonConverter, "jsonConverter == null");
     this.preferences = sharedPreferences;
     this.editor = preferences.edit();
     this.jsonConverter = jsonConverter;
-    initAccessors();
+    this.accessorProvider = new PreferencesAccessorsProvider(preferences, editor);
   }
 
   /**
@@ -191,8 +185,8 @@ public class Prefser {
    */
   public <T> Observable<T> observe(@NonNull String key, @NonNull Class<T> classOfT,
       T defaultValue) {
-    checkNotNull(key, KEY_IS_NULL);
-    checkNotNull(classOfT, CLASS_OF_T_IS_NULL);
+    Preconditions.checkNotNull(key, KEY_IS_NULL);
+    Preconditions.checkNotNull(classOfT, CLASS_OF_T_IS_NULL);
 
     return observe(key, TypeToken.fromClass(classOfT), defaultValue);
   }
@@ -210,8 +204,8 @@ public class Prefser {
    */
   public <T> Observable<T> observe(@NonNull final String key,
       @NonNull final TypeToken<T> typeTokenOfT, final T defaultValue) {
-    checkNotNull(key, KEY_IS_NULL);
-    checkNotNull(typeTokenOfT, TYPE_TOKEN_OF_T_IS_NULL);
+    Preconditions.checkNotNull(key, KEY_IS_NULL);
+    Preconditions.checkNotNull(typeTokenOfT, TYPE_TOKEN_OF_T_IS_NULL);
 
     return observePreferences().filter(new Func1<String, Boolean>() {
       @Override public Boolean call(String filteredKey) {
@@ -235,8 +229,8 @@ public class Prefser {
    * @return value from SharedPreferences associated with given key or default value
    */
   public <T> T get(@NonNull String key, @NonNull Class<T> classOfT, T defaultValue) {
-    checkNotNull(key, KEY_IS_NULL);
-    checkNotNull(classOfT, CLASS_OF_T_IS_NULL);
+    Preconditions.checkNotNull(key, KEY_IS_NULL);
+    Preconditions.checkNotNull(classOfT, CLASS_OF_T_IS_NULL);
 
     if (!contains(key) && defaultValue == null) {
       return null;
@@ -256,12 +250,12 @@ public class Prefser {
    * @return value from SharedPreferences associated with given key or default value
    */
   public <T> T get(@NonNull String key, @NonNull TypeToken<T> typeTokenOfT, T defaultValue) {
-    checkNotNull(key, KEY_IS_NULL);
-    checkNotNull(typeTokenOfT, TYPE_TOKEN_OF_T_IS_NULL);
+    Preconditions.checkNotNull(key, KEY_IS_NULL);
+    Preconditions.checkNotNull(typeTokenOfT, TYPE_TOKEN_OF_T_IS_NULL);
 
     Type typeOfT = typeTokenOfT.getType();
 
-    for (Map.Entry<Class<?>, Accessor<?>> entry : accessors.entrySet()) {
+    for (Map.Entry<Class<?>, Accessor<?>> entry : accessorProvider.getAccessors().entrySet()) {
       if (typeOfT.equals(entry.getKey())) {
         @SuppressWarnings("unchecked") Accessor<T> accessor = (Accessor<T>) entry.getValue();
         return accessor.get(key, defaultValue);
@@ -285,7 +279,7 @@ public class Prefser {
    * @return Observable with String containing key of the value in default SharedPreferences
    */
   public Observable<String> observePreferences() {
-    return Observable.create(new Observable.OnSubscribe<String>() {
+    return Observable.unsafeCreate(new Observable.OnSubscribe<String>() {
       // NOTE: Without this OnChangeListener will be GCed.
       Collection<OnChangeListener> listenerReferences =
           Collections.synchronizedList(new ArrayList<OnChangeListener>());
@@ -327,7 +321,7 @@ public class Prefser {
    * @param value value to be stored
    */
   public <T> void put(@NonNull String key, @NonNull T value) {
-    checkNotNull(value, VALUE_IS_NULL);
+    Preconditions.checkNotNull(value, VALUE_IS_NULL);
     put(key, value, TypeToken.fromValue(value));
   }
 
@@ -339,11 +333,11 @@ public class Prefser {
    * @param typeTokenOfT type token of T (e.g. {@code new TypeToken<> {})
    */
   public <T> void put(@NonNull String key, @NonNull T value, @NonNull TypeToken<T> typeTokenOfT) {
-    checkNotNull(key, KEY_IS_NULL);
-    checkNotNull(value, VALUE_IS_NULL);
-    checkNotNull(typeTokenOfT, TYPE_TOKEN_OF_T_IS_NULL);
+    Preconditions.checkNotNull(key, KEY_IS_NULL);
+    Preconditions.checkNotNull(value, VALUE_IS_NULL);
+    Preconditions.checkNotNull(typeTokenOfT, TYPE_TOKEN_OF_T_IS_NULL);
 
-    if (!accessors.containsKey(value.getClass())) {
+    if (!accessorProvider.getAccessors().containsKey(value.getClass())) {
       String jsonValue = jsonConverter.toJson(value, typeTokenOfT.getType());
       editor.putString(key, String.valueOf(jsonValue)).apply();
       return;
@@ -351,7 +345,7 @@ public class Prefser {
 
     Class<?> classOfValue = value.getClass();
 
-    for (Map.Entry<Class<?>, Accessor<?>> entry : accessors.entrySet()) {
+    for (Map.Entry<Class<?>, Accessor<?>> entry : accessorProvider.getAccessors().entrySet()) {
       if (classOfValue.equals(entry.getKey())) {
         @SuppressWarnings("unchecked") Accessor<T> accessor = (Accessor<T>) entry.getValue();
         accessor.put(key, value);
@@ -365,7 +359,7 @@ public class Prefser {
    * @param key key of the preference to be removed
    */
   public void remove(@NonNull String key) {
-    checkNotNull(key, KEY_IS_NULL);
+    Preconditions.checkNotNull(key, KEY_IS_NULL);
     if (!contains(key)) {
       return;
     }
@@ -391,73 +385,5 @@ public class Prefser {
    */
   public int size() {
     return preferences.getAll().size();
-  }
-
-  private void initAccessors() {
-    accessors.put(Boolean.class, new Accessor<Boolean>() {
-      @Override public Boolean get(String key, Boolean defaultValue) {
-        return preferences.getBoolean(key, defaultValue);
-      }
-
-      @Override public void put(String key, Boolean value) {
-        editor.putBoolean(key, value).apply();
-      }
-    });
-
-    accessors.put(Float.class, new Accessor<Float>() {
-      @Override public Float get(String key, Float defaultValue) {
-        return preferences.getFloat(key, defaultValue);
-      }
-
-      @Override public void put(String key, Float value) {
-        editor.putFloat(key, value).apply();
-      }
-    });
-
-    accessors.put(Integer.class, new Accessor<Integer>() {
-      @Override public Integer get(String key, Integer defaultValue) {
-        return preferences.getInt(key, defaultValue);
-      }
-
-      @Override public void put(String key, Integer value) {
-        editor.putInt(key, value).apply();
-      }
-    });
-
-    accessors.put(Long.class, new Accessor<Long>() {
-      @Override public Long get(String key, Long defaultValue) {
-        return preferences.getLong(key, defaultValue);
-      }
-
-      @Override public void put(String key, Long value) {
-        editor.putLong(key, value).apply();
-      }
-    });
-
-    accessors.put(Double.class, new Accessor<Double>() {
-      @Override public Double get(String key, Double defaultValue) {
-        return Double.valueOf(preferences.getString(key, String.valueOf(defaultValue)));
-      }
-
-      @Override public void put(String key, Double value) {
-        editor.putString(key, String.valueOf(value)).apply();
-      }
-    });
-
-    accessors.put(String.class, new Accessor<String>() {
-      @Override public String get(String key, String defaultValue) {
-        return preferences.getString(key, String.valueOf(defaultValue));
-      }
-
-      @Override public void put(String key, String value) {
-        editor.putString(key, String.valueOf(value)).apply();
-      }
-    });
-  }
-
-  private void checkNotNull(Object object, String message) {
-    if (object == null) {
-      throw new NullPointerException(message);
-    }
   }
 }
