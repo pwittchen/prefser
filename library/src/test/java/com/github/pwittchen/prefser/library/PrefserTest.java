@@ -27,12 +27,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class) @Config(constants = BuildConfig.class)
 public final class PrefserTest {
@@ -97,7 +98,9 @@ public final class PrefserTest {
 
   @Test public void testPrefserShouldNotBeNullWhenCreatedWithPreferences() {
     // given
-    SharedPreferences sharedPreferences = Mockito.mock(SharedPreferences.class);
+    SharedPreferences sharedPreferences = mock(SharedPreferences.class);
+    SharedPreferences.Editor editor = mock(SharedPreferences.Editor.class);
+    when(sharedPreferences.edit()).thenReturn(editor);
 
     // when
     Prefser customPrefser = new Prefser(sharedPreferences);
@@ -108,7 +111,7 @@ public final class PrefserTest {
 
   @Test public void testPrefserWithJsonConverterShouldNotBeNull() {
     // given
-    JsonConverter jsonConverter = Mockito.mock(JsonConverter.class);
+    JsonConverter jsonConverter = mock(JsonConverter.class);
     Context context = RuntimeEnvironment.application.getApplicationContext();
 
     // when
@@ -132,8 +135,10 @@ public final class PrefserTest {
 
   @Test public void testPrefserWithSharedPreferencesAndJsonConverterShouldNotBeNull() {
     // given
-    JsonConverter jsonConverter = Mockito.mock(JsonConverter.class);
-    SharedPreferences sharedPreferences = Mockito.mock(SharedPreferences.class);
+    JsonConverter jsonConverter = mock(JsonConverter.class);
+    SharedPreferences sharedPreferences = mock(SharedPreferences.class);
+    SharedPreferences.Editor editor = mock(SharedPreferences.Editor.class);
+    when(sharedPreferences.edit()).thenReturn(editor);
 
     // when
     Prefser customPrefser = new Prefser(sharedPreferences, jsonConverter);
@@ -146,7 +151,7 @@ public final class PrefserTest {
   public void testPrefserWithSharedPreferencesShouldThrowAnExceptionWhenConverterIsNull() {
     // given
     JsonConverter jsonConverter = null;
-    SharedPreferences sharedPreferences = Mockito.mock(SharedPreferences.class);
+    SharedPreferences sharedPreferences = mock(SharedPreferences.class);
 
     // when
     new Prefser(sharedPreferences, jsonConverter);
