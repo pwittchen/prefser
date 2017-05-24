@@ -16,6 +16,10 @@
 package com.github.pwittchen.prefser.library;
 
 class Preconditions {
+
+  private Preconditions() {
+  }
+
   static void checkNotNull(final Object object, final String message) {
     if (object == null) {
       throw new NullPointerException(message);
