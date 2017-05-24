@@ -34,4 +34,9 @@ public class PreconditionsTest {
 
     // then an exception is thrown
   }
+
+  @Test(expected = IllegalAccessException.class)
+  public void constructorShouldBePrivate() throws Exception {
+    Preconditions.class.newInstance();
+  }
 }
