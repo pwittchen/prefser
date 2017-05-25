@@ -1,6 +1,17 @@
 CHANGELOG
 =========
 
+v. 2.0.7
+--------
+*25 May 2017*
+
+- updated dependencies
+- updated Gradle configuration
+- migrated unit tests to Robolectric
+- started executing unit tests on Travis CI
+- added integration with codecov.io and coverage report
+- extracted code related to accessors from the `Prefser` class (refactoring library internals) #109 
+
 v. 2.0.6
 --------
 *30 Jul 2016*
