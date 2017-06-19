@@ -6,6 +6,13 @@ min sdk version = 9
 
 JavaDoc is available at: http://pwittchen.github.io/prefser/
 
+| Current Branch | Branch  | Artifact Id | Build Status  | Coverage | Maven Central |
+|:--------------:|:-------:|:-----------:|:-------------:|:--------:|:-------------:|
+| :ballot_box_with_check: | [`RxJava1.x`](https://github.com/pwittchen/prefser/tree/RxJava1.x) | `prefser` | [![Build Status for RxJava1.x](https://travis-ci.org/pwittchen/prefser.svg?branch=RxJava1.x)](https://travis-ci.org/pwittchen/prefser) | [![codecov](https://codecov.io/gh/pwittchen/prefser/branch/RxJava1.x/graph/badge.svg)](https://codecov.io/gh/pwittchen/prefser) | ![Maven Central](https://img.shields.io/maven-central/v/com.github.pwittchen/prefser.svg?style=flat) |
+| | [`RxJava2.x`](https://github.com/pwittchen/prefser/tree/RxJava2.x) | `prefser-rx2` | [![Build Status for RxJava2.x](https://travis-ci.org/pwittchen/prefser.svg?branch=RxJava2.x)](https://travis-ci.org/pwittchen/prefser) | [![codecov](https://codecov.io/gh/pwittchen/prefser/branch/RxJava2.x/graph/badge.svg)](https://codecov.io/gh/pwittchen/prefser) | ![Maven Central](https://img.shields.io/maven-central/v/com.github.pwittchen/prefser-rx2.svg?style=flat) |
+
+This is **RxJava1.x** branch. To see documentation for RxJava2.x, switch to [RxJava2.x](https://github.com/pwittchen/prefser/tree/RxJava2.x) branch.
+
 Contents
 --------
 * [Overview](#overview)
