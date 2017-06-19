@@ -1,6 +1,16 @@
 CHANGELOG
 =========
 
+v. 2.1.0
+--------
+*19 Jun 2017*
+- migrated project to RxJava2.x on `RxJava2.x` branch
+- kept backward compatibility with RxJava.x or `RxJava1.x` branch
+- removed `master` branch from the Git repository
+- updated project dependencies
+- updated project samples
+- updated documentation
+
 v. 2.0.7
 --------
 *25 May 2017*
