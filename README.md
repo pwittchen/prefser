@@ -1,4 +1,4 @@
-Prefser [![Build Status](https://travis-ci.org/pwittchen/prefser.svg)](https://travis-ci.org/pwittchen/prefser) [![codecov](https://codecov.io/gh/pwittchen/prefser/branch/master/graph/badge.svg)](https://codecov.io/gh/pwittchen/prefser) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Prefser-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/1594) ![Maven Central](https://img.shields.io/maven-central/v/com.github.pwittchen/prefser.svg?style=flat)
+Prefser [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Prefser-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/1594)
 =======
 Wrapper for Android [SharedPreferences](http://developer.android.com/reference/android/content/SharedPreferences.html) with object serialization and [RxJava](https://github.com/ReactiveX/RxJava) Observables
 
