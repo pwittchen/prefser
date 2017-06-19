@@ -48,7 +48,7 @@ jacocoAndroidUnitTestReport {
 
 dependencies {
   compile deps.gson
-  compile deps.rxjava
+  compile deps.rxjava2
   compile deps.supportannotations
 
   testCompile deps.junit

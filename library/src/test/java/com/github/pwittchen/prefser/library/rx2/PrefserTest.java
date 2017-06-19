@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.pwittchen.prefser.library;
+package com.github.pwittchen.prefser.library.rx2;
 
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
+import com.github.pwittchen.prefser.library.BuildConfig;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;

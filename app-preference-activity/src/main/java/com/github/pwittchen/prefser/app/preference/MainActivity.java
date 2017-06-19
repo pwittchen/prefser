@@ -23,7 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.github.myapplication.R;
-import com.github.pwittchen.prefser.library.Prefser;
+import com.github.pwittchen.prefser.library.rx2.Prefser;
 import java.util.HashSet;
 import java.util.Set;
 

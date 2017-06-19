@@ -13,16 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.pwittchen.prefser.library;
+package com.github.pwittchen.prefser.library.rx2;
 
-class Preconditions {
+interface Accessor<T> {
+  T get(String key, T defaultValue);
 
-  private Preconditions() {
-  }
-
-  static void checkNotNull(final Object object, final String message) {
-    if (object == null) {
-      throw new NullPointerException(message);
-    }
-  }
+  void put(String key, T value);
 }

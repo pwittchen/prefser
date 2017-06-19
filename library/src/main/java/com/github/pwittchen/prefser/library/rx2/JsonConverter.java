@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Piotr Wittchen
+ * Copyright (C) 2015 Piotr Wittchen
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.pwittchen.prefser.library;
+package com.github.pwittchen.prefser.library.rx2;
 
-interface Accessor<T> {
-  T get(String key, T defaultValue);
+import java.lang.reflect.Type;
 
-  void put(String key, T value);
+public interface JsonConverter {
+  <T> T fromJson(String json, Type typeOfT);
+
+  <T> String toJson(T object, Type typeOfT);
 }

@@ -20,10 +20,11 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.widget.Toast;
 import com.github.myapplication.R;
-import com.github.pwittchen.prefser.library.Prefser;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
+import com.github.pwittchen.prefser.library.rx2.Prefser;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class SettingsActivity extends PreferenceActivity {
 
@@ -51,8 +52,8 @@ public class SettingsActivity extends PreferenceActivity {
     prefser.observePreferences()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<String>() {
-          @Override public void call(String key) {
+        .subscribe(new Consumer<String>() {
+          @Override public void accept(@NonNull String key) throws Exception {
             Toast.makeText(SettingsActivity.this, String.format("%s is changed", key),
                 Toast.LENGTH_SHORT).show();
           }

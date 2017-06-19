@@ -13,10 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.pwittchen.prefser.library;
+package com.github.pwittchen.prefser.library.rx2;
 
-import java.util.Map;
+class Preconditions {
 
-interface AccessorsProvider {
-  Map<Class<?>, Accessor<?>> getAccessors();
+  private Preconditions() {
+  }
+
+  static void checkNotNull(final Object object, final String message) {
+    if (object == null) {
+      throw new NullPointerException(message);
+    }
+  }
 }

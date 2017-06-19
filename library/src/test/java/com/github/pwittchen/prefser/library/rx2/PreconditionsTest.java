@@ -1,5 +1,6 @@
-package com.github.pwittchen.prefser.library;
+package com.github.pwittchen.prefser.library.rx2;
 
+import com.github.pwittchen.prefser.library.BuildConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;

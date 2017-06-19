@@ -22,11 +22,12 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.github.pwittchen.prefser.library.Prefser;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
+import com.github.pwittchen.prefser.library.rx2.Prefser;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends Activity {
 
@@ -36,9 +37,9 @@ public class MainActivity extends Activity {
   private final static String MY_KEY_THREE = "MY_KEY_THREE";
 
   private Prefser prefser;
-  private Subscription subscriptionOne;
-  private Subscription subscriptionTwo;
-  private Subscription subscriptionThree;
+  private Disposable subscriptionOne;
+  private Disposable subscriptionTwo;
+  private Disposable subscriptionThree;
 
   @BindView(R.id.value_one) protected EditText valueOne;
   @BindView(R.id.value_two) protected EditText valueTwo;
@@ -60,19 +61,27 @@ public class MainActivity extends Activity {
 
   @Override protected void onPause() {
     super.onPause();
-    subscriptionOne.unsubscribe();
-    subscriptionTwo.unsubscribe();
-    subscriptionThree.unsubscribe();
+    if(!subscriptionOne.isDisposed()) {
+      subscriptionOne.dispose();
+    }
+
+    if(!subscriptionTwo.isDisposed()) {
+      subscriptionTwo.dispose();
+    }
+
+    if(!subscriptionThree.isDisposed()) {
+      subscriptionThree.dispose();
+    }
   }
 
   private void createSubscriptionOne() {
     subscriptionOne = prefser.getAndObserve(MY_KEY_ONE, String.class, EMPTY_STRING)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<String>() {
-          @Override public void call(String value) {
-            valueOne.setText(value);
-            showToast(value);
+        .subscribe(new Consumer<String>() {
+          @Override public void accept(@NonNull String s) throws Exception {
+            valueOne.setText(s);
+            showToast(s);
           }
         });
   }
@@ -81,10 +90,10 @@ public class MainActivity extends Activity {
     subscriptionTwo = prefser.getAndObserve(MY_KEY_TWO, String.class, EMPTY_STRING)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<String>() {
-          @Override public void call(String value) {
-            valueTwo.setText(value);
-            showToast(value);
+        .subscribe(new Consumer<String>() {
+          @Override public void accept(@NonNull String s) throws Exception {
+            valueTwo.setText(s);
+            showToast(s);
           }
         });
   }
@@ -93,10 +102,10 @@ public class MainActivity extends Activity {
     subscriptionThree = prefser.getAndObserve(MY_KEY_THREE, String.class, EMPTY_STRING)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<String>() {
-          @Override public void call(String value) {
-            valueThree.setText(value);
-            showToast(value);
+        .subscribe(new Consumer<String>() {
+          @Override public void accept(@NonNull String s) throws Exception {
+            valueThree.setText(s);
+            showToast(s);
           }
         });
   }

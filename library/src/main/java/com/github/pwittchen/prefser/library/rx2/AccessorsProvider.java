@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Piotr Wittchen
+ * Copyright (C) 2017 Piotr Wittchen
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.pwittchen.prefser.library;
+package com.github.pwittchen.prefser.library.rx2;
 
-import com.google.gson.Gson;
-import java.lang.reflect.Type;
+import java.util.Map;
 
-public final class GsonConverter implements JsonConverter {
-
-  private final Gson gson = new Gson();
-
-  @Override public <T> T fromJson(String json, Type typeOfT) {
-    return gson.fromJson(json, typeOfT);
-  }
-
-  @Override public <T> String toJson(T object, Type typeOfT) {
-    return gson.toJson(object, typeOfT);
-  }
+interface AccessorsProvider {
+  Map<Class<?>, Accessor<?>> getAccessors();
 }

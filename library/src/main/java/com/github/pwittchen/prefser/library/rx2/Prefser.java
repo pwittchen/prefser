@@ -13,24 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.pwittchen.prefser.library;
+package com.github.pwittchen.prefser.library.rx2;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
-import rx.Observable;
-import rx.Subscriber;
-import rx.functions.Action0;
-import rx.functions.Func0;
-import rx.functions.Func1;
-import rx.subscriptions.Subscriptions;
+import java.util.concurrent.Callable;
 
 /**
  * Prefser is a wrapper for Android SharedPreferences
@@ -165,11 +163,12 @@ public class Prefser {
   public <T> Observable<T> getAndObserve(final String key, final TypeToken<T> typeTokenOfT,
       final T defaultValue) {
     return observe(key, typeTokenOfT, defaultValue) // start observing
-        .mergeWith(Observable.defer(new Func0<Observable<T>>() { // then start getting
-          @Override public Observable<T> call() {
-            return Observable.just(get(key, typeTokenOfT, defaultValue));
-          }
-        }));
+        .mergeWith(
+            Observable.defer(new Callable<ObservableSource<? extends T>>() { // then start getting
+              @Override public ObservableSource<? extends T> call() throws Exception {
+                return Observable.just(get(key, typeTokenOfT, defaultValue));
+              }
+            }));
   }
 
   /**
@@ -207,12 +206,13 @@ public class Prefser {
     Preconditions.checkNotNull(key, KEY_IS_NULL);
     Preconditions.checkNotNull(typeTokenOfT, TYPE_TOKEN_OF_T_IS_NULL);
 
-    return observePreferences().filter(new Func1<String, Boolean>() {
-      @Override public Boolean call(String filteredKey) {
+    return observePreferences().filter(new Predicate<String>() {
+      @Override public boolean test(@io.reactivex.annotations.NonNull String filteredKey)
+          throws Exception {
         return key.equals(filteredKey);
       }
-    }).map(new Func1<String, T>() {
-      @Override public T call(String s) {
+    }).map(new Function<String, T>() {
+      @Override public T apply(@io.reactivex.annotations.NonNull String s) throws Exception {
         return get(key, typeTokenOfT, defaultValue);
       }
     });
@@ -273,45 +273,26 @@ public class Prefser {
    * returns RxJava Observable from SharedPreferences used inside Prefser object.
    * You can subscribe this Observable and every time,
    * when SharedPreferences will change, subscriber will be notified
-   * about that (e.g. in call() method) and you will be able to read
+   * about that and you will be able to read
    * key of the value, which has been changed.
    *
    * @return Observable with String containing key of the value in default SharedPreferences
    */
   public Observable<String> observePreferences() {
-    return Observable.unsafeCreate(new Observable.OnSubscribe<String>() {
-      // NOTE: Without this OnChangeListener will be GCed.
-      Collection<OnChangeListener> listenerReferences =
-          Collections.synchronizedList(new ArrayList<OnChangeListener>());
-
-      @Override public void call(final Subscriber<? super String> subscriber) {
-        final OnChangeListener onChangeListener = new OnChangeListener(subscriber);
-        preferences.registerOnSharedPreferenceChangeListener(onChangeListener);
-        listenerReferences.add(onChangeListener);
-        subscriber.add(Subscriptions.create(new Action0() {
-          @Override public void call() {
-            preferences.unregisterOnSharedPreferenceChangeListener(onChangeListener);
-            listenerReferences.remove(onChangeListener);
-          }
-        }));
+    return Observable.create(new ObservableOnSubscribe<String>() {
+      @Override
+      public void subscribe(final @io.reactivex.annotations.NonNull ObservableEmitter<String> e) {
+        preferences.registerOnSharedPreferenceChangeListener(
+            new SharedPreferences.OnSharedPreferenceChangeListener() {
+              @Override
+              public void onSharedPreferenceChanged(SharedPreferences sharedPrefs, String key) {
+                if (!e.isDisposed()) {
+                  e.onNext(key);
+                }
+              }
+            });
       }
     });
-  }
-
-  private static class OnChangeListener
-      implements SharedPreferences.OnSharedPreferenceChangeListener {
-    private final Subscriber<? super String> subscriber;
-
-    public OnChangeListener(Subscriber<? super String> subscriber) {
-      this.subscriber = subscriber;
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-      if (!subscriber.isUnsubscribed()) {
-        subscriber.onNext(key);
-      }
-    }
   }
 
   /**

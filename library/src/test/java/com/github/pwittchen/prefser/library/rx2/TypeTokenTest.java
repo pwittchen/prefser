@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.pwittchen.prefser.library;
+package com.github.pwittchen.prefser.library.rx2;
 
+import com.github.pwittchen.prefser.library.BuildConfig;
 import java.lang.reflect.Type;
 import org.junit.Test;
 import org.junit.runner.RunWith;

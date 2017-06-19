@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.pwittchen.prefser.library.utils;
+package com.github.pwittchen.prefser.library.rx2.utils;
 
 import android.util.Log;
+import io.reactivex.Observer;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 import java.util.NoSuchElementException;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
-import rx.Observer;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -34,14 +36,18 @@ public final class RecordingObserver<T> implements Observer<T> {
 
   private final BlockingDeque<Object> events = new LinkedBlockingDeque<>();
 
-  @Override public void onCompleted() {
+  @Override public void onError(Throwable e) {
+    Log.v(TAG, "onError", e);
+    events.addLast(new OnError(e));
+  }
+
+  @Override public void onComplete() {
     Log.v(TAG, "onCompleted");
     events.addLast(new OnCompleted());
   }
 
-  @Override public void onError(Throwable e) {
-    Log.v(TAG, "onError", e);
-    events.addLast(new OnError(e));
+  @Override public void onSubscribe(@NonNull Disposable d) {
+    Log.v(TAG, "onSubscribe");
   }
 
   @Override public void onNext(T t) {
