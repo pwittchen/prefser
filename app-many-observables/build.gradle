@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
 
 android {
   compileSdkVersion rootProject.ext.compileSdkVersion
@@ -24,4 +25,6 @@ dependencies {
   compile deps.butterknife
   compile deps.rxandroid
   compile project(':library')
+
+  apt deps.butterknifecompiler
 }
