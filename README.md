@@ -4,7 +4,7 @@ Wrapper for Android [SharedPreferences](http://developer.android.com/reference/a
 
 min sdk version = 9
 
-JavaDoc is available at: http://pwittchen.github.io/prefser/
+JavaDoc is available at: http://pwittchen.github.io/prefser/RxJava2.x
 
 | Current Branch | Branch  | Artifact Id | Build Status  | Coverage | Maven Central |
 |:--------------:|:-------:|:-----------:|:-------------:|:--------:|:-------------:|
