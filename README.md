@@ -365,12 +365,24 @@ If you want to use Observables, besides dependency to Prefser you should also ad
 You can depend on the library through Maven:
 
 ```xml
-coming soon!
+<dependency>
+    <groupId>com.github.pwittchen</groupId>
+    <artifactId>prefser-rx2</artifactId>
+    <version>2.1.0</version>
+</dependency>
+<dependency>
+    <groupId>io.reactivex</groupId>
+    <artifactId>rxandroid</artifactId>
+    <version>2.0.1</version>
+</dependency>
 ```
 or through Gradle:
 
 ```groovy
-coming soon!
+dependencies {
+  compile 'com.github.pwittchen:prefser-rx2:2.1.0'
+  compile 'io.reactivex:rxandroid:2.0.1'
+}
 ```
 
 Tests
