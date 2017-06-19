@@ -67,7 +67,7 @@ public class MainActivity extends Activity {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Action1<String>() {
           @Override public void call(String key) {
-            Toast.makeText(MainActivity.this, String.format("Value in %s changed", MY_KEY),
+            Toast.makeText(MainActivity.this, String.format("global: Value in %s changed", MY_KEY),
                 Toast.LENGTH_SHORT).show();
           }
         });
@@ -90,7 +90,7 @@ public class MainActivity extends Activity {
 
           @Override public void onNext(Object o) {
             value.setText(String.valueOf(o));
-            Toast.makeText(MainActivity.this, String.format("Value in %s changed, really!", MY_KEY),
+            Toast.makeText(MainActivity.this, String.format("single: Value in %s changed", MY_KEY),
                 Toast.LENGTH_SHORT).show();
           }
 
@@ -114,8 +114,8 @@ public class MainActivity extends Activity {
     prefser.put(MY_KEY, value.getText().toString());
   }
 
-  @OnClick(R.id.put_lenny_face) public void onPutLennyFaceClicked() {
-    prefser.put(MY_KEY, "Hi! I'm Lenny ( ͡° ͜ʖ ͡°)");
+  @OnClick(R.id.put_lenny_face) public void onPutMyNameClicked() {
+    prefser.put(MY_KEY, "Hi! I'm Piotr");
   }
 
   @OnClick(R.id.remove) public void onRemoveClicked() {
