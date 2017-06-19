@@ -234,12 +234,12 @@ When you want to observe many preferences, use [observePreferences()](#subscribi
 **Example**
 
 ```java
-Subscription subscription = prefser.observe(key, String.class, "default value")
+Disposable subscription = prefser.observe(key, String.class, "default value")
   .subscribeOn(Schedulers.io())
   ... // you can do anything else, what is possible with RxJava
   .observeOn(AndroidSchedulers.mainThread())
-  .subscribe(new Action1<String>() {
-  @Override public void call(String value) {
+  .subscribe(new Consumer<String>() {
+    @Override public void accept(@NonNull String value) {
     // Perform any action you want.
     // E.g. display value in a TextView.
    }
@@ -322,13 +322,13 @@ If you want to observe single preference under as specified key, use [observe()]
 
 **Example**
 ```java
-Subscription subscription = prefser.observePreferences()
+Disposable subscription = prefser.observePreferences()
   .subscribeOn(Schedulers.io())
   .filter(...) // you can filter your updates by key
   ...          // you can do anything else, what is possible with RxJava
   .observeOn(AndroidSchedulers.mainThread())
-  .subscribe(new Action1<String>() {
-  @Override public void call(String key) {
+  .subscribe(new Consumer<String>() {
+    @Override public void accept(@NonNull String key) {
     // Perform any action you want.
     // E.g. get value stored under key 
     // and display in a TextView.
@@ -346,7 +346,7 @@ When you are subscribing for the updates in Activity, please remember to unsubsc
 @Override
 protected void onPause() {
   super.onPause();
-  subscription.unsubscribe();
+  subscription.dispose();
 }
 ```
 
