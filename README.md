@@ -422,6 +422,9 @@ Who is using this library?
 --------------------------
 
 * [Toss.im](https://toss.im/toss/eng) - a Korean app for consumer finance on mobile
+* and more...
+
+Are you using this library in your app and want to be listed here? Send me a Pull Request or an e-mail to piotr@wittchen.biz.pl.
 
 References
 ----------
