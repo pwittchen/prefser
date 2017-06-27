@@ -33,6 +33,7 @@ Contents
 * [Code style](#code-style)
 * [Static code analysis](#static-code-analysis)
 * [Caveats](#caveats)
+* [Who is using this library?](#who-is-using-this-library)
 * [References](#references)
 * [License](#license)
 
@@ -416,6 +417,11 @@ Caveats
 * Set of Strings should be saved and read in a "classical way" with `getPreferences()` method.
 * TypeToken is required for proper Lists reading.
 * This library is just a wrapper around SharedPreferences, so it's not a database solution and it's not recommended to use it for large data sets, complicated data operations or adding new data frequently. For such use cases SQLite database or key-value database would be better choice.
+
+Who is using this library?
+--------------------------
+
+* [Toss.im](https://toss.im/toss/eng) - a Korean app for consumer finance on mobile
 
 References
 ----------
