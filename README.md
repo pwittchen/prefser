@@ -436,6 +436,7 @@ References
 
 ### Similar projects
 * [SecureSharedPreferences](https://github.com/rtoshiro/SecureSharedPreferences)
+* [Hawk](https://github.com/orhanobut/hawk)
 
 License
 -------
