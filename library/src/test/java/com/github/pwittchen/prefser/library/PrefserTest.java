@@ -1169,4 +1169,179 @@ public final class PrefserTest {
     // then
     assertThat(value).isNull();
   }
+
+  @Test public void testShouldReturnStringValueWithDefaultNull() {
+    // given
+    prefser.clear();
+    String key = GIVEN_KEY;
+    String givenValue = "someText";
+
+    // when
+    prefser.put(key, givenValue);
+    String readValue = prefser.get(key, String.class, null);
+
+    // then
+    assertThat(givenValue).isEqualTo(readValue);
+  }
+
+  // alteracoes comeca aqui
+
+  @Test public void testGetShouldReturnNullForCustomObject() {
+    // given
+    prefser.clear();
+    String keyWhichDoesNotExist = KEY_WHICH_DOES_NOT_EXIST;
+
+    // when
+    CustomClass value = prefser.get(keyWhichDoesNotExist, CustomClass.class, null);
+
+    // then
+    assertThat(value).isNull();
+//    CustomClass givenObject = new CustomClass(23, "someText");
+//    CustomClass defaultObject = new CustomClass(67, "defaultText");
+  }
+
+  @Test public void testGetShouldReturnCustomObjectWithDefaultNull() {
+    // given
+    prefser.clear();
+    String key = GIVEN_KEY;
+    CustomClass givenObject = new CustomClass(12, "someText");
+
+    // when
+    prefser.put(key, givenObject);
+    CustomClass readObject = prefser.get(key, CustomClass.class, null);
+
+    // then
+    assertThat(givenObject).isEqualTo(readObject);
+  }
+
+  @Test public void testShouldReturnNullForDoubleType() {
+    // given
+    prefser.clear();
+    String keyWhichDoesNotExist = KEY_WHICH_DOES_NOT_EXIST;
+
+    // when
+    Double value = prefser.get(keyWhichDoesNotExist, Double.class, null);
+
+    // then
+    assertThat(value).isNull();
+  }
+
+  @Test public void testShouldReturnDoubleValueWithDefaultNull() {
+    // given
+    prefser.clear();
+    String key = GIVEN_KEY;
+    Double givenValue = 7.77;
+
+    // when
+    prefser.put(key, givenValue);
+    Double readValue = prefser.get(key, Double.class, null);
+
+    // then
+    assertThat(givenValue).isEqualTo(readValue);
+  }
+
+  @Test public void testShouldReturnNullForBooleanType() {
+    // given
+    prefser.clear();
+    String keyWhichDoesNotExist = KEY_WHICH_DOES_NOT_EXIST;
+
+    // when
+    Boolean value = prefser.get(keyWhichDoesNotExist, Boolean.class, null);
+
+    // then
+    assertThat(value).isNull();
+  }
+
+  @Test public void testShouldReturnBooleanValueWithDefaultNull() {
+    // given
+    prefser.clear();
+    String key = GIVEN_KEY;
+    Boolean givenValue = true;
+
+    // when
+    prefser.put(key, givenValue);
+    Boolean readValue = prefser.get(key, Boolean.class, null);
+
+    // then
+    assertThat(givenValue).isEqualTo(readValue);
+  }
+
+  @Test public void testShouldReturnNullForIntegerType() {
+    // given
+    prefser.clear();
+    String keyWhichDoesNotExist = KEY_WHICH_DOES_NOT_EXIST;
+
+    // when
+    Integer value = prefser.get(keyWhichDoesNotExist, Integer.class, null);
+
+    // then
+    assertThat(value).isNull();
+  }
+
+  @Test public void testShouldReturnIntegerValueWithDefaultNull() {
+    // given
+    prefser.clear();
+    String key = GIVEN_KEY;
+    Integer givenValue = 7;
+
+    // when
+    prefser.put(key, givenValue);
+    Integer readValue = prefser.get(key, Integer.class, null);
+
+    // then
+    assertThat(givenValue).isEqualTo(readValue);
+  }
+
+  @Test public void testShouldReturnNullForFloatType() {
+    // given
+    prefser.clear();
+    String keyWhichDoesNotExist = KEY_WHICH_DOES_NOT_EXIST;
+
+    // when
+    Float value = prefser.get(keyWhichDoesNotExist, Float.class, null);
+
+    // then
+    assertThat(value).isNull();
+  }
+
+  @Test public void testShouldReturnFloatValueWithDefaultNull() {
+    // given
+    prefser.clear();
+    String key = GIVEN_KEY;
+    Float givenValue = 7.45f;
+
+    // when
+    prefser.put(key, givenValue);
+    Float readValue = prefser.get(key, Float.class, null);
+
+    // then
+    assertThat(givenValue).isEqualTo(readValue);
+  }
+
+  @Test public void testShouldReturnNullForLongType() {
+    // given
+    prefser.clear();
+    String keyWhichDoesNotExist = KEY_WHICH_DOES_NOT_EXIST;
+
+    // when
+    Long value = prefser.get(keyWhichDoesNotExist, Long.class, null);
+
+    // then
+    assertThat(value).isNull();
+  }
+
+  @Test public void testShouldReturnLongValueWithDefaultNull() {
+    // given
+    prefser.clear();
+    String key = GIVEN_KEY;
+    Long givenValue = 7L;
+
+    // when
+    prefser.put(key, givenValue);
+    Long readValue = prefser.get(key, Long.class, null);
+
+    // then
+    assertThat(givenValue).isEqualTo(readValue);
+  }
+
 }
