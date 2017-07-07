@@ -48,7 +48,7 @@ class PreferencesAccessorsProvider implements AccessorsProvider {
   private void createBooleanAccessor() {
     accessors.put(Boolean.class, new Accessor<Boolean>() {
       @Override public Boolean get(String key, Boolean defaultValue) {
-        return preferences.getBoolean(key, defaultValue);
+        return preferences.getBoolean(key, (defaultValue == null) ? false : defaultValue);
       }
 
       @Override public void put(String key, Boolean value) {
@@ -60,7 +60,7 @@ class PreferencesAccessorsProvider implements AccessorsProvider {
   private void createFloatAccessor() {
     accessors.put(Float.class, new Accessor<Float>() {
       @Override public Float get(String key, Float defaultValue) {
-        return preferences.getFloat(key, defaultValue);
+        return preferences.getFloat(key, (defaultValue == null) ? 0f : defaultValue);
       }
 
       @Override public void put(String key, Float value) {
@@ -72,7 +72,7 @@ class PreferencesAccessorsProvider implements AccessorsProvider {
   private void createIntegerAccessor() {
     accessors.put(Integer.class, new Accessor<Integer>() {
       @Override public Integer get(String key, Integer defaultValue) {
-        return preferences.getInt(key, defaultValue);
+        return preferences.getInt(key, (defaultValue == null) ? 0 : defaultValue);
       }
 
       @Override public void put(String key, Integer value) {
@@ -84,7 +84,7 @@ class PreferencesAccessorsProvider implements AccessorsProvider {
   private void createLongAccessor() {
     accessors.put(Long.class, new Accessor<Long>() {
       @Override public Long get(String key, Long defaultValue) {
-        return preferences.getLong(key, defaultValue);
+        return preferences.getLong(key,  (defaultValue == null) ? 0L : defaultValue);
       }
 
       @Override public void put(String key, Long value) {

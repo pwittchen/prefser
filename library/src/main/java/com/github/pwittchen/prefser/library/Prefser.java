@@ -232,8 +232,8 @@ public class Prefser {
     Preconditions.checkNotNull(key, KEY_IS_NULL);
     Preconditions.checkNotNull(classOfT, CLASS_OF_T_IS_NULL);
 
-    if (!contains(key) && defaultValue == null) {
-      return null;
+    if (!contains(key)) {
+      return defaultValue;
     }
 
     return get(key, TypeToken.fromClass(classOfT), defaultValue);
