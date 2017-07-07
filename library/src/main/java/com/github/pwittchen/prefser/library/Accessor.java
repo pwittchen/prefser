@@ -16,7 +16,7 @@
 package com.github.pwittchen.prefser.library;
 
 interface Accessor<T> {
-  T get(String key, T defaultValue);
+  T get(String key);
 
   void put(String key, T value);
 }

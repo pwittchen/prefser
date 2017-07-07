@@ -229,13 +229,7 @@ public class Prefser {
    * @return value from SharedPreferences associated with given key or default value
    */
   public <T> T get(@NonNull String key, @NonNull Class<T> classOfT, T defaultValue) {
-    Preconditions.checkNotNull(key, KEY_IS_NULL);
     Preconditions.checkNotNull(classOfT, CLASS_OF_T_IS_NULL);
-
-    if (!contains(key)) {
-      return defaultValue;
-    }
-
     return get(key, TypeToken.fromClass(classOfT), defaultValue);
   }
 
@@ -253,20 +247,20 @@ public class Prefser {
     Preconditions.checkNotNull(key, KEY_IS_NULL);
     Preconditions.checkNotNull(typeTokenOfT, TYPE_TOKEN_OF_T_IS_NULL);
 
+    if (!contains(key)) {
+      return defaultValue;
+    }
+
     Type typeOfT = typeTokenOfT.getType();
 
     for (Map.Entry<Class<?>, Accessor<?>> entry : accessorProvider.getAccessors().entrySet()) {
       if (typeOfT.equals(entry.getKey())) {
         @SuppressWarnings("unchecked") Accessor<T> accessor = (Accessor<T>) entry.getValue();
-        return accessor.get(key, defaultValue);
+        return accessor.get(key);
       }
     }
 
-    if (contains(key)) {
-      return jsonConverter.fromJson(preferences.getString(key, null), typeOfT);
-    } else {
-      return defaultValue;
-    }
+    return jsonConverter.fromJson(preferences.getString(key, null), typeOfT);
   }
 
   /**

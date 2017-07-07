@@ -47,8 +47,8 @@ class PreferencesAccessorsProvider implements AccessorsProvider {
 
   private void createBooleanAccessor() {
     accessors.put(Boolean.class, new Accessor<Boolean>() {
-      @Override public Boolean get(String key, Boolean defaultValue) {
-        return preferences.getBoolean(key, (defaultValue == null) ? false : defaultValue);
+      @Override public Boolean get(String key) {
+        return preferences.getBoolean(key, false);
       }
 
       @Override public void put(String key, Boolean value) {
@@ -59,8 +59,8 @@ class PreferencesAccessorsProvider implements AccessorsProvider {
 
   private void createFloatAccessor() {
     accessors.put(Float.class, new Accessor<Float>() {
-      @Override public Float get(String key, Float defaultValue) {
-        return preferences.getFloat(key, (defaultValue == null) ? 0f : defaultValue);
+      @Override public Float get(String key) {
+        return preferences.getFloat(key, 0f);
       }
 
       @Override public void put(String key, Float value) {
@@ -71,8 +71,8 @@ class PreferencesAccessorsProvider implements AccessorsProvider {
 
   private void createIntegerAccessor() {
     accessors.put(Integer.class, new Accessor<Integer>() {
-      @Override public Integer get(String key, Integer defaultValue) {
-        return preferences.getInt(key, (defaultValue == null) ? 0 : defaultValue);
+      @Override public Integer get(String key) {
+        return preferences.getInt(key, 0);
       }
 
       @Override public void put(String key, Integer value) {
@@ -83,8 +83,8 @@ class PreferencesAccessorsProvider implements AccessorsProvider {
 
   private void createLongAccessor() {
     accessors.put(Long.class, new Accessor<Long>() {
-      @Override public Long get(String key, Long defaultValue) {
-        return preferences.getLong(key,  (defaultValue == null) ? 0L : defaultValue);
+      @Override public Long get(String key) {
+        return preferences.getLong(key, 0L);
       }
 
       @Override public void put(String key, Long value) {
@@ -95,8 +95,8 @@ class PreferencesAccessorsProvider implements AccessorsProvider {
 
   private void createDoubleAccessor() {
     accessors.put(Double.class, new Accessor<Double>() {
-      @Override public Double get(String key, Double defaultValue) {
-        return Double.valueOf(preferences.getString(key, String.valueOf(defaultValue)));
+      @Override public Double get(String key) {
+        return Double.valueOf(preferences.getString(key, ""));
       }
 
       @Override public void put(String key, Double value) {
@@ -107,8 +107,8 @@ class PreferencesAccessorsProvider implements AccessorsProvider {
 
   private void createStringAccessor() {
     accessors.put(String.class, new Accessor<String>() {
-      @Override public String get(String key, String defaultValue) {
-        return preferences.getString(key, String.valueOf(defaultValue));
+      @Override public String get(String key) {
+        return preferences.getString(key, "");
       }
 
       @Override public void put(String key, String value) {
