@@ -27,8 +27,6 @@ import com.github.pwittchen.prefser.library.Prefser;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends Activity {
@@ -59,18 +57,10 @@ public class MainActivity extends Activity {
   private void createSubscriptionForAllPreferences() {
     subscriptionForAllPreferences = prefser.observePreferences()
         .subscribeOn(Schedulers.io())
-        .filter(new Func1<String, Boolean>() {
-          @Override public Boolean call(String key) {
-            return key.equals(MY_KEY);
-          }
-        })
+        .filter(key -> key.equals(MY_KEY))
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<String>() {
-          @Override public void call(String key) {
-            Toast.makeText(MainActivity.this, String.format("global: Value in %s changed", MY_KEY),
-                Toast.LENGTH_SHORT).show();
-          }
-        });
+        .subscribe(key -> Toast.makeText(MainActivity.this,
+            String.format("global: Value in %s changed", MY_KEY), Toast.LENGTH_SHORT).show());
   }
 
   private void createSubscriptionForSinglePreference() {
@@ -84,8 +74,8 @@ public class MainActivity extends Activity {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Subscriber<Object>() {
           @Override public void onError(Throwable e) {
-            Toast.makeText(MainActivity.this, String.format("Problem with accessing key %s", MY_KEY),
-                Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this,
+                String.format("Problem with accessing key %s", MY_KEY), Toast.LENGTH_SHORT).show();
           }
 
           @Override public void onNext(Object o) {

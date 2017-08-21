@@ -22,7 +22,6 @@ import android.widget.Toast;
 import com.github.myapplication.R;
 import com.github.pwittchen.prefser.library.Prefser;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 public class SettingsActivity extends PreferenceActivity {
@@ -51,11 +50,7 @@ public class SettingsActivity extends PreferenceActivity {
     prefser.observePreferences()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<String>() {
-          @Override public void call(String key) {
-            Toast.makeText(SettingsActivity.this, String.format("%s is changed", key),
-                Toast.LENGTH_SHORT).show();
-          }
-        });
+        .subscribe(key -> Toast.makeText(SettingsActivity.this, String.format("%s is changed", key),
+            Toast.LENGTH_SHORT).show());
   }
 }
