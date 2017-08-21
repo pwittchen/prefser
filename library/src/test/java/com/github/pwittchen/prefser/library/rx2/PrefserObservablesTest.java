@@ -19,6 +19,8 @@ import android.content.Context;
 import com.github.pwittchen.prefser.library.BuildConfig;
 import com.github.pwittchen.prefser.library.rx2.utils.RecordingObserver;
 import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.After;
@@ -108,8 +110,7 @@ public final class PrefserObservablesTest {
 
     // when
     prefser.put(givenKey, givenValue);
-    Boolean first =
-        prefser.getAndObserve(givenKey, Boolean.class, defaultValue).blockingFirst();
+    Boolean first = prefser.getAndObserve(givenKey, Boolean.class, defaultValue).blockingFirst();
 
     // then
     assertThat(first).isTrue();
@@ -141,8 +142,7 @@ public final class PrefserObservablesTest {
 
     // when
     prefser.put(givenKey, givenValue);
-    boolean first =
-        prefser.getAndObserve(givenKey, Boolean.class, defaultValue).blockingFirst();
+    boolean first = prefser.getAndObserve(givenKey, Boolean.class, defaultValue).blockingFirst();
 
     // then
     assertThat(first).isTrue();
@@ -238,8 +238,7 @@ public final class PrefserObservablesTest {
 
     // when
     prefser.put(givenKey, givenValue);
-    Integer first =
-        prefser.getAndObserve(givenKey, Integer.class, defaultValue).blockingFirst();
+    Integer first = prefser.getAndObserve(givenKey, Integer.class, defaultValue).blockingFirst();
 
     // then
     assertThat(first).isEqualTo(givenValue);
@@ -537,8 +536,7 @@ public final class PrefserObservablesTest {
     prefser.put(givenKey, floats);
     TypeToken<List<Float>> typeToken = new TypeToken<List<Float>>() {
     };
-    List<Float> first =
-        prefser.getAndObserve(givenKey, typeToken, defaultFloats).blockingFirst();
+    List<Float> first = prefser.getAndObserve(givenKey, typeToken, defaultFloats).blockingFirst();
 
     // then
     assertThat(first).isEqualTo(floats);
@@ -611,8 +609,7 @@ public final class PrefserObservablesTest {
     prefser.put(givenKey, longs);
     TypeToken<List<Long>> typeToken = new TypeToken<List<Long>>() {
     };
-    List<Long> first =
-        prefser.getAndObserve(givenKey, typeToken, defaultLongs).blockingFirst();
+    List<Long> first = prefser.getAndObserve(givenKey, typeToken, defaultLongs).blockingFirst();
 
     // then
     assertThat(first).isEqualTo(longs);
@@ -648,8 +645,7 @@ public final class PrefserObservablesTest {
     prefser.put(givenKey, doubles);
     TypeToken<List<Double>> typeToken = new TypeToken<List<Double>>() {
     };
-    List<Double> first =
-        prefser.getAndObserve(givenKey, typeToken, defaultDoubles).blockingFirst();
+    List<Double> first = prefser.getAndObserve(givenKey, typeToken, defaultDoubles).blockingFirst();
 
     // then
     assertThat(first).isEqualTo(doubles);
@@ -685,8 +681,7 @@ public final class PrefserObservablesTest {
     prefser.put(givenKey, strings);
     TypeToken<List<String>> typeToken = new TypeToken<List<String>>() {
     };
-    List<String> first =
-        prefser.getAndObserve(givenKey, typeToken, defaultStrings).blockingFirst();
+    List<String> first = prefser.getAndObserve(givenKey, typeToken, defaultStrings).blockingFirst();
 
     // then
     assertThat(first).isEqualTo(strings);
@@ -967,8 +962,7 @@ public final class PrefserObservablesTest {
 
     // when
     prefser.put(givenKey, ints);
-    int[] generated =
-        prefser.getAndObserve(givenKey, int[].class, defaultInts).blockingFirst();
+    int[] generated = prefser.getAndObserve(givenKey, int[].class, defaultInts).blockingFirst();
 
     // then
     assertThat(generated[0]).isEqualTo(ints[0]);
@@ -1138,8 +1132,7 @@ public final class PrefserObservablesTest {
     // when
     prefser.put(givenKey, customClasses);
     CustomClass[] generated =
-        prefser.getAndObserve(givenKey, CustomClass[].class, defaultCustomClasses)
-            .blockingFirst();
+        prefser.getAndObserve(givenKey, CustomClass[].class, defaultCustomClasses).blockingFirst();
 
     // then
     assertThat(generated[0]).isEqualTo(customClasses[0]);
@@ -1226,5 +1219,21 @@ public final class PrefserObservablesTest {
     assertThat(observer1.takeNext()).isEqualTo(givenKey);
     assertThat(observer2.takeNext()).isEqualTo(givenKey);
     observer2.assertNoMoreEvents();
+  }
+
+  @Test public void testShouldDisposeSubscriptionAndStopObservation() {
+    // given
+    prefser.clear();
+
+    // when
+    Disposable disposable = prefser.observePreferences().subscribe(new Consumer<String>() {
+      @Override public void accept(String s) throws Exception {
+      }
+    });
+
+    disposable.dispose();
+
+    // then
+    assertThat(disposable.isDisposed()).isTrue();
   }
 }
