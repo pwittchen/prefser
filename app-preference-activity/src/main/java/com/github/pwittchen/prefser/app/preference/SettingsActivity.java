@@ -22,8 +22,6 @@ import android.widget.Toast;
 import com.github.myapplication.R;
 import com.github.pwittchen.prefser.library.rx2.Prefser;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class SettingsActivity extends PreferenceActivity {
@@ -52,11 +50,7 @@ public class SettingsActivity extends PreferenceActivity {
     prefser.observePreferences()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<String>() {
-          @Override public void accept(@NonNull String key) throws Exception {
-            Toast.makeText(SettingsActivity.this, String.format("%s is changed", key),
-                Toast.LENGTH_SHORT).show();
-          }
-        });
+        .subscribe(key -> Toast.makeText(SettingsActivity.this, String.format("%s is changed", key),
+            Toast.LENGTH_SHORT).show());
   }
 }
