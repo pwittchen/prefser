@@ -28,6 +28,7 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import rx.Observable;
 import rx.Subscription;
+import rx.functions.Action1;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -1228,5 +1229,21 @@ public final class PrefserObservablesTest {
     observer1.assertNoMoreEvents();
     assertThat(observer2.takeNext()).isEqualTo(givenKey);
     observer2.assertNoMoreEvents();
+  }
+
+  @Test public void testShouldUnsubscribeSubscriptionAndStopObservation() {
+    // given
+    prefser.clear();
+
+    // when
+    Subscription subscription = prefser.observePreferences().subscribe(new Action1<String>() {
+      @Override public void call(String s) {
+      }
+    });
+
+    subscription.unsubscribe();
+
+    // then
+    assertThat(subscription.isUnsubscribed()).isTrue();
   }
 }
