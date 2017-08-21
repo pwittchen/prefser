@@ -17,6 +17,10 @@ package com.github.pwittchen.prefser.library;
 
 class Preconditions {
 
+  protected static Preconditions create() {
+    return new Preconditions();
+  }
+
   private Preconditions() {
   }
 

@@ -25,7 +25,6 @@ import butterknife.OnClick;
 import com.github.pwittchen.prefser.library.Prefser;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends Activity {
@@ -69,11 +68,9 @@ public class MainActivity extends Activity {
     subscriptionOne = prefser.getAndObserve(MY_KEY_ONE, String.class, EMPTY_STRING)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<String>() {
-          @Override public void call(String value) {
-            valueOne.setText(value);
-            showToast(value);
-          }
+        .subscribe(value -> {
+          valueOne.setText(value);
+          showToast(value);
         });
   }
 
@@ -81,11 +78,9 @@ public class MainActivity extends Activity {
     subscriptionTwo = prefser.getAndObserve(MY_KEY_TWO, String.class, EMPTY_STRING)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<String>() {
-          @Override public void call(String value) {
-            valueTwo.setText(value);
-            showToast(value);
-          }
+        .subscribe(value -> {
+          valueTwo.setText(value);
+          showToast(value);
         });
   }
 
@@ -93,11 +88,9 @@ public class MainActivity extends Activity {
     subscriptionThree = prefser.getAndObserve(MY_KEY_THREE, String.class, EMPTY_STRING)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<String>() {
-          @Override public void call(String value) {
-            valueThree.setText(value);
-            showToast(value);
-          }
+        .subscribe(value -> {
+          valueThree.setText(value);
+          showToast(value);
         });
   }
 

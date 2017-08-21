@@ -5,10 +5,19 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
 @RunWith(RobolectricTestRunner.class) @Config(constants = BuildConfig.class)
 public class PreconditionsTest {
+
+  @Test public void shouldCreatePreconditionsObject() {
+    // when
+    Preconditions preconditions = Preconditions.create();
+
+    // then
+    assertThat(preconditions).isNotNull();
+  }
 
   @Test public void shouldNotThrowAnyExceptionWhenObjectIsNotNull() {
     // given
@@ -35,8 +44,8 @@ public class PreconditionsTest {
     // then an exception is thrown
   }
 
-  @Test(expected = IllegalAccessException.class)
-  public void constructorShouldBePrivate() throws Exception {
+  @Test(expected = IllegalAccessException.class) public void constructorShouldBePrivate()
+      throws Exception {
     Preconditions.class.newInstance();
   }
 }
