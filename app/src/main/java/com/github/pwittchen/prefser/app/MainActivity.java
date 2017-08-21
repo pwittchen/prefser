@@ -28,8 +28,6 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends Activity {
@@ -58,17 +56,12 @@ public class MainActivity extends Activity {
   }
 
   private void createSubscriptionForAllPreferences() {
-    subscriptionForAllPreferences =
-        prefser.observePreferences().subscribeOn(Schedulers.io()).filter(new Predicate<String>() {
-          @Override public boolean test(final @NonNull String s) throws Exception {
-            return s.equals(MY_KEY);
-          }
-        }).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<String>() {
-          @Override public void accept(@NonNull String s) throws Exception {
-            Toast.makeText(MainActivity.this, String.format("global: Value in %s changed", MY_KEY),
-                Toast.LENGTH_SHORT).show();
-          }
-        });
+    subscriptionForAllPreferences = prefser.observePreferences()
+        .subscribeOn(Schedulers.io())
+        .filter(key -> key.equals(MY_KEY))
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(value -> Toast.makeText(MainActivity.this,
+            String.format("global: Value in %s changed", MY_KEY), Toast.LENGTH_SHORT).show());
   }
 
   private void createSubscriptionForSinglePreference() {

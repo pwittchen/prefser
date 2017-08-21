@@ -24,9 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.github.pwittchen.prefser.library.rx2.Prefser;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends Activity {
@@ -61,15 +59,15 @@ public class MainActivity extends Activity {
 
   @Override protected void onPause() {
     super.onPause();
-    if(!subscriptionOne.isDisposed()) {
+    if (!subscriptionOne.isDisposed()) {
       subscriptionOne.dispose();
     }
 
-    if(!subscriptionTwo.isDisposed()) {
+    if (!subscriptionTwo.isDisposed()) {
       subscriptionTwo.dispose();
     }
 
-    if(!subscriptionThree.isDisposed()) {
+    if (!subscriptionThree.isDisposed()) {
       subscriptionThree.dispose();
     }
   }
@@ -78,11 +76,9 @@ public class MainActivity extends Activity {
     subscriptionOne = prefser.getAndObserve(MY_KEY_ONE, String.class, EMPTY_STRING)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<String>() {
-          @Override public void accept(@NonNull String s) throws Exception {
-            valueOne.setText(s);
-            showToast(s);
-          }
+        .subscribe(value -> {
+          valueOne.setText(value);
+          showToast(value);
         });
   }
 
@@ -90,11 +86,9 @@ public class MainActivity extends Activity {
     subscriptionTwo = prefser.getAndObserve(MY_KEY_TWO, String.class, EMPTY_STRING)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<String>() {
-          @Override public void accept(@NonNull String s) throws Exception {
-            valueTwo.setText(s);
-            showToast(s);
-          }
+        .subscribe(value -> {
+          valueTwo.setText(value);
+          showToast(value);
         });
   }
 
@@ -102,11 +96,9 @@ public class MainActivity extends Activity {
     subscriptionThree = prefser.getAndObserve(MY_KEY_THREE, String.class, EMPTY_STRING)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<String>() {
-          @Override public void accept(@NonNull String s) throws Exception {
-            valueThree.setText(s);
-            showToast(s);
-          }
+        .subscribe(value -> {
+          valueThree.setText(value);
+          showToast(value);
         });
   }
 
