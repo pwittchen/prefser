@@ -15,12 +15,21 @@
  */
 package com.github.pwittchen.prefser.library.rx2;
 
+import android.support.annotation.NonNull;
 import com.google.gson.Gson;
 import java.lang.reflect.Type;
 
 public final class GsonConverter implements JsonConverter {
 
-  private final Gson gson = new Gson();
+  private final Gson gson;
+
+  public GsonConverter(@NonNull Gson gson) {
+    this.gson = gson;
+  }
+
+  public GsonConverter() {
+    gson = new Gson();
+  }
 
   @Override public <T> T fromJson(String json, Type typeOfT) {
     return gson.fromJson(json, typeOfT);
