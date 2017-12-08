@@ -1,6 +1,19 @@
 CHANGELOG
 =========
 
+v. 2.2.0
+--------
+*08 Dec 2017*
+- Allow to pass custom instance of Gson object - PR #123 
+- Updated project dependencies
+  - RxJava -> 2.1.7
+  - Gson -> 2.8.2
+  - Support Annotations -> 27.0.2
+  - AppCompat v7 -> 27.0.2
+  - Truth -> 0.36
+  - Mockito Core -> 2.13.0
+- Updated Gradle to 3.0
+
 v. 2.1.0
 --------
 *19 Jun 2017*
