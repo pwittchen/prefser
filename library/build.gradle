@@ -47,12 +47,12 @@ jacocoAndroidUnitTestReport {
 }
 
 dependencies {
-  compile deps.gson
-  compile deps.rxjava2
-  compile deps.supportannotations
+  api deps.rxjava2
+  implementation deps.gson
+  implementation deps.supportannotations
 
-  testCompile deps.junit
-  testCompile deps.truth
-  testCompile deps.mockitocore
-  testCompile deps.robolectric
+  testImplementation deps.junit
+  testImplementation deps.truth
+  testImplementation deps.mockitocore
+  testImplementation deps.robolectric
 }

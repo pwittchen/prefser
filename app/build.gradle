@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 
 android {
@@ -8,7 +7,7 @@ android {
 
   defaultConfig {
     applicationId "com.github.pwittchen.prefser"
-    minSdkVersion rootProject.ext.minSdkVersion
+    minSdkVersion rootProject.ext.minSdkVersionApps
     targetSdkVersion rootProject.ext.compileSdkVersion
     versionCode 1
     versionName "1.0"
@@ -28,10 +27,10 @@ android {
 }
 
 dependencies {
-  compile deps.appcompatv7
-  compile deps.butterknife
-  compile deps.rxandroid2
-  compile project(':library')
+  implementation deps.appcompatv7
+  implementation deps.butterknife
+  implementation deps.rxandroid2
+  implementation project(':library')
 
-  apt deps.butterknifecompiler
+  annotationProcessor deps.butterknifecompiler
 }
