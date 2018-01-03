@@ -5,10 +5,10 @@ ext {
   minSdkVersionApps = 14
   compileSdkVersion = 26
   buildToolsVersion = '26.0.2'
-  gradleVersion = '3.0.0'
+  gradleVersion = '3.0.1'
 }
 
-ext.deps = [rxjava2            : 'io.reactivex.rxjava2:rxjava:2.1.7',
+ext.deps = [rxjava2            : 'io.reactivex.rxjava2:rxjava:2.1.8',
             rxandroid2         : 'io.reactivex.rxjava2:rxandroid:2.0.1',
             gson               : 'com.google.code.gson:gson:2.8.2',
             supportannotations : 'com.android.support:support-annotations:27.0.2',
@@ -16,7 +16,7 @@ ext.deps = [rxjava2            : 'io.reactivex.rxjava2:rxjava:2.1.7',
             butterknife        : 'com.jakewharton:butterknife:8.8.1',
             butterknifecompiler: 'com.jakewharton:butterknife-compiler:8.8.1',
             junit              : 'junit:junit:4.12',
-            truth              : 'com.google.truth:truth:0.36',
+            truth              : 'com.google.truth:truth:0.37',
             robolectric        : 'org.robolectric:robolectric:3.1.2',
             mockitocore        : 'org.mockito:mockito-core:2.13.0']
 
