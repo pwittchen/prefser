@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+v. 2.2.1
+--------
+*03 Jan 2018*
+- Updated project dependencies
+  - RxJava -> 2.1.8
+  - Truth -> 0.3.7
+- Updated Gradle to 3.1
+
 v. 2.2.0
 --------
 *08 Dec 2017*
