@@ -57,11 +57,11 @@ Classic SharedPreferences allows you to store only primitive data types, Strings
 
 Thanks to Gson serialization, Prefser allows you to store:
 * Primitive data types
- * boolean
- * float
- * int
- * long
- * double
+  * boolean
+  * float
+  * int
+  * long
+  * double
 * Strings
 * Custom Objects
 * Lists
