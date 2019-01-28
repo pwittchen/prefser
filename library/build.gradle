@@ -31,6 +31,8 @@ android {
     exclude 'META-INF/LICENSE.txt'
   }
 
+  testOptions.unitTests.includeAndroidResources = true
+
   testOptions {
     unitTests.all {
       jacoco {

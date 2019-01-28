@@ -16,7 +16,6 @@
 package com.github.pwittchen.prefser.library.rx2;
 
 import android.content.Context;
-import com.github.pwittchen.prefser.library.BuildConfig;
 import com.github.pwittchen.prefser.library.rx2.utils.RecordingObserver;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -33,7 +32,7 @@ import org.robolectric.annotation.Config;
 
 import static com.google.common.truth.Truth.assertThat;
 
-@RunWith(RobolectricTestRunner.class) @Config(constants = BuildConfig.class)
+@RunWith(RobolectricTestRunner.class) @Config(manifest = Config.NONE)
 public final class PrefserObservablesTest {
 
   private static final String GIVEN_KEY = "givenKey";

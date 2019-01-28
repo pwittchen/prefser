@@ -1,6 +1,5 @@
 package com.github.pwittchen.prefser.library.rx2;
 
-import com.github.pwittchen.prefser.library.BuildConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -9,7 +8,7 @@ import org.robolectric.annotation.Config;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
-@RunWith(RobolectricTestRunner.class) @Config(constants = BuildConfig.class)
+@RunWith(RobolectricTestRunner.class) @Config(manifest = Config.NONE)
 public class PreconditionsTest {
 
   @Test public void shouldCreatePreconditionsObject() {

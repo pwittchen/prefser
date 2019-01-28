@@ -18,7 +18,6 @@ package com.github.pwittchen.prefser.library.rx2;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
-import com.github.pwittchen.prefser.library.BuildConfig;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -36,7 +35,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricTestRunner.class) @Config(constants = BuildConfig.class)
+@RunWith(RobolectricTestRunner.class) @Config(manifest = Config.NONE)
 public final class PrefserTest {
 
   private static final String GIVEN_KEY = "givenKey";

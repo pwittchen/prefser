@@ -2,7 +2,7 @@ Prefser [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Prefs
 =======
 Wrapper for Android [SharedPreferences](http://developer.android.com/reference/android/content/SharedPreferences.html) with object serialization and [RxJava](https://github.com/ReactiveX/RxJava) Observables
 
-min sdk version = 9
+min sdk version = 14
 
 JavaDoc is available at: http://pwittchen.github.io/prefser/RxJava2.x
 

@@ -15,7 +15,6 @@
  */
 package com.github.pwittchen.prefser.library.rx2;
 
-import com.github.pwittchen.prefser.library.BuildConfig;
 import java.lang.reflect.Type;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +23,7 @@ import org.robolectric.annotation.Config;
 
 import static com.google.common.truth.Truth.assertThat;
 
-@RunWith(RobolectricTestRunner.class) @Config(constants = BuildConfig.class)
+@RunWith(RobolectricTestRunner.class) @Config(manifest = Config.NONE)
 final public class TypeTokenTest {
 
   @Test(expected = RuntimeException.class)

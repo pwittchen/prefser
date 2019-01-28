@@ -26,7 +26,7 @@ android {
 }
 
 dependencies {
-  implementation deps.appcompatv7
+  implementation deps.appcompat
   implementation deps.butterknife
   implementation deps.rxandroid2
   implementation project(':library')
