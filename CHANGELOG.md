@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+v. 2.2.2
+--------
+*?*
+
+- updated project dependencies - 74de9db550ff941083448c28c48b6daffaed7b6c
+- migrated to `androidx` - 74de9db550ff941083448c28c48b6daffaed7b6c, fixes #130
+
 v. 2.2.1
 --------
 *03 Jan 2018*
