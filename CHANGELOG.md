@@ -3,7 +3,7 @@ CHANGELOG
 
 v. 2.2.2
 --------
-*?*
+*29 Jan 2019*
 
 - updated project dependencies - 74de9db550ff941083448c28c48b6daffaed7b6c
 - migrated to `androidx` - 74de9db550ff941083448c28c48b6daffaed7b6c, fixes #130
