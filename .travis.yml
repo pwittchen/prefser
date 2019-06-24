@@ -10,6 +10,7 @@ env:
 android:
   components:
     - tools
+    - tools
     - platform-tools
     - build-tools-28
     - android-28
@@ -28,7 +29,7 @@ install:
 sudo: required
 
 before_install:
-  - yes | /usr/local/android-sdk/tools/bin/sdkmanager "platforms;android-27"
+  - yes | sdkmanager "platforms;android-27"
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
