@@ -28,7 +28,7 @@ install:
 sudo: required
 
 before_install:
-- yes | sdkmanager "platforms;android-27"
+  - yes | /usr/local/android-sdk/tools/bin/sdkmanager "platforms;android-27"
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
