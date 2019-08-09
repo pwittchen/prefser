@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+v. 2.2.3
+--------
+*?*
+- updated project dependencies
+
 v. 2.2.2
 --------
 *29 Jan 2019*
