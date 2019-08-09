@@ -369,22 +369,24 @@ You can depend on the library through Maven:
 <dependency>
     <groupId>com.github.pwittchen</groupId>
     <artifactId>prefser-rx2</artifactId>
-    <version>2.2.2</version>
+    <version>x.y.z</version>
 </dependency>
 <dependency>
     <groupId>io.reactivex.rxjava2</groupId>
     <artifactId>rxandroid</artifactId>
-    <version>2.1.0</version>
+    <version>2.1.1</version>
 </dependency>
 ```
 or through Gradle:
 
 ```groovy
 dependencies {
-  compile 'com.github.pwittchen:prefser-rx2:2.2.2'
-  compile 'io.reactivex.rxjava2:rxandroid:2.1.0'
+  compile 'com.github.pwittchen:prefser-rx2:x.y.z'
+  compile 'io.reactivex.rxjava2:rxandroid:2.1.1'
 }
 ```
+
+Where `x.y.z` is the latest library release: ![Maven Central](https://img.shields.io/maven-central/v/com.github.pwittchen/prefser-rx2.svg?style=flat-square)
 
 Tests
 -----
