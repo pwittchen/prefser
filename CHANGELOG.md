@@ -3,7 +3,7 @@ CHANGELOG
 
 v. 2.2.3
 --------
-*?*
+*09 Aug 2019*
 - updated project dependencies
 
 v. 2.2.2
