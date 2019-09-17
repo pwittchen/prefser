@@ -20,13 +20,18 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
+
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
+import io.reactivex.functions.Cancellable;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -280,17 +285,22 @@ public class Prefser {
    */
   public Observable<String> observePreferences() {
     return Observable.create(new ObservableOnSubscribe<String>() {
+
+      final Collection<OnChangeListener> listenerReferences =
+              Collections.synchronizedList(new ArrayList<OnChangeListener>());
+
       @Override
       public void subscribe(final @io.reactivex.annotations.NonNull ObservableEmitter<String> e) {
-        preferences.registerOnSharedPreferenceChangeListener(
-            new SharedPreferences.OnSharedPreferenceChangeListener() {
-              @Override
-              public void onSharedPreferenceChanged(SharedPreferences sharedPrefs, String key) {
-                if (!e.isDisposed()) {
-                  e.onNext(key);
-                }
-              }
-            });
+        final OnChangeListener onChangeListener = new OnChangeListener(e);
+        preferences.registerOnSharedPreferenceChangeListener(onChangeListener);
+        listenerReferences.add(onChangeListener);
+        e.setCancellable(new Cancellable() {
+          @Override
+          public void cancel() {
+            preferences.unregisterOnSharedPreferenceChangeListener(onChangeListener);
+            listenerReferences.remove(onChangeListener);
+          }
+        });
       }
     });
   }
@@ -366,5 +376,21 @@ public class Prefser {
    */
   public int size() {
     return preferences.getAll().size();
+  }
+
+  private static class OnChangeListener
+          implements SharedPreferences.OnSharedPreferenceChangeListener {
+    private final ObservableEmitter<? super String> emitter;
+
+    OnChangeListener(ObservableEmitter<? super String> emitter) {
+      this.emitter = emitter;
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+      if (!emitter.isDisposed()) {
+        emitter.onNext(key);
+      }
+    }
   }
 }
