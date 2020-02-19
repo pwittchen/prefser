@@ -440,6 +440,7 @@ References
 * [SecureSharedPreferences](https://github.com/rtoshiro/SecureSharedPreferences)
 * [secure-preferences](https://github.com/scottyab/secure-preferences)
 * [Hawk](https://github.com/orhanobut/hawk)
+* [binaryprefs](https://github.com/yandextaxitech/binaryprefs)
 
 License
 -------
