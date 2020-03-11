@@ -1,13 +1,18 @@
 apply plugin: 'com.android.library'
-apply plugin: 'jacoco-android'
+apply plugin: 'com.hiya.jacoco-android'
 apply from: '../config/quality.gradle'
 apply from: '../maven_push.gradle'
+
+jacoco {
+  toolVersion = "0.8.4"
+}
 
 android {
   compileSdkVersion rootProject.ext.compileSdkVersion
   buildToolsVersion rootProject.ext.buildToolsVersion
 
   defaultConfig {
+    multiDexEnabled true
     minSdkVersion rootProject.ext.minSdkVersion
     targetSdkVersion rootProject.ext.compileSdkVersion
     versionCode 1
@@ -40,12 +45,21 @@ android {
       }
     }
   }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
 }
 
 jacocoAndroidUnitTestReport {
   csv.enabled false
   html.enabled true
   xml.enabled true
+}
+
+tasks.withType(Test) {
+  jacoco.includeNoLocationClasses = true
 }
 
 dependencies {

@@ -84,7 +84,7 @@ You can create `Prefser` object in the following ways:
 Prefser prefser = new Prefser(context);
 Prefser prefser = new Prefser(sharedPreferences);
 ```
- 
+
 When you create `Prefser` object with Android Context, it will use default `SharedPreferences` from `PreferenceManager`.
 
 You can set `JsonConverter` implementation for `Prefser`. When it's not set, `Prefser` will use `GsonConverter` by default.
@@ -136,8 +136,8 @@ prefser.put("key", new Double[]{1.2, 2.3, 3.4});          // put array of double
 prefser.put("key", new String[]{"one", "two", "three"});  // put array of Strings
 
 CustomObject[] objects = new CustomObject[]{
-  new CustomObject(), 
-  new CustomObject(), 
+  new CustomObject(),
+  new CustomObject(),
   new CustomObject()
 };
 
@@ -331,7 +331,7 @@ Disposable subscription = prefser.observePreferences()
   .subscribe(new Consumer<String>() {
     @Override public void accept(@NonNull String key) {
     // Perform any action you want.
-    // E.g. get value stored under key 
+    // E.g. get value stored under key
     // and display in a TextView.
   }
 });
@@ -405,7 +405,7 @@ Code style used in the project is called `SquareAndroid` from Java Code Styles r
 Static code analysis
 --------------------
 
-Static code analysis runs Checkstyle, FindBugs, PMD and Lint. It can be executed with command:
+Static code analysis runs Checkstyle, PMD and Lint. It can be executed with command:
 
  ```
  ./gradlew check
